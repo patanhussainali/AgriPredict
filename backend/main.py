@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Check if running on Vercel
-is_vercel = os.environ.get("VERCEL") == "1"
+is_vercel = bool(os.environ.get("VERCEL"))
 app = FastAPI(root_path="/api" if is_vercel else "")
 
 @app.get("/")
