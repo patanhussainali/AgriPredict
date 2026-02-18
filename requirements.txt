@@ -11,3 +11,4 @@ passlib
 requests
 pydantic
 email-validator
+dnspython
