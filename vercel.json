@@ -6,17 +6,14 @@
             "runtime": "python3.9"
         }
     },
-    "routes": [
+    "rewrites": [
         {
-            "src": "/api/(.*)",
-            "dest": "/backend/main.py"
+            "source": "/api/:path*",
+            "destination": "/backend/main.py"
         },
         {
-            "handle": "filesystem"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/index.html"
+            "source": "/((?!api).*)",
+            "destination": "/index.html"
         }
     ]
 }
