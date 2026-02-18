@@ -140,6 +140,21 @@ def verify_email_endpoint(request: VerifyEmailRequest):
     
     return {"message": "Email verified successfully. You can now login."}
 
+# ----------------- AI Chat Endpoint -----------------
+class ChatRequest(BaseModel):
+    message: str
+    lang: str = "en"
+
+@app.post("/chat")
+def chat_endpoint(request: ChatRequest):
+    try:
+        from backend.utils.chat_engine import chat_bot
+        response = chat_bot.get_response(request.message, request.lang)
+        return {"response": response}
+    except Exception as e:
+        print(f"Chat Error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 # ----------------- User Management -----------------
 
 @app.post("/signup")
