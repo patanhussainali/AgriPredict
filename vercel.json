@@ -1,4 +1,10 @@
 {
+    "trailingSlash": false,
+    "functions": {
+        "backend/main.py": {
+            "maxDuration": 60
+        }
+    },
     "builds": [
         {
             "src": "backend/main.py",
