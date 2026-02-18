@@ -1,17 +1,11 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-import pandas as pd
 import numpy as np
 import joblib
 import os
 from dotenv import load_dotenv
 
-load_dotenv() # Load environment variables from .env
-
-# Check if running on Vercel (or similar) where /api prefix might be present
-# If the request comes as /api/..., we need to tell FastAPI about it.
-# We can detect this via an environment variable or just default it if we are sure.
-# For Vercel Python runtime, the app is mounted at /api usually if configured in vercel.json
+load_dotenv()
 
 app = FastAPI(root_path="/api")
 
@@ -19,7 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # Allow all for MVP, or specific ["http://localhost:5173"]
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -32,19 +26,17 @@ try:
     elif os.path.exists('model_objects.joblib'):
         model_data = joblib.load('model_objects.joblib')
     else:
-        # Fallback if not yet trained (handled gracefully)
         model_data = None
 except Exception as e:
     print(f"Error loading model: {e}")
     model_data = None
 
-# Load CSV for officer dashboard stats
+# Load CSV for officer dashboard stats (List of Dicts now)
 try:
     from load_kaggle_data import load_data
-    df = load_data()
-    if df is None: df = pd.DataFrame()
+    csv_data = load_data() # Returns list of dicts
 except:
-    df = pd.DataFrame()
+    csv_data = []
 
 class PredictionRequest(BaseModel):
     district: str
@@ -58,10 +50,9 @@ class PredictionRequest(BaseModel):
     n: float
     p: float
     k: float
-    lang: str = "en" # en or ta
-    pulse_type: str = None # Optional, for specific pulse selection
+    lang: str = "en"
+    pulse_type: str = None
 
-# Simple translation dictionary for MVP
 TRANSLATIONS = {
     "en": {
         "irrigate": "Irrigate immediately",
@@ -107,7 +98,7 @@ try:
     from pymongo import MongoClient
     from datetime import datetime
     
-    # Connect to local MongoDB
+    # Connect to local MongoDB 
     client = MongoClient("mongodb://127.0.0.1:27017/")
     db = client["agri_predict_db"]
     sessions_collection = db["sessions"]
@@ -120,7 +111,7 @@ except Exception as e:
     db = None
     sessions_collection = None
     predictions_collection = None
-
+    users_collection = None
 
 
 # ----------------- Email Verification -----------------
@@ -158,7 +149,6 @@ def chat_endpoint(request: ChatRequest):
         except ImportError:
             import sys
             import os
-            # Add parent dir to path to find 'backend' package if running from inside backend/
             sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
             from backend.utils.chat_engine import chat_bot
 
@@ -175,25 +165,20 @@ def signup(user: UserSignup):
     if users_collection is None:
         raise HTTPException(status_code=503, detail="Database not connected")
     
-    # Check if user already exists
     if users_collection.find_one({"email": user.email}):
         raise HTTPException(status_code=400, detail="Email already registered")
     
-    # Hash password
     hashed_password = get_password_hash(user.password)
-    
-    # Generate Verification Token
     verification_token = str(uuid.uuid4())
     
     user_dict = user.dict()
     user_dict["password"] = hashed_password
     user_dict["created_at"] = datetime.now()
-    user_dict["is_verified"] = False # Default to False
+    user_dict["is_verified"] = False
     user_dict["verification_token"] = verification_token
     
     users_collection.insert_one(user_dict)
     
-    # Simulate sending email
     base_url = os.getenv("BASE_URL", "http://localhost:3000")
     verification_link = f"{base_url}/verify?token={verification_token}"
     print(f"------------- EMAIL VERIFICATION -------------")
@@ -212,65 +197,31 @@ def login(user: UserLogin):
     if not user_record or not verify_password(user.password, user_record["password"]):
         raise HTTPException(status_code=401, detail="Invalid email or password")
         
-    # Check if verified
-    # For backward compatibility with existing users (if any), treat missing is_verified as True
-    # But for new robust system, we should enforce it. 
-    # Let's assume all new users from now on have is_verified.
-    # Existing users from previous steps might not have it.
     if user_record.get("is_verified") is False:
         raise HTTPException(status_code=403, detail="Email not verified. Please check your inbox.")
 
-    # Return user info (excluding password)
     return {
         "message": "Login successful",
         "user": {
             "first_name": user_record.get("first_name"),
             "last_name": user_record.get("last_name"),
             "email": user_record.get("email"),
-            "role": "farmer" # Defaulting to farmer for now
+            "role": "farmer"
         }
     }
+
 def get_user_sessions(email: str = None):
-    """
-    Returns a list of active sessions for the user.
-    Fetches from MongoDB 'sessions' collection.
-    If empty, seeds with mock data for demonstration.
-    """
     if sessions_collection is None:
         return [{"error": "Database not connected", "id": 0}]
 
-    # Seed data if collection is empty
     if sessions_collection.count_documents({}) == 0:
         mock_sessions = [
-            {
-                "id": 1,
-                "device": "Windows PC",
-                "location": "Hyderabad, India",
-                "active": True,
-                "type": "desktop",
-                "last_active": "Active now"
-            },
-            {
-                "id": 2,
-                "device": "iPhone 13",
-                "location": "Chennai, India",
-                "active": False,
-                "type": "mobile",
-                "last_active": "2 hours ago"
-            },
-            {
-                 "id": 3,
-                "device": "MacBook Pro",
-                "location": "Bangalore, India",
-                "active": False,
-                "type": "desktop",
-                "last_active": "Yesterday"
-            }
+            {"id": 1, "device": "Windows PC", "location": "Hyderabad, India", "active": True, "type": "desktop", "last_active": "Active now"},
+            {"id": 2, "device": "iPhone 13", "location": "Chennai, India", "active": False, "type": "mobile", "last_active": "2 hours ago"},
+            {"id": 3, "device": "MacBook Pro", "location": "Bangalore, India", "active": False, "type": "desktop", "last_active": "Yesterday"}
         ]
         sessions_collection.insert_many(mock_sessions)
-        print("Seeded mock sessions to MongoDB.")
-
-    # Retrieve sessions (exclude _id for clean JSON response)
+    
     sessions = list(sessions_collection.find({}, {"_id": 0}))
     return sessions
 
@@ -282,53 +233,77 @@ def predict_yield(data: PredictionRequest):
     model = model_data['model']
     features = model_data['features']
     
-    # ... (Pre-processing logic remains same) ...
-    # Prepare input dataframe
-    input_data = pd.DataFrame(0, index=[0], columns=features)
+    # Create input vector (numpy array) sorted by feature order
+    input_vector = np.zeros(len(features))
     
-    # Set numeric values
-    if 'rainfall' in features: input_data['rainfall'] = data.rainfall
-    if 'temp_min' in features: input_data['temp_min'] = data.temp_min
-    if 'temp_max' in features: input_data['temp_max'] = data.temp_max
-    if 'ph' in features: input_data['ph'] = data.ph
-    if 'n' in features: input_data['n'] = data.n
-    if 'p' in features: input_data['p'] = data.p
-    if 'k' in features: input_data['k'] = data.k
-    if 'humidity' in features: input_data['humidity'] = 70.0 
-        
-    # Set categorical values
-    district_val = data.district.upper() 
-    crop_val = data.crop 
-    season_val = data.season 
-    soil_val = data.soil_type 
+    numeric_map = {
+        'rainfall': data.rainfall,
+        'temp_min': data.temp_min,
+        'temp_max': data.temp_max,
+        'ph': data.ph,
+        'n': data.n,
+        'p': data.p,
+        'k': data.k,
+        'humidity': 70.0
+    }
     
-    # Manually check and set OHE columns
-    for col, val in [('District', district_val), ('Crop', crop_val), ('Season', season_val), ('Soil_Type', soil_val)]:
-        feature_name = f"{col}_{val}"
-        if feature_name in features:
-            input_data[feature_name] = 1
-        else:
-             if f"{col}_{val.upper()}" in features:
-                 input_data[f"{col}_{val.upper()}"] = 1
-             elif f"{col}_{val.title()}" in features:
-                 input_data[f"{col}_{val.title()}"] = 1
+    for feat_name, val in numeric_map.items():
+        if feat_name in features:
+            idx = features.index(feat_name)
+            input_vector[idx] = val
             
-    # Model Prediction
-    predicted_yield = model.predict(input_data)[0]
+    inputs_cat = {
+        'District': data.district.upper(),
+        'Crop': data.crop,
+        'Season': data.season,
+        'Soil_Type': data.soil_type
+    }
     
-    # Advisory Logic (Hybrid Rule-Based)
+    for col, val in inputs_cat.items():
+        candidates = [
+            f"{col}_{val}",
+            f"{col}_{val.upper()}",
+            f"{col}_{val.title()}"
+        ]
+        
+        for cand in candidates:
+            if cand in features:
+                idx = features.index(cand)
+                input_vector[idx] = 1
+                break
+            
+    try:
+        predicted_yield = model.predict(input_vector.reshape(1, -1))[0]
+    except Exception as e:
+        print(f"Prediction Error: {e}")
+        raise HTTPException(status_code=500, detail=f"Model error: {str(e)}")
+    
     advisory = []
     messages = TRANSLATIONS.get(data.lang, TRANSLATIONS["en"])
     
     risk_level = "Safe"
     risk_color = "green"
     
-    # Rule 1: Yield Gap
+    # Yield Gap Logic
     avg_yield = 0
-    if not df.empty and 'Yield' in df.columns:
-        filtered = df[(df['District'] == district_val) & (df['Crop'] == crop_val)]
-        if not filtered.empty:
-            avg_yield = filtered['Yield'].mean()
+    district_val = data.district
+    crop_val = data.crop
+    
+    filtered_yields = []
+    if csv_data:
+        for row in csv_data:
+            d_name = row.get('District', '').strip()
+            c_name = row.get('Crop', '').strip()
+            y_val = row.get('Yield')
+            
+            if d_name.lower() == district_val.lower() and c_name.lower() == crop_val.lower():
+                try:
+                    filtered_yields.append(float(y_val))
+                except:
+                    pass
+                    
+        if filtered_yields:
+            avg_yield = sum(filtered_yields) / len(filtered_yields)
             
     confidence = 85.0 
     
@@ -339,22 +314,20 @@ def predict_yield(data: PredictionRequest):
     else:
         advisory.append(messages["optimal"])
         
-    # Rule 2: Weather Risk
     if data.rainfall < 300 and data.crop == "Rice":
         advisory.append(messages["irrigate"])
         
     if data.n < 100:
         advisory.append(messages["fertilize"])
 
-    # ---------------------------------------------------------
-    # AI Recommendation (Groq)
-    # ---------------------------------------------------------
+    # AI Recommendation
     ai_analysis = "AI Analysis Unavailable"
     try:
         try:
             from backend.utils.chat_engine import chat_bot
         except ImportError:
             import sys
+            import os
             sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
             from backend.utils.chat_engine import chat_bot
             
@@ -363,7 +336,6 @@ def predict_yield(data: PredictionRequest):
         print(f"AI Recommendation Failed: {e}")
         ai_analysis = "Could not generate AI analysis."
 
-    # ----------------- MongoDB Storage -----------------
     if predictions_collection is not None:
         try:
             prediction_record = data.dict()
@@ -374,9 +346,8 @@ def predict_yield(data: PredictionRequest):
                 "ai_analysis": ai_analysis
             })
             predictions_collection.insert_one(prediction_record)
-            print("Prediction saved to MongoDB.")
         except Exception as e:
-            print(f"Failed to save prediction to MongoDB: {e}")
+            print(f"Failed to save to MongoDB: {e}")
 
     return {
         "predicted_yield": round(predicted_yield, 2),
@@ -389,17 +360,10 @@ def predict_yield(data: PredictionRequest):
         "ai_analysis": ai_analysis 
     }
 
-# ----------------- Analytics Endpoints -----------------
-
 @app.get("/analytics/datasets")
 def get_datasets():
-    """
-    Returns a list of available datasets.
-    For MVP, we only have one: the loaded Kaggle dataset.
-    """
     datasets = []
-    # If df is loaded, show it
-    if not df.empty:
+    if csv_data:
         datasets.append({
             "id": "tn_agriculture",
             "name": "Tamilnadu Agriculture Yield Data (Kaggle)",
@@ -409,58 +373,53 @@ def get_datasets():
 
 @app.get("/analytics/data/{dataset_id}")
 def get_dataset_data(dataset_id: str):
-    """
-    Returns the data for a specific dataset.
-    """
     if dataset_id == "tn_agriculture":
-        if df.empty:
+        if not csv_data:
             raise HTTPException(status_code=404, detail="Dataset not found or empty")
-        
-        # Replace NaN with None for valid JSON (FastAPI handles None as null)
-        # using pandas.DataFrame.where(cond, other) -> keeps values where cond is True
-        # but we need to replace NaN.
-        # df.replace({np.nan: None}) is cleaner
-        
-        try:
-            clean_df = df.replace({np.nan: None})
-            return clean_df.to_dict(orient="records")
-        except Exception as e:
-            print(f"Error serializing data: {e}")
-            raise HTTPException(status_code=500, detail="Data serialization error")
+        return csv_data
     
     raise HTTPException(status_code=404, detail="Dataset ID not found")
 
 @app.get("/dashboard/chart-data")
 def get_dashboard_chart_data(crop: str = "Rice"):
-    """
-    Returns historical yield data for the dashboard chart.
-    Groups by Year and calculates Average Yield.
-    """
-    if df.empty:
+    if not csv_data:
         return {"labels": [], "data": []}
     
-    # Filter by crop (case insensitive for robustness)
-    # The CSV has 'Crop' column.
-    try:
-        # Create a boolean mask for the crop
-        mask = df['Crop'].astype(str).str.lower() == crop.lower()
-        crop_df = df[mask]
-        
-        if crop_df.empty:
-            return {"labels": [], "data": []}
-        
-        # Group by Year and calculate mean Yield
-        # Sort by Year to ensure chronological order
-        yearly_data = crop_df.groupby('Crop_Year')['Yield'].mean().sort_index()
-        
-        # Format for frontend: labels (Years), data (Yields)
-        return {
-            "labels": yearly_data.index.astype(str).tolist(),
-            "data": [round(val, 2) for val in yearly_data.values.tolist()]
-        }
-    except Exception as e:
-        print(f"Error generating chart data: {e}")
+    filtered = []
+    for row in csv_data:
+        if row.get('Crop', '').lower() == crop.lower():
+            filtered.append(row)
+            
+    if not filtered:
         return {"labels": [], "data": []}
+        
+    yearly_sums = {}
+    yearly_counts = {}
+    
+    for row in filtered:
+        try:
+            year = int(float(row.get('Crop_Year', 0)))
+            yield_val = float(row.get('Yield', 0))
+            
+            if year not in yearly_sums:
+                yearly_sums[year] = 0.0
+                yearly_counts[year] = 0
+            
+            yearly_sums[year] += yield_val
+            yearly_counts[year] += 1
+        except:
+            continue
+            
+    years = sorted(yearly_sums.keys())
+    averages = []
+    for y in years:
+        avg = yearly_sums[y] / yearly_counts[y]
+        averages.append(round(avg, 2))
+        
+    return {
+        "labels": [str(y) for y in years],
+        "data": averages
+    }
 
 if __name__ == "__main__":
     import uvicorn
