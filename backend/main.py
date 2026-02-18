@@ -11,6 +11,10 @@ load_dotenv()
 is_vercel = os.environ.get("VERCEL") == "1"
 app = FastAPI(root_path="/api" if is_vercel else "")
 
+@app.get("/")
+def health_check():
+    return {"status": "ok", "message": "AgriPredict API is running"}
+
 from fastapi.middleware.cors import CORSMiddleware
 
 app.add_middleware(
