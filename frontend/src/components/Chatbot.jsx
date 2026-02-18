@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useContext } from 'react';
 import { LanguageContext } from '../context/LanguageContext';
 import { Send, Bot, Loader2, Mic, MicOff } from 'lucide-react';
+import API_URL from '../config';
 
 const Chatbot = () => {
     const { t, lang } = useContext(LanguageContext);

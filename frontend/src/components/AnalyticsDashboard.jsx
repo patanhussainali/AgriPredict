@@ -36,7 +36,7 @@ const AnalyticsDashboard = () => {
 
     // Fetch list of datasets on mount
     useEffect(() => {
-        fetch('http://localhost:8000/analytics/datasets')
+        fetch(`${API_URL}/analytics/datasets`)
             .then(res => {
                 if (!res.ok) throw new Error(`Dataset list failed: ${res.status}`);
                 return res.json();

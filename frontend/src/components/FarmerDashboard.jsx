@@ -113,7 +113,7 @@ const FarmerDashboard = () => {
                 pulse_type: formData.pulse_type
             };
 
-            const response = await fetch('http://localhost:8000/predict', {
+            const response = await fetch(`${API_URL}/predict`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),

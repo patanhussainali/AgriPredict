@@ -148,7 +148,15 @@ class ChatRequest(BaseModel):
 @app.post("/chat")
 def chat_endpoint(request: ChatRequest):
     try:
-        from backend.utils.chat_engine import chat_bot
+        try:
+            from backend.utils.chat_engine import chat_bot
+        except ImportError:
+            import sys
+            import os
+            # Add parent dir to path to find 'backend' package if running from inside backend/
+            sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+            from backend.utils.chat_engine import chat_bot
+
         response = chat_bot.get_response(request.message, request.lang)
         return {"response": response}
     except Exception as e:
@@ -181,7 +189,8 @@ def signup(user: UserSignup):
     users_collection.insert_one(user_dict)
     
     # Simulate sending email
-    verification_link = f"http://localhost:5173/verify?token={verification_token}"
+    base_url = os.getenv("BASE_URL", "http://localhost:3000")
+    verification_link = f"{base_url}/verify?token={verification_token}"
     print(f"------------- EMAIL VERIFICATION -------------")
     print(f"Sending verification link to: {user.email}")
     print(f"Link: {verification_link}")

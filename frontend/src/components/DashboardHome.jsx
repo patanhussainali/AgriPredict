@@ -37,7 +37,7 @@ const DashboardHome = ({ user }) => {
         const fetchChartData = async () => {
             setLoadingChart(true);
             try {
-                const response = await fetch(`http://localhost:8000/dashboard/chart-data?crop=${selectedCrop}`);
+                const response = await fetch(`${API_URL}/dashboard/chart-data?crop=${selectedCrop}`);
                 if (response.ok) {
                     const result = await response.json();
                     // Result: { labels: ["2010", ...], data: [3.5, ...] }

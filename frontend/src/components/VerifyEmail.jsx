@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { CheckCircle, XCircle, Loader, ArrowLeft } from 'lucide-react';
+import API_URL from '../config';
 
 const VerifyEmail = () => {
     const [status, setStatus] = useState('verifying'); // verifying, success, error
     const [message, setMessage] = useState('Verifying your email...');
 
     useEffect(() => {
-        const verify = async () => {
+        const verifyToken = async () => {
             const params = new URLSearchParams(window.location.search);
             const token = params.get('token');
 
@@ -17,7 +18,7 @@ const VerifyEmail = () => {
             }
 
             try {
-                const response = await fetch('http://localhost:8000/auth/verify-email', {
+                const response = await fetch(`${API_URL}/auth/verify-email`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ token }),

@@ -1,3 +1,5 @@
+import API_URL from '../config';
+
 /* eslint-disable react/prop-types */
 import { useState, useContext } from 'react';
 import { LanguageContext } from '../context/LanguageContext.jsx';
@@ -95,7 +97,7 @@ const Login = ({ onLogin, onBack }) => {
         setLoading(true);
 
         try {
-            const response = await fetch('http://localhost:8000/login', {
+            const response = await fetch(`${API_URL}/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -136,7 +138,7 @@ const Login = ({ onLogin, onBack }) => {
         setLoading(true);
 
         try {
-            const response = await fetch('http://localhost:8000/auth/forgot-password', {
+            const response = await fetch(`${API_URL}/auth/forgot-password`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: forgotEmail }),
@@ -405,7 +407,7 @@ const Login = ({ onLogin, onBack }) => {
                                 onSuccess={async (credentialResponse) => {
                                     try {
                                         setLoading(true);
-                                        const res = await fetch('http://localhost:8000/google-login', {
+                                        const res = await fetch(`${API_URL}/google-login`, {
                                             method: 'POST',
                                             headers: { 'Content-Type': 'application/json' },
                                             body: JSON.stringify({ credential: credentialResponse.credential }),

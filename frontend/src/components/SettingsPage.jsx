@@ -167,7 +167,7 @@ const SettingsPage = () => {
                                         btn.disabled = true;
 
                                         try {
-                                            const response = await fetch('http://localhost:8000/auth/forgot-password', {
+                                            const response = await fetch(`${API_URL}/auth/forgot-password`, {
                                                 method: 'POST',
                                                 headers: { 'Content-Type': 'application/json' },
                                                 body: JSON.stringify({ email }),

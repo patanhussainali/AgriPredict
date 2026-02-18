@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from 'react';
 // import axios from 'axios';
 import { TrendingUp, AlertTriangle } from 'lucide-react';
 import { LanguageContext } from '../context/LanguageContext.jsx';
+import API_URL from '../config';
 
 const OfficerDashboard = () => {
     const { lang, t } = useContext(LanguageContext);
@@ -14,7 +15,7 @@ const OfficerDashboard = () => {
             try {
                 // For MVP: Mock data if API fails or is not ready, to prevent crash
                 try {
-                    const response = await fetch('http://localhost:8000/dashboard/officer');
+                    const response = await fetch(`${API_URL}/dashboard/officer`);
                     if (response.ok) {
                         const data = await response.json();
                         setStats(data);
