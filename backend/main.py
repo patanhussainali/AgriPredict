@@ -8,7 +8,12 @@ from dotenv import load_dotenv
 
 load_dotenv() # Load environment variables from .env
 
-app = FastAPI()
+# Check if running on Vercel (or similar) where /api prefix might be present
+# If the request comes as /api/..., we need to tell FastAPI about it.
+# We can detect this via an environment variable or just default it if we are sure.
+# For Vercel Python runtime, the app is mounted at /api usually if configured in vercel.json
+
+app = FastAPI(root_path="/api")
 
 from fastapi.middleware.cors import CORSMiddleware
 
