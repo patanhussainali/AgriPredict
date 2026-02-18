@@ -1,8 +1,12 @@
 fastapi
 uvicorn
 scikit-learn
-
 numpy
+pandas
 joblib
 groq
 python-dotenv
+pymongo
+passlib
+google-auth-library
+requests
