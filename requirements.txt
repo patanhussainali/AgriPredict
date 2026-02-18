@@ -9,3 +9,5 @@ python-dotenv
 pymongo
 passlib
 requests
+pydantic
+email-validator
