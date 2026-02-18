@@ -106,7 +106,8 @@ try:
     from datetime import datetime
     
     # Connect to MongoDB (Vercel or Local)
-    mongo_uri = os.getenv("MONGO_URI", "mongodb://127.0.0.1:27017/")
+    # Check both common variable names
+    mongo_uri = os.getenv("MONGO_URI") or os.getenv("MONGODB_URI") or "mongodb://127.0.0.1:27017/"
     client = MongoClient(mongo_uri)
     db = client["agri_predict_db"]
     sessions_collection = db["sessions"]
