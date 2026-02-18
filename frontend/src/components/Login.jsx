@@ -60,7 +60,7 @@ const Login = ({ onLogin, onBack }) => {
         setLoading(true);
 
         try {
-            const response = await fetch('http://localhost:8000/signup', {
+            const response = await fetch(`${API_URL}/signup`, { // Use API_URL here too, not localhost!
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -70,6 +70,15 @@ const Login = ({ onLogin, onBack }) => {
                     password
                 }),
             });
+
+            const contentType = response.headers.get("content-type");
+            if (!contentType || !contentType.includes("application/json")) {
+                const text = await response.text();
+                if (text.trim().startsWith("<")) {
+                    throw new Error(`Configuration Error: Received HTML from "${API_URL}/signup". Check VITE_API_URL.`);
+                }
+                throw new Error(`Server Error (${response.status}): ${text.slice(0, 100)}`);
+            }
 
             const data = await response.json();
 
@@ -105,6 +114,16 @@ const Login = ({ onLogin, onBack }) => {
                     password: loginPassword
                 }),
             });
+
+            const contentType = response.headers.get("content-type");
+            if (!contentType || !contentType.includes("application/json")) {
+                const text = await response.text();
+                // Check if it's HTML (likely 404 SPA fallback)
+                if (text.trim().startsWith("<")) {
+                    throw new Error(`Configuration Error: The app is trying to connect to "${API_URL}/login" but received a Web Page (HTML) instead of Data (JSON). Please check your VITE_API_URL setting in Vercel. It should end with "/api".`);
+                }
+                throw new Error(`Server Error (${response.status}): ${text.slice(0, 100)}`);
+            }
 
             const data = await response.json();
 
