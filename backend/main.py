@@ -101,6 +101,13 @@ try:
     # Connect to MongoDB (Vercel or Local)
     # Check both common variable names
     mongo_uri = os.getenv("MONGO_URI") or os.getenv("MONGODB_URI") or "mongodb://127.0.0.1:27017/"
+    if mongo_uri:
+        # Sanitize input: remove quotes and potential "MONGODB_URI=" prefix if user pasted incorrectly
+        mongo_uri = mongo_uri.strip().strip("'").strip('"')
+        if "=" in mongo_uri and "://" in mongo_uri.split("=", 1)[1]:
+            # User might have pasted KEY=VALUE
+            mongo_uri = mongo_uri.split("=", 1)[1].strip()
+            
     client = MongoClient(mongo_uri)
     db = client["agri_predict_db"]
     sessions_collection = db["sessions"]
