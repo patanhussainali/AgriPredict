@@ -36,8 +36,23 @@ def get_weather_params(season):
         return {'temp_min': 22, 'temp_max': 32, 'rainfall': random.uniform(200, 600), 'humidity': random.uniform(60, 80)}
 
 def load_data():
-    base_path = os.path.dirname(os.path.abspath(__file__))
-    processed_path = os.path.join(base_path, 'data', 'processed_kaggle_data.csv')
+    # Vercel-friendly path handling
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    # Go up one level if we are in backend/ and data/ is at root, OR assuming data is inside backend/
+    # Based on file structure, data/ is at project root, backend/ is a sibling.
+    project_root = os.path.dirname(current_dir) 
+    
+    # Check if data is at project root
+    processed_path = os.path.join(project_root, 'data', 'processed_kaggle_data.csv')
+    data_path = os.path.join(project_root, 'data', 'Tamilnadu agriculture yield data.csv')
+
+    # Fallback: if running locally and data is inside backend/ (unlikely but possible in some setups)
+    if not os.path.exists(processed_path) and not os.path.exists(data_path):
+         processed_path = os.path.join(current_dir, 'data', 'processed_kaggle_data.csv')
+         data_path = os.path.join(current_dir, 'data', 'Tamilnadu agriculture yield data.csv')
+    
+    # Restore base_path for subsequent code compatibility
+    base_path = project_root
     
     # 1. Check cache
     if os.path.exists(processed_path):

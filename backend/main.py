@@ -35,9 +35,14 @@ except Exception as e:
 
 # Load CSV for officer dashboard stats (List of Dicts now)
 try:
-    from load_kaggle_data import load_data
+    try:
+        from backend.load_kaggle_data import load_data
+    except ImportError:
+        from load_kaggle_data import load_data
+        
     csv_data = load_data() # Returns list of dicts
-except:
+except Exception as e:
+    print(f"Error loading Kaggle data: {e}")
     csv_data = []
 
 class PredictionRequest(BaseModel):
