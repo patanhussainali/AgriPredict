@@ -22,3 +22,4 @@ frontend/node_modules/
 
 # NOTICE: We specifically DO NOT ignore 'dist' or 'frontend/dist' here.
 # This ensures the build output is captured by Vercel.
+!frontend/dist
