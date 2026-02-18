@@ -19,6 +19,18 @@ class handler(BaseHTTPRequestHandler):
             result["status"] = "success"
             result["import_test"] = "Imported backend.main successfully"
             result["mongo_configured"] = "Yes" if backend.main.client else "No"
+            
+            # Inspect Routes
+            if hasattr(backend.main, "app"):
+                routes = []
+                for route in backend.main.app.routes:
+                    if hasattr(route, "path"):
+                        routes.append(route.path)
+                result["registered_routes"] = routes
+                result["root_path_setting"] = backend.main.app.root_path
+                result["is_vercel_env"] = os.environ.get("VERCEL")
+            else:
+                result["registered_routes"] = "App object not found"
         except Exception as e:
             import traceback
             result["status"] = "error"
