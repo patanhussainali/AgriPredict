@@ -1,0 +1,252 @@
+import React, { useState, useEffect } from 'react';
+import { Leaf, Search, Shovel, Info, Sprout, Tractor, CloudSun } from 'lucide-react'; // Using available icons
+// Assuming we usually don't have exact icons like Wheelbarrow in standard sets, substituting with relevant ones.
+
+const LandingPage = ({ onLoginClick }) => {
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+    // Scroll to top on mount to ensure Home section is visible
+    React.useLayoutEffect(() => {
+        // 1. Prevent browser from restoring scroll position
+        if ('scrollRestoration' in window.history) {
+            window.history.scrollRestoration = 'manual';
+        }
+
+        // 2. Temporarily disable smooth scroll for instant jump
+        const html = document.documentElement;
+        const body = document.body;
+
+        // Save original styles (likely 'smooth' from CSS or empty)
+        const originalHtmlScroll = html.style.scrollBehavior;
+        const originalBodyScroll = body.style.scrollBehavior;
+
+        // Force 'auto' to make scroll instant
+        html.style.scrollBehavior = 'auto';
+        body.style.scrollBehavior = 'auto';
+
+        // 3. Force scroll to top instantly
+        window.scrollTo(0, 0);
+
+        // 4. Re-enable smooth scroll after a short delay (enough for browser layout to settle)
+        const timer = setTimeout(() => {
+            html.style.scrollBehavior = 'smooth'; // Explicitly set smooth back
+            body.style.scrollBehavior = originalBodyScroll;
+        }, 50);
+
+        return () => {
+            if ('scrollRestoration' in window.history) {
+                window.history.scrollRestoration = 'auto';
+            }
+            clearTimeout(timer);
+        };
+    }, []);
+
+    return (
+        <div className="min-h-screen flex flex-col font-sans relative">
+            {/* Header */}
+            <header className="flex items-center justify-between px-8 py-4 bg-white shadow-sm sticky top-0 z-50">
+                <div className="flex items-center gap-2">
+                    <div className="bg-green-700 p-1.5 rounded-lg">
+                        <Leaf className="text-white w-6 h-6" />
+                    </div>
+                    <span className="text-xl font-bold text-gray-800 tracking-tight">AgriPredict</span>
+                </div>
+
+                {/* Desktop Nav */}
+                <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
+                    <a href="#home" className="hover:text-green-700 transition-colors">Home</a>
+                    <a href="#about" className="hover:text-green-700 transition-colors">About Us</a>
+                    <a href="#services" className="hover:text-green-700 transition-colors">Services</a>
+                    <a href="#contact" className="hover:text-green-700 transition-colors">Contact</a>
+                    <Search className="w-5 h-5 text-gray-400 cursor-pointer hover:text-green-700 transition-colors" />
+                </nav>
+
+                {/* Mobile Menu Toggle */}
+                <div className="md:hidden">
+                    <button
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        className="text-gray-600 focus:outline-none"
+                    >
+                        {isMobileMenuOpen ? (
+                            <span className="text-2xl">&times;</span>
+                        ) : (
+                            <span className="text-2xl">☰</span>
+                        )}
+                    </button>
+                </div>
+            </header>
+
+            {/* Mobile Nav Dropdown */}
+            {isMobileMenuOpen && (
+                <div className="md:hidden bg-white shadow-lg absolute top-16 left-0 w-full z-40 flex flex-col py-4 px-8 space-y-4 text-gray-600 font-medium">
+                    <a href="#home" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-green-700">Home</a>
+                    <a href="#about" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-green-700">About Us</a>
+                    <a href="#services" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-green-700">Services</a>
+                    <a href="#contact" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-green-700">Contact</a>
+                </div>
+            )}
+
+            {/* Main Content - HERO (HOME) */}
+            <section id="home" className="flex-1 flex flex-col md:flex-row bg-[#F3F8F2] min-h-screen pt-16 md:pt-0 relative"> {/* Added min-h-screen and padding for scroll offset */}
+
+                {/* Left Side (Image) - Mobile: Top, Desktop: Left */}
+                <div className="w-full md:w-5/12 h-64 md:h-auto relative overflow-hidden order-1 md:order-1 flex items-center justify-center bg-gray-200">
+                    <img
+                        src="/assets/farmer_hero.png"
+                        alt="Farmer in greenhouse"
+                        className="w-full h-full object-cover"
+                    />
+                </div>
+
+                {/* Right Side (Content) - Mobile: Bottom, Desktop: Right */}
+                <div className="w-full md:w-7/12 bg-[#2D4A27] text-white p-8 md:p-16 flex flex-col justify-center order-2 md:order-2 relative">
+                    <div className="max-w-xl">
+                        <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-2 tracking-tighter">
+                            AgriPredict
+                        </h1>
+                        <h2 className="text-3xl md:text-5xl font-light text-[#8BC34A] mb-8">
+                            Crop & Yield Prediction
+                        </h2>
+
+                        <p className="text-gray-300 text-sm md:text-base leading-relaxed mb-10 max-w-lg">
+                            Empowering farmers with AI-driven insights for better yields.
+                            Join our community to access real-time crop predictions, weather updates,
+                            and expert advisory services designed to make agriculture sustainable and profitable.
+                        </p>
+
+                        <div className="flex gap-4">
+                            <a href="#about" className="bg-white text-[#2D4A27] px-8 py-3 rounded-sm font-semibold hover:bg-gray-100 transition-colors flex items-center justify-center">
+                                Learn More
+                            </a>
+                            <button
+                                onClick={onLoginClick}
+                                className="bg-[#558B2F] text-white px-8 py-3 rounded-sm font-semibold hover:bg-[#487528] transition-colors"
+                            >
+                                Log In
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Scroll Indicator */}
+                    <div className="hidden md:block absolute bottom-8 left-16 animate-bounce cursor-pointer">
+                        <a href="#about" className="text-[#8BC34A] flex flex-col items-center opacity-80 hover:opacity-100">
+                            <span className="text-xs mb-1 tracking-widest uppercase">Scroll</span>
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            {/* Icons Footer Strip - Directly imitates layout */}
+            <div className="bg-white h-auto md:h-32 flex flex-wrap">
+                {/* Dark Green Box with Cart/Wheelbarrow Icon */}
+                <div className="w-1/2 md:w-1/4 bg-[#21381D] flex items-center justify-center p-8 md:p-0">
+                    <Tractor className="text-[#8BC34A] w-16 h-16 opacity-80" strokeWidth={1} />
+                </div>
+
+                {/* Light Green/White Box with Shovel */}
+                <div className="w-1/2 md:w-1/4 bg-[#8BC34A] flex items-center justify-center p-8 md:p-0">
+                    <Shovel className="text-[#21381D] w-16 h-16 opacity-80" strokeWidth={1} />
+                </div>
+
+                {/* Dark Green Box with Rake/Fork */}
+                <div className="w-1/2 md:w-1/4 bg-[#46663F] flex items-center justify-center p-8 md:p-0">
+                    <Sprout className="text-white w-16 h-16 opacity-80" strokeWidth={1} />
+                </div>
+
+                {/* White Box Icons */}
+                <div className="w-1/2 md:w-1/4 bg-white flex items-center justify-around p-4 text-[#558B2F]">
+                    <div className="flex flex-col items-center gap-2">
+                        <CloudSun className="w-10 h-10" strokeWidth={1.5} />
+                    </div>
+                    <div className="flex flex-col items-center gap-2">
+                        <Leaf className="w-10 h-10" strokeWidth={1.5} />
+                    </div>
+                </div>
+
+            </div>
+
+            {/* ABOUT US SECTION */}
+            <section id="about" className="py-20 px-8 bg-white text-center">
+                <div className="max-w-4xl mx-auto">
+                    <h2 className="text-3xl font-bold text-[#2D4A27] mb-6">About Us</h2>
+                    <p className="text-gray-600 leading-relaxed text-lg">
+                        At AgriPredict, we believe in the power of data to transform agriculture.
+                        Our mission is to bridge the gap between traditional farming practices and modern technology.
+                        By leveraging advanced machine learning algorithms, we provide farmers with accurate crop
+                        recommendations and yield predictions, helping them make informed decisions and optimize their harvest.
+                    </p>
+                </div>
+            </section>
+
+            {/* SERVICES SECTION */}
+            <section id="services" className="py-20 px-8 bg-[#F3F8F2]">
+                <div className="max-w-6xl mx-auto">
+                    <h2 className="text-3xl font-bold text-[#2D4A27] mb-12 text-center">Our Services</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {/* Service 1 */}
+                        <div className="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow text-center">
+                            <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <Sprout className="w-8 h-8 text-green-600" />
+                            </div>
+                            <h3 className="text-xl font-semibold text-gray-800 mb-3">Crop Prediction</h3>
+                            <p className="text-gray-600 text-sm">
+                                Analyze soil and climate data to recommend the most suitable crops for your land.
+                            </p>
+                        </div>
+                        {/* Service 2 */}
+                        <div className="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow text-center">
+                            <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <Tractor className="w-8 h-8 text-green-600" />
+                            </div>
+                            <h3 className="text-xl font-semibold text-gray-800 mb-3">Yield Estimation</h3>
+                            <p className="text-gray-600 text-sm">
+                                Get accurate yield forecasts to plan your harvest and market strategies effectively.
+                            </p>
+                        </div>
+                        {/* Service 3 */}
+                        <div className="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow text-center">
+                            <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <CloudSun className="w-8 h-8 text-green-600" />
+                            </div>
+                            <h3 className="text-xl font-semibold text-gray-800 mb-3">Weather Advisory</h3>
+                            <p className="text-gray-600 text-sm">
+                                Real-time weather updates and alerts to protect your crops from adverse conditions.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* CONTACT SECTION */}
+            <section id="contact" className="py-20 px-8 bg-[#2D4A27] text-white text-center">
+                <div className="max-w-2xl mx-auto">
+                    <h2 className="text-3xl font-bold mb-6">Get in Touch</h2>
+                    <p className="text-gray-300 mb-8">
+                        Have questions or need support? Reach out to our team of agricultural experts.
+                    </p>
+                    <div className="flex flex-col md:flex-row justify-center gap-8 text-left inline-block">
+                        <div className="flex items-center gap-3">
+                            <div className="bg-[#487528] p-3 rounded-full">
+                                <Info className="w-6 h-6" />
+                            </div>
+                            <div>
+                                <h4 className="font-semibold">Email Us</h4>
+                                <p className="text-sm text-gray-300">agripredictcustomercare@gmail.com</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <footer className="bg-[#21381D] text-gray-400 py-6 text-center text-sm">
+                &copy; 2026 AgriPredict. All rights reserved.
+            </footer>
+        </div>
+    );
+};
+
+export default LandingPage;

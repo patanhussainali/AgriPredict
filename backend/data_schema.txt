@@ -1,0 +1,24 @@
+
+--- crop_production_history.csv ---
+Columns: ['Unnamed: 0', 'Unnamed: 1', 'Unnamed: 2', 'Unnamed: 3', 'Unnamed: 4', 'Unnamed: 5', 'Unnamed: 6', 'Unnamed: 7', 'Unnamed: 8', 'Unnamed: 9', 'Unnamed: 10', 'Unnamed: 11']
+First Row: {'Unnamed: 0': 'S.No', 'Unnamed: 1': 'Crop', 'Unnamed: 2': '2010-11', 'Unnamed: 3': '2011-12', 'Unnamed: 4': '2012-13', 'Unnamed: 5': '2013-14', 'Unnamed: 6': '2014-15', 'Unnamed: 7': '2015-16', 'Unnamed: 8': '2016-17', 'Unnamed: 9': '2017-18', 'Unnamed: 10': '2018-19', 'Unnamed: 11': '2019-20'}
+
+--- land_use.csv ---
+Columns: ['III. 4: LAND USE PATTERN IN 2019-20 - DISTRICT WISE', 'Unnamed: 1', 'Unnamed: 2', 'Unnamed: 3', 'Unnamed: 4', 'Unnamed: 5', 'Unnamed: 6', 'Unnamed: 7', 'Unnamed: 8', 'Unnamed: 9', 'Unnamed: 10', 'Unnamed: 11', 'Unnamed: 12', 'Unnamed: 13', 'Unnamed: 14']
+First Row: {'III. 4: LAND USE PATTERN IN 2019-20 - DISTRICT WISE': '(HECTARES)', 'Unnamed: 1': nan, 'Unnamed: 2': nan, 'Unnamed: 3': nan, 'Unnamed: 4': nan, 'Unnamed: 5': nan, 'Unnamed: 6': nan, 'Unnamed: 7': nan, 'Unnamed: 8': nan, 'Unnamed: 9': nan, 'Unnamed: 10': nan, 'Unnamed: 11': nan, 'Unnamed: 12': nan, 'Unnamed: 13': nan, 'Unnamed: 14': nan}
+
+--- rainfall_data.csv ---
+Columns: ['Sl.No.', 'Unnamed: 1', 'SOUTH - WEST MONSOON', 'Unnamed: 3', 'Unnamed: 4', 'Unnamed: 5', 'Unnamed: 6', 'Unnamed: 7', 'Unnamed: 8', 'Unnamed: 9', 'Unnamed: 10']
+First Row: {'Sl.No.': nan, 'Unnamed: 1': nan, 'SOUTH - WEST MONSOON': nan, 'Unnamed: 3': nan, 'Unnamed: 4': nan, 'Unnamed: 5': nan, 'Unnamed: 6': nan, 'Unnamed: 7': nan, 'Unnamed: 8': nan, 'Unnamed: 9': nan, 'Unnamed: 10': nan}
+
+--- rice_production.csv ---
+Columns: ['Unnamed: 0', 'Unnamed: 1', 'Unnamed: 2', 'Unnamed: 3', 'Unnamed: 4', 'Unnamed: 5', 'Unnamed: 6', 'Unnamed: 7', 'Unnamed: 8', 'Unnamed: 9', 'Unnamed: 10', 'Unnamed: 11', 'Unnamed: 12', 'Unnamed: 13']
+First Row: {'Unnamed: 0': nan, 'Unnamed: 1': nan, 'Unnamed: 2': 'AREA (in Ha.)', 'Unnamed: 3': nan, 'Unnamed: 4': nan, 'Unnamed: 5': nan, 'Unnamed: 6': 'PRODUCTION (in Tonnes)', 'Unnamed: 7': nan, 'Unnamed: 8': nan, 'Unnamed: 9': nan, 'Unnamed: 10': 'PRODUCTIVITY (Kg/ Ha)', 'Unnamed: 11': nan, 'Unnamed: 12': nan, 'Unnamed: 13': nan}
+
+--- Tamilnadu agriculture yield data.csv ---
+Columns: ['State_Name', 'District_Name', 'Crop_Year', 'Season', 'Crop', 'Area', 'Production']
+First Row: {'State_Name': 'Tamil Nadu', 'District_Name': 'ARIYALUR', 'Crop_Year': 2008, 'Season': 'Kharif', 'Crop': 'Rice', 'Area': 24574, 'Production': nan}
+
+--- Tamilnadu Crop-Production.csv ---
+Columns: ['State', 'District', 'Year', 'Crop', 'Season', 'Area']
+First Row: {'State': 'Tamil Nadu', 'District': 'ARIYALUR', 'Year': 2008, 'Crop': 'Rice', 'Season': 'Autumn     ', 'Area': 1298}

@@ -1,0 +1,1 @@
+- [x] Switch hashing algo to `pbkdf2_sha256` due to Windows `bcrypt` issues
