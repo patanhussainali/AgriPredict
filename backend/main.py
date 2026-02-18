@@ -7,7 +7,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-app = FastAPI(root_path="/api")
+# Check if running on Vercel
+is_vercel = os.environ.get("VERCEL") == "1"
+app = FastAPI(root_path="/api" if is_vercel else "")
 
 from fastapi.middleware.cors import CORSMiddleware
 
