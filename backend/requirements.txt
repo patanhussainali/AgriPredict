@@ -4,6 +4,5 @@ scikit-learn
 pandas
 numpy
 joblib
-xgboost
 groq
 python-dotenv
