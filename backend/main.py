@@ -108,13 +108,17 @@ try:
             # User might have pasted KEY=VALUE
             mongo_uri = mongo_uri.split("=", 1)[1].strip()
             
-    client = MongoClient(mongo_uri)
+            # User might have pasted KEY=VALUE
+            mongo_uri = mongo_uri.split("=", 1)[1].strip()
+            
+    # Connect with timeout to avoid Vercel 10s limit (Cold Start)
+    client = MongoClient(mongo_uri, serverSelectionTimeoutMS=5000)
     db = client["agri_predict_db"]
     sessions_collection = db["sessions"]
     predictions_collection = db["predictions"]
     users_collection = db["users"]
     
-    print(f"Connected to MongoDB successfully! (Host: {client.address})")
+    print("MongoDB Client Initialized (Lazy Connection)")
 except Exception as e:
     print(f"MongoDB Connection Error: {e}")
     db = None
