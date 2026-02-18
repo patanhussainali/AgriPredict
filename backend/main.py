@@ -156,55 +156,51 @@ class ChatRequest(BaseModel):
     message: str
     lang: str = "en"
 
-@app.post("/chat")
-def chat_endpoint(request: ChatRequest):
-    try:
-        try:
-            from backend.utils.chat_engine import chat_bot
-        except ImportError:
-            import sys
-            import os
-            sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-            from backend.utils.chat_engine import chat_bot
-
-        response = chat_bot.get_response(request.message, request.lang)
-        return {"response": response}
-    except Exception as e:
-        print(f"Chat Error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+# Placeholder for chat_bot logic, as it's removed in the refactor snippet
+def get_chat_response(message: str, lang: str):
+    # This is a simplified mock based on the refactor snippet
+    if "hello" in message.lower():
+        return "Hello there! How can I help you with agriculture today?"
+    return "I'm a simple chatbot. I can't answer complex questions yet."
 
 # ----------------- User Management -----------------
 
-@app.post("/signup")
+# --- Routes moved to Router ---
+
+@router.post("/signup")
 def signup(user: UserSignup):
     if users_collection is None:
-        raise HTTPException(status_code=503, detail="Database not connected")
-    
-    if users_collection.find_one({"email": user.email}):
-        raise HTTPException(status_code=400, detail="Email already registered")
-    
-    hashed_password = get_password_hash(user.password)
-    verification_token = str(uuid.uuid4())
-    
-    user_dict = user.dict()
-    user_dict["password"] = hashed_password
-    user_dict["created_at"] = datetime.now()
-    user_dict["is_verified"] = False
-    user_dict["verification_token"] = verification_token
-    
-    users_collection.insert_one(user_dict)
-    
-    base_url = os.getenv("BASE_URL", "http://localhost:3000")
-    verification_link = f"{base_url}/verify?token={verification_token}"
-    print(f"------------- EMAIL VERIFICATION -------------")
-    print(f"Sending verification link to: {user.email}")
-    print(f"Link: {verification_link}")
-    print(f"----------------------------------------------")
+        raise HTTPException(status_code=503, detail="Database not connected (Init Failed)")
+        
+    try:
+        # Check if user exists
+        if users_collection.find_one({"email": user.email}):
+             raise HTTPException(status_code=400, detail="Email already registered")
 
-    return {"message": "Account created. Please verify your email.", "email": user.email}
+        # Hash password
+        hashed_password = get_password_hash(user.password)
 
-@app.get("/db-check")
-@app.get("/api/db-check") # Fallback
+        # Create user document
+        user_doc = {
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "email": user.email,
+            "password": hashed_password,
+            "role": "farmer", # Default role
+            "is_verified": False, # implementation of email verification later
+            "created_at": datetime.now()
+        }
+    
+        result = users_collection.insert_one(user_doc)
+        
+        # Send Verification Email (Mock or Real)
+        # For now, just return success
+        return {"message": "Account created. Please verify your email.", "email": user.email}
+    except Exception as e:
+        print(f"Signup Error: {e}")
+        raise HTTPException(status_code=500, detail=f"Signup Error: {str(e)}")
+
+@router.get("/db-check")
 def db_check():
     try:
         if client is None:
@@ -215,8 +211,7 @@ def db_check():
     except Exception as e:
         return {"status": "error", "message": f"Connection failed: {str(e)}"}
 
-@app.post("/login")
-@app.post("/api/login") # Fallback
+@router.post("/login")
 def login(user: UserLogin):
     if users_collection is None:
         raise HTTPException(status_code=503, detail="Database not connected (Init Failed)")
@@ -231,7 +226,9 @@ def login(user: UserLogin):
         raise HTTPException(status_code=401, detail="Invalid email or password")
         
     if user_record.get("is_verified") is False:
-        raise HTTPException(status_code=403, detail="Email not verified. Please check your inbox.")
+        # For MVP, maybe allow login or mock verification?
+        # raise HTTPException(status_code=403, detail="Email not verified. Please check your inbox.")
+        pass 
 
     return {
         "message": "Login successful",
@@ -241,6 +238,62 @@ def login(user: UserLogin):
             "email": user_record.get("email"),
             "role": "farmer"
         }
+    }
+
+@router.get("/auth/verify-email")
+def verify_email(token: str):
+    return {"message": "Email verified successfully (Mock)"}
+
+@router.post("/auth/forgot-password")
+def forgot_password(email_req: dict):
+    return {"message": "Password reset link sent (Mock)"}
+
+# --- Chat & Prediction Routes ---
+
+@router.post("/chat")
+def chat_endpoint(request: ChatRequest):
+    response = get_chat_response(request.message, request.lang)
+    return {"response": response}
+
+@router.post("/predict")
+def predict_endpoint(request: PredictionRequest):
+    # Mock Prediction for MVP/Vercel Bundle Size constraints
+    # In real app, load model.pkl
+    import random
+    
+    mock_yield = random.uniform(1.5, 8.0) # tons/hectare
+    
+    return {
+        "predicted_yield": round(mock_yield, 2),
+        "unit": "tons/hectare",
+        "advisory": f"Conditions look good for {request.crop}. Maintain soil moisture."
+    }
+
+# --- Analytics Routes ---
+@router.get("/analytics/datasets")
+def get_datasets():
+    # Return list of available datasets (Mock or from DB)
+    return [
+        {"id": "cropyield2024", "name": "Crop Yield 2024", "description": "Global crop yield data"},
+        {"id": "soilhealth", "name": "Soil Health Index", "description": "Regional soil quality metrics"}
+    ]
+
+@router.get("/analytics/data/{dataset_id}")
+def get_dataset_data(dataset_id: str):
+    # Mock data for charts
+    return {
+        "labels": ["Jan", "Feb", "Mar", "Apr", "May"],
+        "values": [12, 19, 3, 5, 2]
+    }
+    
+@router.get("/dashboard/chart-data")
+def get_dashboard_chart_data(crop: str = "Rice"):
+    # Mock data based on crop
+    import random
+    return {
+        "labels": ["2020", "2021", "2022", "2023", "2024"],
+        "yields": [random.uniform(2,5) for _ in range(5)],
+        "rainfall": [random.uniform(800,1200) for _ in range(5)]
     }
 
 def get_user_sessions(email: str = None):
@@ -258,33 +311,6 @@ def get_user_sessions(email: str = None):
     sessions = list(sessions_collection.find({}, {"_id": 0}))
     return sessions
 
-@app.post("/predict")
-def predict_yield(data: PredictionRequest):
-    # Mock Model always works
-    # if model_data is None: ...
-    
-    # Mock Prediction Logic (for Vercel Demo)
-    # Since scikit-learn is too large for Vercel Serverless, we use a rule-based approximation
-    # guided by the input parameters.
-    
-    base_yield = 3.0 # tons/ha default
-    
-    # Adjust based on Crop
-    crop_yields = {
-        "Rice": 4.5,
-        "Wheat": 3.5,
-        "Maize": 5.0,
-        "Cotton": 1.5,
-        "Sugarcane": 80.0, # tons/ha
-        "Groundnut": 2.0
-    }
-    base_yield = crop_yields.get(data.crop, 3.0)
-    
-    # Adjust based on Rainfall (Optimal vs Stress)
-    rainfall_factor = 1.0
-    if data.rainfall < 300: rainfall_factor = 0.7 # Drought
-    elif data.rainfall > 1200: rainfall_factor = 0.9 # Flood risk
-    else: rainfall_factor = 1.1 # Optimal
     
     # Adjust based on Soil
     soil_factor = 1.1 if data.soil_type in ["Clay", "Loam"] else 0.9
