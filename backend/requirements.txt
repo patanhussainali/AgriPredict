@@ -8,5 +8,4 @@ groq
 python-dotenv
 pymongo
 passlib
-google-auth
 requests
