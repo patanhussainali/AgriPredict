@@ -3,6 +3,7 @@
 // On Vercel, requests to /api/... will be rewritten to the backend.
 // But for a separate backend deployment or if we want explicit control:
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const isProd = import.meta.env.PROD;
+const API_URL = import.meta.env.VITE_API_URL || (isProd ? "/api" : "http://localhost:8000");
 
 export default API_URL;
