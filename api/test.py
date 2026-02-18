@@ -29,13 +29,34 @@ class handler(BaseHTTPRequestHandler):
                         routes.append(route.path)
                 result["registered_routes"] = routes
                 result["root_path_setting"] = backend.main.app.root_path
-                result["is_vercel_env"] = os.environ.get("VERCEL")
-            else:
-                result["registered_routes"] = "App object not found"
+            
+            # Active DB Check
+            try:
+                if backend.main.client:
+                    backend.main.client.admin.command('ping')
+                    result["mongo_ping"] = "Success"
+                    # Try a simple find
+                    count = backend.main.users_collection.count_documents({})
+                    result["user_count"] = count
+                else:
+                    result["mongo_ping"] = "Client is None"
+            except Exception as e:
+                result["mongo_ping"] = f"Failed: {str(e)}"
+                result["mongo_error_type"] = type(e).__name__
+
+            # Active Auth Check (Passlib)
+            try:
+                from passlib.context import CryptContext
+                pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
+                hash = pwd_context.hash("test")
+                result["auth_check"] = "Success (Passlib working)"
+            except Exception as e:
+                 result["auth_check"] = f"Failed: {str(e)}"
+                 
         except Exception as e:
             import traceback
             result["status"] = "error"
-            result["import_test"] = f"Failed to import backend.main: {str(e)}"
+            result["main_error"] = str(e)
             result["traceback"] = traceback.format_exc()
             
         self.wfile.write(json.dumps(result).encode('utf-8'))
