@@ -13,6 +13,8 @@ export default defineConfig({
     strictPort: false,
   },
   build: {
+    outDir: 'dist',
+    emptyOutDir: true,
     chunkSizeWarningLimit: 1000,
   },
 })

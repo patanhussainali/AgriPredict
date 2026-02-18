@@ -12,6 +12,7 @@
             }
         }
     ],
+    "cleanUrls": true,
     "routes": [
         {
             "src": "/api/(.*)",
