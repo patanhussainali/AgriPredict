@@ -14,7 +14,7 @@ export default defineConfig({
     strictPort: false,
   },
   build: {
-    outDir: 'dist',
+    outDir: 'public',
     emptyOutDir: true,
     chunkSizeWarningLimit: 1000,
   },
