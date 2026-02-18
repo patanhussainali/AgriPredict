@@ -6,10 +6,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Check if running on Vercel
-is_vercel = bool(os.environ.get("VERCEL"))
-app = FastAPI(root_path="/api" if is_vercel else "")
+# Force /api root_path for Vercel deployment
+is_vercel = True 
+app = FastAPI(root_path="/api")
 
 @app.get("/")
+@app.get("/api/") # Fallback
 def health_check():
     return {"status": "ok", "message": "AgriPredict API is running"}
 
@@ -202,6 +204,7 @@ def signup(user: UserSignup):
     return {"message": "Account created. Please verify your email.", "email": user.email}
 
 @app.get("/db-check")
+@app.get("/api/db-check") # Fallback
 def db_check():
     try:
         if client is None:
@@ -213,6 +216,7 @@ def db_check():
         return {"status": "error", "message": f"Connection failed: {str(e)}"}
 
 @app.post("/login")
+@app.post("/api/login") # Fallback
 def login(user: UserLogin):
     if users_collection is None:
         raise HTTPException(status_code=503, detail="Database not connected (Init Failed)")
