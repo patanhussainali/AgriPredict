@@ -6,13 +6,9 @@
         },
         {
             "src": "frontend/package.json",
-            "use": "@vercel/static-build",
-            "config": {
-                "distDir": "dist"
-            }
+            "use": "@vercel/static-build"
         }
     ],
-    "cleanUrls": true,
     "routes": [
         {
             "src": "/api/(.*)",
@@ -24,6 +20,10 @@
         },
         {
             "handle": "filesystem"
+        },
+        {
+            "src": "/",
+            "dest": "/index.html"
         },
         {
             "src": "/(.*)",
