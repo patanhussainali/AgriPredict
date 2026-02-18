@@ -201,12 +201,28 @@ def signup(user: UserSignup):
 
     return {"message": "Account created. Please verify your email.", "email": user.email}
 
+@app.get("/db-check")
+def db_check():
+    try:
+        if client is None:
+            return {"status": "error", "message": "Client not initialized"}
+        # Force a connection check
+        client.admin.command('ping')
+        return {"status": "ok", "message": "MongoDB connection successful!"}
+    except Exception as e:
+        return {"status": "error", "message": f"Connection failed: {str(e)}"}
+
 @app.post("/login")
 def login(user: UserLogin):
     if users_collection is None:
-        raise HTTPException(status_code=503, detail="Database not connected")
+        raise HTTPException(status_code=503, detail="Database not connected (Init Failed)")
         
-    user_record = users_collection.find_one({"email": user.email})
+    try:
+        user_record = users_collection.find_one({"email": user.email})
+    except Exception as e:
+        print(f"DB Error during login: {e}")
+        raise HTTPException(status_code=500, detail=f"Database Error: {str(e)}")
+
     if not user_record or not verify_password(user.password, user_record["password"]):
         raise HTTPException(status_code=401, detail="Invalid email or password")
         
