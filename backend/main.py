@@ -105,14 +105,15 @@ try:
     from pymongo import MongoClient
     from datetime import datetime
     
-    # Connect to local MongoDB 
-    client = MongoClient("mongodb://127.0.0.1:27017/")
+    # Connect to MongoDB (Vercel or Local)
+    mongo_uri = os.getenv("MONGO_URI", "mongodb://127.0.0.1:27017/")
+    client = MongoClient(mongo_uri)
     db = client["agri_predict_db"]
     sessions_collection = db["sessions"]
     predictions_collection = db["predictions"]
     users_collection = db["users"]
     
-    print("Connected to MongoDB successfully!")
+    print(f"Connected to MongoDB successfully! (Host: {client.address})")
 except Exception as e:
     print(f"MongoDB Connection Error: {e}")
     db = None
