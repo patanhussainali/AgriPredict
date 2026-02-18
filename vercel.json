@@ -5,8 +5,11 @@
             "use": "@vercel/python"
         },
         {
-            "src": "frontend_new/package.json",
-            "use": "@vercel/next"
+            "src": "frontend/package.json",
+            "use": "@vercel/static-build",
+            "config": {
+                "distDir": "dist"
+            }
         }
     ],
     "routes": [
@@ -15,8 +18,11 @@
             "dest": "/backend/main.py"
         },
         {
+            "handle": "filesystem"
+        },
+        {
             "src": "/(.*)",
-            "dest": "/frontend_new/$1"
+            "dest": "/index.html"
         }
     ]
 }
