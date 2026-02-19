@@ -50,11 +50,22 @@ const Login = ({ onLogin, onBack }) => {
                 }),
             });
 
-            const data = await response.json();
+            let data;
+            const text = await response.text();
+            try {
+                data = JSON.parse(text);
+            } catch (err) {
+                alert(`Server Error (${response.status}): ${text.substring(0, 100)}...`);
+                throw new Error(`Invalid JSON: ${text}`);
+            }
 
             if (!response.ok) {
                 throw new Error(data.detail || 'Signup failed');
             }
+
+            // Success
+            alert(`Account created! Please check email: ${data.email}`);
+            setIsLogin(true); // Switch to Login mode
 
             // Move to login view or show success
             setIsSignUp(false);
