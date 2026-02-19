@@ -369,6 +369,21 @@ const Login = ({ onLogin, onBack }) => {
                             <p className="text-gray-500 mt-2">Sign in to access your dashboard.</p>
                         </div>
 
+                        {/* Google Button */}
+                        <button
+                            onClick={handleGoogleLogin}
+                            disabled={loading}
+                            className="w-full mb-4 flex items-center justify-center gap-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium py-2.5 rounded-lg transition-all"
+                        >
+                            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
+                            Sign in with Google
+                        </button>
+
+                        <div className="relative mb-6 text-center">
+                            <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-200"></div></div>
+                            <span className="relative px-2 bg-white text-gray-500 text-sm">Or continue with email</span>
+                        </div>
+
                         <form onSubmit={handleLoginSubmit} className="w-full space-y-4 text-left">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
