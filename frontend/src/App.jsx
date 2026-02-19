@@ -31,14 +31,30 @@ function AppContent() {
     return <VerifyEmail />;
   }
 
+  // Check for existing session on mount
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (e) {
+        console.error("Failed to parse user session", e);
+        localStorage.removeItem('user');
+      }
+    }
+  }, []);
+
   const handleLogin = (userData) => {
     setUser(userData);
-    setActiveTab('dashboard'); // Default to dashboard on login
+    setShowLogin(false); // Explicitly hide login view
+    setActiveTab('dashboard');
   };
 
   const handleLogout = () => {
     setUser(null);
-    setShowLogin(false); // Reset to Landing Page on logout
+    setShowLogin(false);
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
     setActiveTab('dashboard');
   };
 
