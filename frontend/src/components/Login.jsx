@@ -305,7 +305,7 @@ const Login = ({ onLogin, onBack }) => {
                                 disabled={loading}
                                 className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition-colors shadow-md disabled:opacity-70"
                             >
-                                {loading ? 'Creating Account...' : 'Sign Up'}
+                                {loading ? 'Creating Account...' : 'Sign Up (V2)'}
                             </button>
                         </form>
 
