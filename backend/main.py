@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, APIRouter
 from pydantic import BaseModel
 import os
 from dotenv import load_dotenv
@@ -9,6 +9,7 @@ load_dotenv()
 # Force /api root_path for Vercel deployment
 is_vercel = True 
 app = FastAPI(root_path="/api")
+router = APIRouter()
 
 @app.get("/")
 @app.get("/api/") # Fallback
@@ -464,6 +465,12 @@ def get_dashboard_chart_data(crop: str = "Rice"):
         "labels": [str(y) for y in years],
         "data": averages
     }
+
+# --- Mount Routers ---
+# Mount at root (e.g. /login)
+app.include_router(router)
+# Mount at /api (e.g. /api/login) - Explicitly handling Vercel prefix
+app.include_router(router, prefix="/api")
 
 if __name__ == "__main__":
     import uvicorn
