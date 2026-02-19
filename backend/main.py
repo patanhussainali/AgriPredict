@@ -8,7 +8,7 @@ load_dotenv()
 # Check if running on Vercel
 # Force /api root_path for Vercel deployment
 is_vercel = True 
-app = FastAPI(root_path="/api")
+app = FastAPI()
 router = APIRouter()
 
 @app.get("/")
