@@ -87,3 +87,11 @@ class handler(BaseHTTPRequestHandler):
             result["traceback"] = traceback.format_exc()
             
         self.wfile.write(json.dumps(result).encode('utf-8'))
+
+    def do_POST(self):
+        self.send_response(200)
+        self.send_header('Content-type', 'application/json')
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.end_headers()
+        self.wfile.write(json.dumps({"message": "API TEST POST WORKS", "email": "test@works.com"}).encode('utf-8'))
+        return
