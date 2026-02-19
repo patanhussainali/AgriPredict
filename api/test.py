@@ -42,16 +42,28 @@ class handler(BaseHTTPRequestHandler):
                     # Try a WRITE operation (Insert temporary doc)
                     import uuid
                     test_email = f"test_{uuid.uuid4()}@example.com"
-                    backend.main.users_collection.insert_one({
-                        "email": test_email,
-                        "type": "probe_test",
-                        "created_at": "now"
-                    })
-                    result["db_write_test"] = f"Success (Inserted {test_email})"
                     
-                    # Cleanup (Optional, or leave it to see it)
-                    backend.main.users_collection.delete_one({"email": test_email})
-                    result["db_write_cleanup"] = "Success"
+                    # SIMULATE SIGNUP FUNCTION
+                    try:
+                        from backend.main import signup, UserSignup
+                        user_data = UserSignup(
+                            first_name="Test",
+                            last_name="Probe",
+                            email=test_email,
+                            password="testpassword123"
+                        )
+                        # Call the endpoint function directly
+                        signup_result = signup(user_data)
+                        result["signup_logic_test"] = f"Success: {signup_result}"
+                    except Exception as e:
+                        result["signup_logic_test"] = f"Failed: {str(e)}"
+                        
+                    # Cleanup by deleting the user we just signed up
+                    try:
+                         backend.main.users_collection.delete_one({"email": test_email})
+                         result["signup_cleanup"] = "Success"
+                    except:
+                         pass
                     
                 else:
                     result["mongo_ping"] = "Client is None"
