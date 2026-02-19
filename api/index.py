@@ -6,7 +6,13 @@ class handler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Content-type', 'application/json')
         self.end_headers()
-        response_data = {"message": "RAW HANDLER WORKS", "email": "debug@works.com"}
+        # Return the PATH so we know what Vercel sees
+        response_data = {
+            "message": "RAW HANDLER WORKS", 
+            "email": "debug@works.com",
+            "debug_path": self.path,
+            "debug_method": self.command
+        }
         self.wfile.write(json.dumps(response_data).encode('utf-8'))
         return
 
