@@ -90,7 +90,7 @@ const Chatbot = () => {
                 lang: lang
             });
 
-            const res = await fetch(`${API_URL}/chat.py?${params.toString()}`, {
+            const res = await fetch(`${API_URL}/chat?${params.toString()}`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' }
             });

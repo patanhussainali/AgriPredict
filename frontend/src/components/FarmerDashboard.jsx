@@ -113,8 +113,8 @@ const FarmerDashboard = () => {
                 pulse_type: formData.pulse_type || ''
             });
 
-            // TARGET api/predict.py
-            const response = await fetch(`${API_URL}/predict.py?${params.toString()}`, {
+            // TARGET api/predict (Vercel strips extension)
+            const response = await fetch(`${API_URL}/predict?${params.toString()}`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' }
             });
