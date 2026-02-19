@@ -7,7 +7,9 @@ import {
     signInWithEmailAndPassword,
     signInWithPopup,
     updateProfile,
-    sendPasswordResetEmail
+    sendPasswordResetEmail,
+    sendEmailVerification,
+    signOut
 } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 
@@ -439,7 +441,20 @@ const Login = ({ onLogin, onBack }) => {
                                 </div>
                             </div>
 
-                            {error && !isSignUp && <p className="text-red-500 text-sm text-center">{error}</p>}
+                            {error && !isSignUp && (
+                                <div className="text-center">
+                                    <p className="text-red-500 text-sm">{error}</p>
+                                    {error.includes("verify") && (
+                                        <button
+                                            type="button"
+                                            onClick={handleResendVerification}
+                                            className="text-green-600 text-xs hover:underline mt-1"
+                                        >
+                                            Resend Verification Email
+                                        </button>
+                                    )}
+                                </div>
+                            )}
 
                             <button
                                 type="submit"
