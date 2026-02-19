@@ -68,13 +68,16 @@ const Login = ({ onLogin, onBack }) => {
             await setDoc(doc(db, "users", user.uid), userProfile);
 
             // 4. Success handling
-            alert("Account created successfully!");
+            alert("Account created successfully! Please login.");
 
-            // Auto-login (User is already signed in by default after creation)
-            localStorage.setItem('token', await user.getIdToken());
-            localStorage.setItem('user', JSON.stringify(userProfile));
+            // Switch to Login View instead of Auto-login
+            setIsSignUp(false);
+            setLoginEmail(email);
+            setError(null);
 
-            if (onLogin) onLogin(userProfile);
+            // localStorage.setItem('token', await user.getIdToken());
+            // localStorage.setItem('user', JSON.stringify(userProfile));
+            // if (onLogin) onLogin(userProfile);
 
         } catch (err) {
             console.error("Signup Error:", err);
@@ -94,21 +97,23 @@ const Login = ({ onLogin, onBack }) => {
             const userCredential = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
             const user = userCredential.user;
 
-            // 2. Fetch User Profile from Firestore to get Role/Name
-            const docRef = doc(db, "users", user.uid);
-            const docSnap = await getDoc(docRef);
+            // 2. Fetch User Profile from Firestore (Safe Mode)
+            let userProfile = {
+                uid: user.uid,
+                email: user.email,
+                name: user.displayName || "User",
+                role: 'farmer'
+            };
 
-            let userProfile = {};
-            if (docSnap.exists()) {
-                userProfile = docSnap.data();
-            } else {
-                // Fallback if no firestore doc
-                userProfile = {
-                    uid: user.uid,
-                    email: user.email,
-                    name: user.displayName || "User",
-                    role: 'farmer'
-                };
+            try {
+                const docRef = doc(db, "users", user.uid);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    userProfile = docSnap.data();
+                }
+            } catch (firestoreErr) {
+                console.warn("Firestore Login Read Failed (Offline?):", firestoreErr);
+                // Proceed with default profile
             }
 
             // 3. Success
@@ -148,26 +153,34 @@ const Login = ({ onLogin, onBack }) => {
             const result = await signInWithPopup(auth, googleProvider);
             const user = result.user;
 
-            // Check if user doc exists
-            const docRef = doc(db, "users", user.uid);
-            const docSnap = await getDoc(docRef);
+            // Default Profile
+            let userProfile = {
+                uid: user.uid,
+                email: user.email,
+                first_name: user.displayName?.split(' ')[0] || 'User',
+                last_name: user.displayName?.split(' ').slice(1).join(' ') || '',
+                role: 'farmer',
+                createdAt: new Date().toISOString(),
+                authProvider: 'google'
+            };
 
-            let userProfile = {};
+            // Firestore Check (Safe Mode)
+            try {
+                const docRef = doc(db, "users", user.uid);
+                const docSnap = await getDoc(docRef);
 
-            if (!docSnap.exists()) {
-                // Create new profile for Google User
-                userProfile = {
-                    uid: user.uid,
-                    email: user.email,
-                    first_name: user.displayName?.split(' ')[0] || 'User',
-                    last_name: user.displayName?.split(' ').slice(1).join(' ') || '',
-                    role: 'farmer',
-                    createdAt: new Date().toISOString(),
-                    authProvider: 'google'
-                };
-                await setDoc(docRef, userProfile);
-            } else {
-                userProfile = docSnap.data();
+                if (docSnap.exists()) {
+                    userProfile = docSnap.data();
+                } else {
+                    // Create new doc if it doesn't exist
+                    try {
+                        await setDoc(docRef, userProfile);
+                    } catch (writeErr) {
+                        console.warn("Firestore Google Write Failed:", writeErr);
+                    }
+                }
+            } catch (readErr) {
+                console.warn("Firestore Google Read Failed:", readErr);
             }
 
             // Success
