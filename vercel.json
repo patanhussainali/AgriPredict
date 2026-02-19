@@ -12,7 +12,7 @@
         },
         {
             "source": "/api/(.*)",
-            "destination": "/api/index.py"
+            "destination": "/api/ver_handler.py"
         },
         {
             "source": "/((?!api).*)",
