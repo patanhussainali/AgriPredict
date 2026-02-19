@@ -1,7 +1,11 @@
-import { auth, db } from '../firebase';
+import { useState, useContext } from 'react';
+import { LanguageContext } from '../context/LanguageContext';
+import { Leaf, Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import { auth, db, googleProvider } from '../firebase';
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
+    signInWithPopup,
     updateProfile,
     sendPasswordResetEmail
 } from "firebase/auth";
