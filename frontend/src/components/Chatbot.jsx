@@ -84,16 +84,24 @@ const Chatbot = () => {
         setLoading(true);
 
         try {
-            const res = await fetch('http://localhost:8000/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: userMsg, lang: lang })
+            // Use GET request for Vercel stability
+            const params = new URLSearchParams({
+                message: userMsg,
+                lang: lang
             });
+
+            const res = await fetch(`${API_URL}/chat.py?${params.toString()}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            if (!res.ok) throw new Error("Chat Service Unavailable");
+
             const data = await res.json();
             setMessages(prev => [...prev, { text: data.response, sender: 'bot' }]);
         } catch (error) {
             console.error("Chat error:", error);
-            setMessages(prev => [...prev, { text: t.chatError, sender: 'bot' }]);
+            setMessages(prev => [...prev, { text: t.chatError || "Sorry, I can't check that right now.", sender: 'bot' }]);
         }
         setLoading(false);
     };

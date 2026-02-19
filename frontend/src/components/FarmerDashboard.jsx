@@ -96,36 +96,39 @@ const FarmerDashboard = () => {
         setResult(null);
 
         try {
-            // Prepare payload for backend
-            const payload = {
+            // Prepare Query Params for GET request (Bypass POST issues)
+            const params = new URLSearchParams({
                 district: formData.district,
-                crop: formData.crop || 'Rice', // Default fallback
+                crop: formData.crop || 'Rice',
                 season: formData.season || 'Kharif',
                 soil_type: formData.soil_type,
-                rainfall: parseFloat(formData.rainfall || 0),
-                temp_min: parseFloat(formData.temp_min || 0),
-                temp_max: parseFloat(formData.temp_max || 0),
-                ph: parseFloat(formData.ph),
-                n: parseFloat(formData.n),
-                p: parseFloat(formData.p),
-                k: parseFloat(formData.k),
+                rainfall: formData.rainfall || '0',
+                temp_min: formData.temp_min || '0',
+                temp_max: formData.temp_max || '0',
+                ph: formData.ph || '6.5',
+                n: formData.n || '140',
+                p: formData.p || '50',
+                k: formData.k || '50',
                 lang: lang,
-                pulse_type: formData.pulse_type
-            };
-
-            const response = await fetch(`${API_URL}/predict`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
+                pulse_type: formData.pulse_type || ''
             });
 
-            if (!response.ok) throw new Error(`Server Error: ${response.status}`);
+            // TARGET api/predict.py
+            const response = await fetch(`${API_URL}/predict.py?${params.toString()}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            if (!response.ok) {
+                const text = await response.text();
+                throw new Error(`Server Error (${response.status}): ${text}`);
+            }
 
             const data = await response.json();
             setResult(data);
         } catch (err) {
             console.error(err);
-            setError(t.error);
+            setError(err.message || t.error);
         } finally {
             setLoading(false);
         }
