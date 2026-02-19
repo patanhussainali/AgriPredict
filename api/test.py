@@ -38,6 +38,21 @@ class handler(BaseHTTPRequestHandler):
                     # Try a simple find
                     count = backend.main.users_collection.count_documents({})
                     result["user_count"] = count
+                    
+                    # Try a WRITE operation (Insert temporary doc)
+                    import uuid
+                    test_email = f"test_{uuid.uuid4()}@example.com"
+                    backend.main.users_collection.insert_one({
+                        "email": test_email,
+                        "type": "probe_test",
+                        "created_at": "now"
+                    })
+                    result["db_write_test"] = f"Success (Inserted {test_email})"
+                    
+                    # Cleanup (Optional, or leave it to see it)
+                    backend.main.users_collection.delete_one({"email": test_email})
+                    result["db_write_cleanup"] = "Success"
+                    
                 else:
                     result["mongo_ping"] = "Client is None"
             except Exception as e:
