@@ -11,10 +11,6 @@
             "destination": "/api/debug.py"
         },
         {
-            "source": "/api/(.*)",
-            "destination": "/api/ver_handler.py"
-        },
-        {
             "source": "/((?!api).*)",
             "destination": "/index.html"
         }
