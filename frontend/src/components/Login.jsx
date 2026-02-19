@@ -39,7 +39,7 @@ const Login = ({ onLogin, onBack }) => {
         setLoading(true);
 
         try {
-            const response = await fetch(`${API_URL}/test`, {
+            const response = await fetch(`${API_URL}/hello.js`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
