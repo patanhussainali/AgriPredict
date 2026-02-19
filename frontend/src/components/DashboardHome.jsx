@@ -37,24 +37,18 @@ const DashboardHome = ({ user }) => {
         const fetchChartData = async () => {
             setLoadingChart(true);
             try {
-                const response = await fetch(`${API_URL}/dashboard/chart-data?crop=${selectedCrop}`);
-                if (response.ok) {
-                    const result = await response.json();
-                    // Result: { labels: ["2010", ...], data: [3.5, ...] }
+                // MOCK DATA FETCH
+                await new Promise(r => setTimeout(r, 500)); // Simulate delay
 
-                    // Transform to [{ name: "2010", value: 3.5 }, ...]
-                    // Limiting to last 10 years for better UI
-                    const sliceIndex = Math.max(0, result.labels.length - 10);
-                    const labels = result.labels.slice(sliceIndex);
-                    const data = result.data.slice(sliceIndex);
+                // Generate random trend for demo
+                const years = ["2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"];
+                const mockData = years.map(year => ({
+                    name: year,
+                    value: parseFloat((Math.random() * 3 + 2).toFixed(2)) // Random yield 2-5
+                }));
 
-                    const transformed = labels.map((label, index) => ({
-                        name: label,
-                        value: data[index]
-                    }));
+                setChartData(mockData);
 
-                    setChartData(transformed);
-                }
             } catch (err) {
                 console.error("Failed to fetch chart data", err);
                 setChartData([]);

@@ -34,21 +34,36 @@ const AnalyticsDashboard = () => {
         yAxis: '', // Metric (Numeric) or 'count'
     });
 
+    // MOCK DATASETS
+    const MOCK_DATASETS = [
+        { id: "cropyield2024", name: "Crop Yield 2024", description: "Global crop yield data" },
+        { id: "soilhealth", name: "Soil Health Index", description: "Regional soil quality metrics" }
+    ];
+
+    // MOCK DATA GENERATOR
+    const generateMockData = (id) => {
+        const crops = ["Rice", "Wheat", "Maize", "Cotton", "Sugarcane"];
+        const districts = ["Thanjavur", "Madurai", "Coimbatore", "Salem", "Trichy"];
+        const data = [];
+        for (let i = 0; i < 50; i++) {
+            data.push({
+                district: districts[Math.floor(Math.random() * districts.length)],
+                crop: crops[Math.floor(Math.random() * crops.length)],
+                yield: (Math.random() * 5 + 2).toFixed(2),
+                rainfall: (Math.random() * 500 + 500).toFixed(0),
+                soil_ph: (Math.random() * 2 + 5.5).toFixed(1)
+            });
+        }
+        return data;
+    };
+
     // Fetch list of datasets on mount
     useEffect(() => {
-        fetch(`${API_URL}/analytics/datasets`)
-            .then(res => {
-                if (!res.ok) throw new Error(`Dataset list failed: ${res.status}`);
-                return res.json();
-            })
-            .then(list => {
-                setDatasets(list);
-                if (list.length > 0) setSelectedFileId(list[0].id);
-            })
-            .catch(err => {
-                console.error("Failed to load datasets", err);
-                setError(err.message);
-            });
+        // MOCK FETCH LIST
+        setTimeout(() => {
+            setDatasets(MOCK_DATASETS);
+            if (MOCK_DATASETS.length > 0) setSelectedFileId(MOCK_DATASETS[0].id);
+        }, 500);
     }, []);
 
     // Fetch data when file ID changes
@@ -58,42 +73,31 @@ const AnalyticsDashboard = () => {
         setLoading(true);
         setError(null);
 
-        // Ensure ID is encoded correctly just in case
-        const safeId = encodeURIComponent(selectedFileId);
+        // MOCK FETCH DATA
+        setTimeout(() => {
+            try {
+                const json = generateMockData(selectedFileId);
+                setData(json);
+                const newStats = calculateStats(json);
+                setStats(newStats);
 
-        fetch(`http://localhost:8000/analytics/data/${selectedFileId}`)
-            .then(res => {
-                if (!res.ok) throw new Error(`Data fetch failed: ${res.status} ${res.statusText}`);
-                return res.json();
-            })
-            .then(json => {
-                if (Array.isArray(json)) {
-                    setData(json);
-                    const newStats = calculateStats(json);
-                    setStats(newStats);
+                if (Object.keys(newStats).length > 0) {
+                    const catCols = Object.keys(newStats).filter(k => newStats[k].type === 'categorical');
+                    const numCols = Object.keys(newStats).filter(k => newStats[k].type === 'numeric');
 
-                    if (Object.keys(newStats).length > 0) {
-                        const catCols = Object.keys(newStats).filter(k => newStats[k].type === 'categorical');
-                        const numCols = Object.keys(newStats).filter(k => newStats[k].type === 'numeric');
-
-                        setChartConfig(prev => ({
-                            ...prev,
-                            xAxis: catCols.length > 0 ? catCols[0] : '',
-                            yAxis: numCols.length > 0 ? numCols[0] : 'count'
-                        }));
-                    }
-                } else {
-                    console.error("Invalid data format", json);
-                    setError(`Invalid data format: ${JSON.stringify(json).slice(0, 200)}`);
-                    setData([]);
+                    setChartConfig(prev => ({
+                        ...prev,
+                        xAxis: catCols.length > 0 ? catCols[0] : 'crop',
+                        yAxis: numCols.length > 0 ? numCols[0] : 'count'
+                    }));
                 }
                 setLoading(false);
-            })
-            .catch(err => {
+            } catch (err) {
                 console.error("Failed to load data", err);
                 setError(`Failed to load data: ${err.message}`);
                 setLoading(false);
-            });
+            }
+        }, 800);
     }, [selectedFileId]);
 
     const calculateStats = (rows) => {
