@@ -38,47 +38,29 @@ const Login = ({ onLogin, onBack }) => {
 
         setLoading(true);
 
-        try {
-            const response = await fetch(`${API_URL}/hello.js`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    first_name: firstName,
-                    last_name: lastName,
-                    email,
-                    password
-                }),
-            });
-
-            let data;
-            const text = await response.text();
-            try {
-                data = JSON.parse(text);
-            } catch (err) {
-                alert(`Server Error (${response.status}): ${text.substring(0, 100)}...`);
-                throw new Error(`Invalid JSON: ${text}`);
-            }
-
-            if (!response.ok) {
-                throw new Error(data.detail || 'Signup failed');
-            }
-
-            // Success
-            alert(`Account created! Please check email: ${data.email}`);
-            setIsLogin(true); // Switch to Login mode
-
-            // Move to login view or show success
-            setIsSignUp(false);
-            setLoginEmail(email); // Pre-fill email
-            setLoginPassword('');
-            // Show verification message
-            setError(null);
-            alert("Account created! Please verify your email before logging in.");
-        } catch (err) {
-            setError(err.message);
-        } finally {
+        // MOCK SIGNUP
+        setTimeout(() => {
             setLoading(false);
-        }
+            alert("Account created successfully (Mock Mode)!");
+
+            // Generate Mock Token and User
+            const mockToken = "mock-jwt-token-12345";
+            const mockUser = {
+                id: "user_123",
+                email: email,
+                first_name: firstName,
+                last_name: lastName,
+                role: 'farmer'
+            };
+
+            localStorage.setItem('token', mockToken);
+            localStorage.setItem('user', JSON.stringify(mockUser));
+
+            // Notify Parent
+            if (onLogin) onLogin(mockUser);
+            // OR Redirect
+            // window.location.href = '/dashboard'; 
+        }, 1000);
     };
 
     const handleLoginSubmit = async (e) => {
@@ -86,39 +68,25 @@ const Login = ({ onLogin, onBack }) => {
         setError(null);
         setLoading(true);
 
-        try {
-            const response = await fetch(`${API_URL}/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    email: loginEmail,
-                    password: loginPassword
-                }),
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                if (response.status === 403) {
-                    throw new Error("Email not verified. Please check your inbox for the verification link.");
-                }
-                throw new Error(data.detail || 'Login failed');
-            }
-
-            // Login successful
-            const userProfile = {
-                ...data.user,
-                name: `${data.user.first_name} ${data.user.last_name}`,
-                rollNo: '000', // Mock data
-                role: data.user.role || 'farmer'
-            };
-            onLogin(userProfile);
-
-        } catch (err) {
-            setError(err.message);
-        } finally {
+        // MOCK LOGIN
+        setTimeout(() => {
             setLoading(false);
-        }
+
+            const mockToken = "mock-jwt-token-12345";
+            const mockUser = {
+                id: "user_123",
+                email: loginEmail,
+                first_name: "Mock",
+                last_name: "User",
+                role: 'farmer'
+            };
+
+            localStorage.setItem('token', mockToken);
+            localStorage.setItem('user', JSON.stringify(mockUser));
+
+            if (onLogin) onLogin(mockUser);
+            // window.location.href = '/dashboard';
+        }, 1000);
     };
 
     const handleForgotPasswordSubmit = async (e) => {
