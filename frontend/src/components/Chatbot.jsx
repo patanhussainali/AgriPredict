@@ -95,13 +95,21 @@ const Chatbot = () => {
                 headers: { 'Content-Type': 'application/json' }
             });
 
-            if (!res.ok) throw new Error("Chat Service Unavailable");
-
             const data = await res.json();
+
+            if (!res.ok) {
+                // Display specific server error if available (e.g., "GROQ_API_KEY missing")
+                throw new Error(data.error || "Chat Service Unavailable");
+            }
+
             setMessages(prev => [...prev, { text: data.response, sender: 'bot' }]);
         } catch (error) {
             console.error("Chat error:", error);
-            setMessages(prev => [...prev, { text: t.chatError || "Sorry, I can't check that right now.", sender: 'bot' }]);
+            const errorText = error.message.includes("Failed to fetch")
+                ? (t.chatError || "Connection failed. Please check your internet.")
+                : `Error: ${error.message}`;
+
+            setMessages(prev => [...prev, { text: errorText, sender: 'bot' }]);
         }
         setLoading(false);
     };
