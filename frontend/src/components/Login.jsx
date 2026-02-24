@@ -57,7 +57,7 @@ const Login = ({ onLogin, onBack }) => {
                 displayName: `${firstName} ${lastName}`.trim()
             });
 
-            // 3. Store User Profile in Firestore
+            // 3. Store User Profile in Firestore (NON-BLOCKING)
             const userProfile = {
                 uid: user.uid,
                 email: user.email,
@@ -67,7 +67,8 @@ const Login = ({ onLogin, onBack }) => {
                 createdAt: new Date().toISOString()
             };
 
-            await setDoc(doc(db, "users", user.uid), userProfile);
+            setDoc(doc(db, "users", user.uid), userProfile)
+                .catch(err => console.error("Non-blocking Firestore Signup Write Failed:", err));
 
             // 5. Send Verification Email
             await sendEmailVerification(user);
@@ -211,23 +212,30 @@ const Login = ({ onLogin, onBack }) => {
                 authProvider: 'google'
             };
 
-            // Firestore Check (Safe Mode)
+            // Firestore Check (Safe Mode with 1s Timeout)
             try {
                 const docRef = doc(db, "users", user.uid);
-                const docSnap = await getDoc(docRef);
+
+                // TIMEOUT RACE: Give Firestore 1 second, then give up and use Google data
+                const timeoutPromise = new Promise((_, reject) =>
+                    setTimeout(() => reject(new Error("Firestore timeout")), 1000)
+                );
+
+                const docSnap = await Promise.race([
+                    getDoc(docRef),
+                    timeoutPromise
+                ]);
 
                 if (docSnap.exists()) {
                     userProfile = docSnap.data();
                 } else {
-                    // Create new doc if it doesn't exist
-                    try {
-                        await setDoc(docRef, userProfile);
-                    } catch (writeErr) {
-                        console.warn("Firestore Google Write Failed:", writeErr);
-                    }
+                    // Create new doc if it doesn't exist (NON-BLOCKING)
+                    setDoc(docRef, userProfile)
+                        .catch(writeErr => console.warn("Non-blocking Firestore Google Write Failed:", writeErr));
                 }
-            } catch (readErr) {
-                console.warn("Firestore Google Read Failed:", readErr);
+            } catch (firestoreErr) {
+                console.warn("Firestore Google Read Failed/Slow (Offline?):", firestoreErr);
+                // Proceed with userProfile built from Google data
             }
 
             // Success
