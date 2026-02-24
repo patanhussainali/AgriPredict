@@ -95,11 +95,18 @@ const Chatbot = () => {
                 headers: { 'Content-Type': 'application/json' }
             });
 
-            const data = await res.json();
+            const text = await res.text();
+            let data;
+            try {
+                data = JSON.parse(text);
+            } catch (e) {
+                console.error("Non-JSON Response received:", text);
+                throw new Error(`Invalid server response (not JSON). Received: ${text.substring(0, 50)}...`);
+            }
 
             if (!res.ok) {
                 // Display specific server error if available (e.g., "GROQ_API_KEY missing")
-                throw new Error(data.error || "Chat Service Unavailable");
+                throw new Error(data.error || data.detail || "Chat Service Unavailable");
             }
 
             setMessages(prev => [...prev, { text: data.response, sender: 'bot' }]);
