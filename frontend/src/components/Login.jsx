@@ -34,9 +34,30 @@ const Login = ({ onLogin, onBack }) => {
 
     const [loginEmail, setLoginEmail] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
-    const [showLoginPassword, setShowLoginPassword] = useState(false);
+    const [weatherStatus, setWeatherStatus] = useState(null);
 
-    const handleSignupSubmit = async (e) => {
+    // Helper to map Firebase errors to user-friendly messages
+    const getFriendlyErrorMessage = (error) => {
+        const code = error.code || error.message || "";
+        if (code.includes('invalid-credential') || code.includes('user-not-found') || code.includes('wrong-password')) {
+            return "Incorrect credentials. Please check your email and password.";
+        }
+        if (code.includes('email-already-in-use')) {
+            return "This email is already registered. Please login instead.";
+        }
+        if (code.includes('network-request-failed')) {
+            return "Network error. Please check your internet connection.";
+        }
+        if (code.includes('too-many-requests')) {
+            return "Too many failed attempts. Please try again later.";
+        }
+        if (code.includes('unauthorized-domain')) {
+            return "This domain is not authorized for Google Sign-in. Please contact support.";
+        }
+        return code.replace("Firebase: ", "").replace(/\(auth\/.*\)\.?/, "").trim() || "An unexpected error occurred.";
+    };
+
+    const handleSignup = async (e) => {
         e.preventDefault();
         setError(null);
 
@@ -87,7 +108,7 @@ const Login = ({ onLogin, onBack }) => {
 
         } catch (err) {
             console.error("Signup Error:", err);
-            setError(err.message.replace("Firebase: ", ""));
+            setError(getFriendlyErrorMessage(err));
         } finally {
             setLoading(false);
         }
@@ -147,7 +168,7 @@ const Login = ({ onLogin, onBack }) => {
 
         } catch (err) {
             console.error("Login Error:", err);
-            setError(err.message.replace("Firebase: ", ""));
+            setError(getFriendlyErrorMessage(err));
         } finally {
             setLoading(false);
         }
@@ -246,7 +267,7 @@ const Login = ({ onLogin, onBack }) => {
 
         } catch (error) {
             console.error("Google Sign-In Error", error);
-            setError(error.message.replace("Firebase: ", ""));
+            setError(getFriendlyErrorMessage(error));
         } finally {
             setLoading(false);
         }
