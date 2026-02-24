@@ -130,7 +130,8 @@ const Login = ({ onLogin, onBack }) => {
                 uid: user.uid,
                 email: user.email,
                 name: user.displayName || "User",
-                role: 'farmer'
+                role: 'farmer',
+                emailVerified: true // Reached this point only if verified
             };
 
             try {
@@ -231,7 +232,8 @@ const Login = ({ onLogin, onBack }) => {
                 last_name: user.displayName?.split(' ').slice(1).join(' ') || '',
                 role: 'farmer',
                 createdAt: new Date().toISOString(),
-                authProvider: 'google'
+                authProvider: 'google',
+                emailVerified: user.emailVerified
             };
 
             // Firestore Check (Safe Mode with 1s Timeout)

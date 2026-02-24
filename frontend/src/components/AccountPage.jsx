@@ -7,18 +7,16 @@ import { Shield, Mail, Calendar, Clock, Globe } from 'lucide-react';
 const AccountPage = ({ user }) => {
     const { t } = useContext(LanguageContext);
 
-    // Mock data simulation - normally this would come from a database or API
-    // We use the passed 'user' prop for basic info and mock the rest
+    // Display data from the real user object
     const userData = {
-        name: user?.name || 'Farmer User',
+        name: user?.first_name ? `${user.first_name} ${user.last_name || ''}`.trim() : (user?.name || 'User'),
         role: user?.role || 'farmer',
-        // Generate a consistent fake ID based on name length
-        userId: '1taP5SYU8SPbbinmaoMkfBVVlWb52',
+        userId: user?.uid || 'N/A',
         email: user?.email || 'No email provided',
-        emailVerified: false,
-        accountCreated: '1/25/2026',
-        lastSignIn: new Date().toLocaleString(), // Current time for "Last Sign-in"
-        provider: 'Google' // Assuming Google login based on Previous Login screen
+        emailVerified: !!user?.emailVerified,
+        accountCreated: user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A',
+        lastSignIn: new Date().toLocaleString(),
+        provider: user?.authProvider ? (user.authProvider.charAt(0).toUpperCase() + user.authProvider.slice(1)) : 'Email'
     };
 
     return (
