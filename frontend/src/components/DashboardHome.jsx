@@ -37,8 +37,7 @@ const DashboardHome = ({ user }) => {
         const fetchChartData = async () => {
             setLoadingChart(true);
             try {
-                // MOCK DATA FETCH
-                await new Promise(r => setTimeout(r, 500)); // Simulate delay
+                // MOCK DATA FETCH (Removed artificial delay for performance)
 
                 // Generate random trend for demo
                 const years = ["2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"];
@@ -176,7 +175,7 @@ const DashboardHome = ({ user }) => {
                 </div>
 
                 {/* Recharts Area Chart */}
-                <div className="h-72 w-full">
+                <div className="w-full h-80 min-h-[300px]">
                     {loadingChart ? (
                         <div className="w-full h-full flex items-center justify-center text-gray-400">
                             <Loader2 className="w-6 h-6 animate-spin mr-2" />

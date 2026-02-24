@@ -55,13 +55,26 @@ export const WeatherProvider = ({ children }) => {
                 (err) => {
                     console.warn("Geolocation denied or error:", err);
                     setError("Location access denied. Please enable location services.");
-                    setLoading(false);
+                    setLoading(false); // Ensure loading stops
                 }
             );
         } else {
             setError("Geolocation not supported by this browser.");
             setLoading(false);
         }
+
+        // Safety timeout: If nothing happens in 5 seconds, stop loading
+        const timer = setTimeout(() => {
+            setLoading(prev => {
+                if (prev) {
+                    console.warn("Weather loading timed out");
+                    return false;
+                }
+                return prev;
+            });
+        }, 5000);
+
+        return () => clearTimeout(timer);
     }, []);
 
     return (

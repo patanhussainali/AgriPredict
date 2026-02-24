@@ -13,6 +13,7 @@ import {
     CheckCircle,
     Leaf
 } from 'lucide-react';
+import API_URL from '../config';
 
 const FarmerDashboard = () => {
     const { t, lang } = useContext(LanguageContext);

@@ -32,16 +32,19 @@ function AppContent() {
   }
 
   // Check for existing session on mount
+  // Check for existing session on mount
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch (e) {
-        console.error("Failed to parse user session", e);
-        localStorage.removeItem('user');
-      }
-    }
+    // USER REQUEST: Always redirect to Landing Page on refresh.
+    // We intentionally DO NOT restore the session here.
+    // const storedUser = localStorage.getItem('user');
+    // if (storedUser) {
+    //   try {
+    //     setUser(JSON.parse(storedUser));
+    //   } catch (e) {
+    //     console.error("Failed to parse user session", e);
+    //     localStorage.removeItem('user');
+    //   }
+    // }
   }, []);
 
   const handleLogin = (userData) => {

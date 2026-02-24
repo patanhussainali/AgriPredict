@@ -7,7 +7,7 @@ const VerifyEmail = () => {
     const [message, setMessage] = useState('Verifying your email...');
 
     useEffect(() => {
-        const verifyToken = async () => {
+        const verify = async () => {
             const params = new URLSearchParams(window.location.search);
             const token = params.get('token');
 
@@ -67,7 +67,7 @@ const VerifyEmail = () => {
                         <p className="text-gray-500 mb-6">{message}</p>
                         <p className="text-sm text-gray-400">Redirecting to login...</p>
                         <button
-                            onClick={() => navigate('/')}
+                            onClick={() => window.location.href = '/'}
                             className="mt-4 px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
                         >
                             Go to Login
@@ -81,7 +81,7 @@ const VerifyEmail = () => {
                         <h2 className="text-2xl font-bold text-gray-900 mb-2">Verification Failed</h2>
                         <p className="text-gray-500 mb-6">{message}</p>
                         <button
-                            onClick={() => navigate('/')}
+                            onClick={() => window.location.href = '/'}
                             className="flex items-center gap-2 px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
                         >
                             <ArrowLeft className="w-4 h-4" /> Back to Login

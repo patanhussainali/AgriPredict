@@ -69,8 +69,11 @@ const Login = ({ onLogin, onBack }) => {
 
             await setDoc(doc(db, "users", user.uid), userProfile);
 
-            // 4. Success handling
-            alert("Account created successfully! Please login.");
+            // 5. Send Verification Email
+            await sendEmailVerification(user);
+
+            // 6. Success handling
+            alert("Account created successfully! A verification email has been sent to your inbox. Please verify before logging in.");
 
             // Switch to Login View instead of Auto-login
             setIsSignUp(false);
@@ -99,7 +102,7 @@ const Login = ({ onLogin, onBack }) => {
             const userCredential = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
             const user = userCredential.user;
 
-            // 2. Fetch User Profile from Firestore (Safe Mode)
+            // 2. Fetch User Profile from Firestore (Safe Mode + Speed Optimization)
             let userProfile = {
                 uid: user.uid,
                 email: user.email,
@@ -109,16 +112,33 @@ const Login = ({ onLogin, onBack }) => {
 
             try {
                 const docRef = doc(db, "users", user.uid);
-                const docSnap = await getDoc(docRef);
+
+                // TIMEOUT RACE: Give Firestore 1 second, then give up and use default
+                const timeoutPromise = new Promise((_, reject) =>
+                    setTimeout(() => reject(new Error("Firestore timeout")), 1000)
+                );
+
+                const docSnap = await Promise.race([
+                    getDoc(docRef),
+                    timeoutPromise
+                ]);
+
                 if (docSnap.exists()) {
                     userProfile = docSnap.data();
                 }
             } catch (firestoreErr) {
-                console.warn("Firestore Login Read Failed (Offline?):", firestoreErr);
+                // If timeout or offline, just log and proceed
+                console.warn("Firestore Login Read Failed/Slow (Offline?):", firestoreErr);
                 // Proceed with default profile
             }
 
-            // 3. Success
+            // 3. Check Email Verification
+            if (!user.emailVerified) {
+                await signOut(auth);
+                throw new Error("Please verify your email address before logging in.");
+            }
+
+            // 4. Success
             localStorage.setItem('token', await user.getIdToken());
             localStorage.setItem('user', JSON.stringify(userProfile));
 
@@ -127,6 +147,31 @@ const Login = ({ onLogin, onBack }) => {
         } catch (err) {
             console.error("Login Error:", err);
             setError(err.message.replace("Firebase: ", ""));
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleResendVerification = async () => {
+        if (!loginEmail) {
+            setError("Please enter your email first.");
+            return;
+        }
+        setLoading(true);
+        try {
+            // We need to sign in momentarily to send the email, or use a different flow.
+            // Since we block login, we can't easily get the 'user' object unless we catch it before signout.
+            // Simplified approach for now: Just tell them to check spam. 
+            // Better approach: If they try to login and get blocked, we have the 'user' credential from the try block but we signed out.
+
+            // To properly resend, we need the user object, which requires signing in.
+            // We will temporarily sign in -> send -> sign out.
+            const userCredential = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+            await sendEmailVerification(userCredential.user);
+            await signOut(auth);
+            alert("Verification email resent!");
+        } catch (e) {
+            setError("Cannot resend (check password?): " + e.message);
         } finally {
             setLoading(false);
         }
