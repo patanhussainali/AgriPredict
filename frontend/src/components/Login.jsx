@@ -34,6 +34,7 @@ const Login = ({ onLogin, onBack }) => {
 
     const [loginEmail, setLoginEmail] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
+    const [showLoginPassword, setShowLoginPassword] = useState(false);
     const [weatherStatus, setWeatherStatus] = useState(null);
 
     // Helper to map Firebase errors to user-friendly messages
@@ -57,7 +58,7 @@ const Login = ({ onLogin, onBack }) => {
         return code.replace("Firebase: ", "").replace(/\(auth\/.*\)\.?/, "").trim() || "An unexpected error occurred.";
     };
 
-    const handleSignup = async (e) => {
+    const handleSignupSubmit = async (e) => {
         e.preventDefault();
         setError(null);
 
