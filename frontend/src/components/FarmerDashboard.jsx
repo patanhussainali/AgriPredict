@@ -129,9 +129,7 @@ const FarmerDashboard = () => {
             setResult(data);
         } catch (err) {
             console.error(err);
-            // Debugging: check if API_URL is truly invisible to the function
-            const scopeInfo = typeof API_URL !== 'undefined' ? "Defined" : "UNDEFINED";
-            setError(`${err.message} (Scope: ${scopeInfo})`);
+            setError(err.message || t.error);
         } finally {
             setLoading(false);
         }
