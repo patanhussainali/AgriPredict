@@ -49,9 +49,9 @@ const Sidebar = ({ activeTab, onTabChange, onLogout, isMobileOpen, isDesktopOpen
             `}>
                 {/* Logo Area */}
                 <div className="h-16 flex items-center px-6 border-b border-gray-100">
-                    <div className="flex items-center gap-2 text-green-600 font-bold text-xl">
-                        <Leaf className="fill-green-600 w-6 h-6" />
-                        <span>AgriPredict AI</span>
+                    <div className="flex items-center gap-3">
+                        <img src="/logo.png" alt="AgriPredict Logo" className="h-8 w-8 object-contain" />
+                        <span className="text-green-600 font-bold text-xl tracking-tight">AgriPredict AI</span>
                     </div>
                 </div>
 

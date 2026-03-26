@@ -1,33 +1,37 @@
 import React from 'react';
-import { Leaf, Mail, Shovel, Info, Sprout, Tractor, CloudSun } from 'lucide-react'; // Using available icons
+import { Mail, Shovel, Sprout, Tractor, CloudSun } from 'lucide-react';
+import { CropPredictionIcon, YieldEstimationIcon, WeatherAdvisoryIcon } from './CustomIcons';
 
 const LandingPage = ({ onLoginClick }) => {
 
-    // Scroll to top on mount to ensure Home section is visible
+    // Scroll to top on mount and clear hash to ensure Home section is visible
     React.useLayoutEffect(() => {
         // 1. Prevent browser from restoring scroll position
         if ('scrollRestoration' in window.history) {
             window.history.scrollRestoration = 'manual';
         }
 
-        // 2. Temporarily disable smooth scroll for instant jump
+        // 2. Clear URL hash (e.g., #about) without reloading the page
+        if (window.location.hash) {
+            window.history.replaceState(null, null, window.location.pathname);
+        }
+
+        // 3. Temporarily disable smooth scroll for instant jump
         const html = document.documentElement;
         const body = document.body;
 
-        // Save original styles (likely 'smooth' from CSS or empty)
         const originalHtmlScroll = html.style.scrollBehavior;
         const originalBodyScroll = body.style.scrollBehavior;
 
-        // Force 'auto' to make scroll instant
         html.style.scrollBehavior = 'auto';
         body.style.scrollBehavior = 'auto';
 
-        // 3. Force scroll to top instantly
+        // 4. Force scroll to top instantly
         window.scrollTo(0, 0);
 
-        // 4. Re-enable smooth scroll after a short delay (enough for browser layout to settle)
+        // 5. Re-enable smooth scroll after a short delay
         const timer = setTimeout(() => {
-            html.style.scrollBehavior = 'smooth'; // Explicitly set smooth back
+            html.style.scrollBehavior = 'smooth';
             body.style.scrollBehavior = originalBodyScroll;
         }, 50);
 
@@ -41,21 +45,18 @@ const LandingPage = ({ onLoginClick }) => {
 
     return (
         <div className="min-h-screen flex flex-col font-sans relative">
-            {/* Header */}
-            <header className="flex items-center justify-between px-8 py-4 bg-white shadow-sm sticky top-0 z-50">
-                <div className="flex items-center gap-2">
-                    <div className="bg-green-700 p-1.5 rounded-lg">
-                        <Leaf className="text-white w-6 h-6" />
-                    </div>
-                    <span className="text-xl font-bold text-gray-800 tracking-tight">AgriPredict</span>
+            <header className="flex items-center justify-between px-8 py-4 bg-white shadow-sm sticky top-0 z-50 h-20">
+                <div className="flex items-center gap-3 h-full">
+                    <img src="/logo.png" alt="AgriPredict Logo" className="h-16 w-auto object-contain" />
+                    <span className="text-2xl font-extrabold text-[#2D4A27] tracking-tighter">AgriPredict</span>
                 </div>
 
                 {/* Navigation */}
-                <nav className="flex items-center gap-3 sm:gap-8 text-xs sm:text-sm font-medium text-gray-600 overflow-x-auto ml-auto">
-                    <a href="#home" className="hover:text-green-700 transition-colors whitespace-nowrap">Home</a>
-                    <a href="#about" className="hover:text-green-700 transition-colors whitespace-nowrap">About Us</a>
-                    <a href="#services" className="hover:text-green-700 transition-colors whitespace-nowrap">Services</a>
-                    <a href="#contact" className="hover:text-green-700 transition-colors whitespace-nowrap">Contact</a>
+                <nav className="flex items-center flex-wrap justify-end gap-2 sm:gap-6 text-[10px] sm:text-sm font-semibold text-gray-600 ml-auto max-w-full">
+                    <a href="#home" className="hover:text-green-700 transition-colors px-1 py-1 sm:px-0 sm:py-0">Home</a>
+                    <a href="#about" className="hover:text-green-700 transition-colors px-1 py-1 sm:px-0 sm:py-0 whitespace-nowrap">About Us</a>
+                    <a href="#services" className="hover:text-green-700 transition-colors px-1 py-1 sm:px-0 sm:py-0">Services</a>
+                    <a href="#contact" className="hover:text-green-700 transition-colors px-1 py-1 sm:px-0 sm:py-0">Contact</a>
                 </nav>
             </header>
 
@@ -132,10 +133,10 @@ const LandingPage = ({ onLoginClick }) => {
                 {/* White Box Icons */}
                 <div className="w-1/2 md:w-1/4 bg-white flex items-center justify-around p-4 text-[#558B2F]">
                     <div className="flex flex-col items-center gap-2">
-                        <CloudSun className="w-10 h-10" strokeWidth={1.5} />
+                        <WeatherAdvisoryIcon className="w-10 h-10" />
                     </div>
                     <div className="flex flex-col items-center gap-2">
-                        <Leaf className="w-10 h-10" strokeWidth={1.5} />
+                        <CropPredictionIcon className="w-10 h-10" />
                     </div>
                 </div>
 
@@ -160,32 +161,32 @@ const LandingPage = ({ onLoginClick }) => {
                     <h2 className="text-3xl font-bold text-[#2D4A27] mb-12 text-center">Our Services</h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {/* Service 1 */}
-                        <div className="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow text-center">
-                            <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                                <Sprout className="w-8 h-8 text-green-600" />
+                        <div className="bg-white p-10 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 text-center border border-gray-100">
+                            <div className="bg-[#E8F5E9] w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-8 border border-[#C8E6C9]">
+                                <CropPredictionIcon className="w-10 h-10 text-[#2E7D32]" />
                             </div>
-                            <h3 className="text-xl font-semibold text-gray-800 mb-3">Crop Prediction</h3>
-                            <p className="text-gray-600 text-sm">
+                            <h3 className="text-2xl font-bold text-gray-800 mb-4">Crop Prediction</h3>
+                            <p className="text-gray-500 text-sm leading-relaxed">
                                 Analyze soil and climate data to recommend the most suitable crops for your land.
                             </p>
                         </div>
                         {/* Service 2 */}
-                        <div className="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow text-center">
-                            <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                                <Tractor className="w-8 h-8 text-green-600" />
+                        <div className="bg-white p-10 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 text-center border border-gray-100">
+                            <div className="bg-[#E8F5E9] w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-8 border border-[#C8E6C9]">
+                                <YieldEstimationIcon className="w-10 h-10 text-[#2E7D32]" />
                             </div>
-                            <h3 className="text-xl font-semibold text-gray-800 mb-3">Yield Estimation</h3>
-                            <p className="text-gray-600 text-sm">
+                            <h3 className="text-2xl font-bold text-gray-800 mb-4">Yield Estimation</h3>
+                            <p className="text-gray-500 text-sm leading-relaxed">
                                 Get accurate yield forecasts to plan your harvest and market strategies effectively.
                             </p>
                         </div>
                         {/* Service 3 */}
-                        <div className="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow text-center">
-                            <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                                <CloudSun className="w-8 h-8 text-green-600" />
+                        <div className="bg-white p-10 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 text-center border border-gray-100">
+                            <div className="bg-[#E8F5E9] w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-8 border border-[#C8E6C9]">
+                                <WeatherAdvisoryIcon className="w-10 h-10 text-[#2E7D32]" />
                             </div>
-                            <h3 className="text-xl font-semibold text-gray-800 mb-3">Weather Advisory</h3>
-                            <p className="text-gray-600 text-sm">
+                            <h3 className="text-2xl font-bold text-gray-800 mb-4">Weather Advisory</h3>
+                            <p className="text-gray-500 text-sm leading-relaxed">
                                 Real-time weather updates and alerts to protect your crops from adverse conditions.
                             </p>
                         </div>

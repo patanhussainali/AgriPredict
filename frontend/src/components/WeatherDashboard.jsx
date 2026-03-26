@@ -170,135 +170,156 @@ const WeatherDashboard = () => {
     }
 
     return (
-        <div className="max-w-4xl mx-auto space-y-6">
+        <div className="flex flex-col h-[calc(100dvh-180px)] md:h-[calc(100vh-140px)] bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            {/* Scrollable Content Area */}
+            <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-8 bg-gray-50/30">
+                <div className="max-w-5xl mx-auto w-full space-y-8">
+                    
+                    {/* Main Weather Card */}
+                    <div className="bg-gradient-to-br from-emerald-600 to-teal-700 rounded-2xl p-6 md:p-8 text-white shadow-lg overflow-hidden relative min-h-[220px] flex items-center">
+                        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl"></div>
+                        <div className="relative z-10 flex flex-col md:flex-row justify-between items-center w-full gap-8">
+                            <div className="w-full md:w-auto text-center md:text-left">
+                                <h2 className="text-2xl md:text-3xl font-bold mb-2 flex items-center justify-center md:justify-start gap-3">
+                                    <MapPin className="w-7 h-7" />
+                                    {t.weatherTitle || "Weather Forecast"}
+                                </h2>
+                                <p className="text-green-100 mb-6 font-medium">{currentDate}</p>
 
-            {/* Main Weather Card */}
-            <div className="bg-gradient-to-br from-emerald-600 to-teal-700 rounded-xl p-6 text-white shadow-lg overflow-hidden relative">
-                <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl"></div>
-                <div className="relative z-10 flex flex-col md:flex-row justify-between items-start gap-6">
-                    <div>
-                        <h2 className="text-2xl font-bold mb-1 flex items-center gap-2">
-                            <MapPin className="w-6 h-6" />
-                            {t.weatherTitle || "Weather Forecast"}
-                        </h2>
-                        <p className="text-green-100 mb-6">{currentDate}</p>
-
-                        <div className="flex items-center gap-4">
-                            <div className="p-3 bg-white/20 rounded-full backdrop-blur-sm">
-                                {getWeatherIcon(weather.weather[0].id, "w-10 h-10 text-white")}
+                                <div className="flex items-center justify-center md:justify-start gap-6">
+                                    <div className="p-4 bg-white/20 rounded-2xl backdrop-blur-md shadow-inner">
+                                        {getWeatherIcon(weather.weather[0].id, "w-12 h-12 text-white")}
+                                    </div>
+                                    <div>
+                                        <div className="text-6xl font-black tracking-tighter">{Math.round(weather.main.temp)}°C</div>
+                                        <div className="text-green-100 font-bold text-lg capitalize opacity-90">{weather.weather[0].description}</div>
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <div className="text-5xl font-bold">{Math.round(weather.main.temp)}°C</div>
-                                <div className="text-green-100 font-medium capitalize">{weather.weather[0].description}</div>
+
+                            <div className="bg-white/10 p-5 rounded-2xl backdrop-blur-md border border-white/10 min-w-full md:min-w-[280px]">
+                                <div className="text-xs text-green-100 uppercase font-black tracking-widest mb-4 opacity-70">{t.currentWeather || "Current Details"}</div>
+                                <div className="grid grid-cols-1 gap-4">
+                                    <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                                        <div className="flex items-center gap-3">
+                                            <Wind className="w-5 h-5 text-green-100" />
+                                            <span className="text-sm font-medium">Wind Speed</span>
+                                        </div>
+                                        <span className="font-bold">{Math.round(weather.wind.speed)} km/h</span>
+                                    </div>
+                                    <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                                        <div className="flex items-center gap-3">
+                                            <Droplets className="w-5 h-5 text-green-100" />
+                                            <span className="text-sm font-medium">Humidity</span>
+                                        </div>
+                                        <span className="font-bold">{weather.main.humidity}%</span>
+                                    </div>
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-3">
+                                            <Sun className="w-5 h-5 text-green-100" />
+                                            <span className="text-sm font-medium">UV Index</span>
+                                        </div>
+                                        <span className="font-bold">Moderate</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div className="bg-white/10 p-4 rounded-lg backdrop-blur-sm min-w-[200px]">
-                        <div className="text-xs text-green-100 uppercase tracking-wider mb-2">{t.currentWeather || "Current Weather"}</div>
-                        <div className="flex flex-col gap-2">
-                            <div className="flex items-center gap-2">
-                                <Wind className="w-4 h-4 opacity-80" />
-                                <span>Wind: <b>{Math.round(weather.wind.speed)} km/h</b></span>
+                    {/* Sections: Graph & Forecast */}
+                    <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+
+                        {/* Graph Section */}
+                        <div className="lg:col-span-3 bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col h-full animate-fade-in-up">
+                            <div className="flex items-center justify-between mb-6">
+                                <h3 className="font-bold text-gray-800 text-lg">Hourly Temperature</h3>
+                                <button className="text-xs font-black uppercase tracking-widest text-yellow-600 bg-yellow-50 px-3 py-1 rounded-full">
+                                    {t.temperature}
+                                </button>
                             </div>
-                            <div className="flex items-center gap-2">
-                                <Droplets className="w-4 h-4 opacity-80" />
-                                <span>Humidity: <b>{weather.main.humidity}%</b></span>
+
+                            {/* Graph Container */}
+                            <div className="h-64 md:h-72 w-full mb-6">
+                                <Line options={chartOptions} data={chartData} />
                             </div>
-                            <div className="flex items-center gap-2">
-                                <Sun className="w-4 h-4 opacity-80" />
-                                <span>UV Index: <b>Moderate</b></span>
+
+                            {/* Hourly Strip below graph */}
+                            <div className="flex justify-between px-2 overflow-x-auto pb-2 scrollbar-hide gap-4">
+                                {next8Periods.map((item, idx) => (
+                                    <div key={idx} className="flex flex-col items-center gap-2 min-w-[3.5rem] p-3 rounded-xl hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100">
+                                        <span className="text-[10px] uppercase font-bold text-gray-400">
+                                            {new Date(item.dt * 1000).toLocaleTimeString([], { hour: 'numeric', hour12: true })}
+                                        </span>
+                                        <div className="bg-gray-50 p-1.5 rounded-lg shadow-sm">
+                                            {getWeatherIcon(item.weather[0].id, "w-6 h-6")}
+                                        </div>
+                                        <span className="text-sm font-black text-gray-800">{Math.round(item.main.temp)}°</span>
+                                    </div>
+                                ))}
                             </div>
+                        </div>
+
+                        {/* 5-Day Forecast Panel */}
+                        <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col h-full animate-fade-in-up delay-100">
+                            <h3 className="font-bold text-gray-800 text-lg mb-6 flex items-center gap-2">
+                                <Calendar className="w-5 h-5 text-green-600" />
+                                5-Day Forecast
+                            </h3>
+                            <div className="space-y-4 flex-1">
+                                {dailyForecast.slice(0, 5).map((item, idx) => (
+                                    <div key={idx} className="flex items-center justify-between p-3 rounded-xl hover:bg-green-50/50 transition-all border border-transparent hover:border-green-100 group">
+                                        <span className="w-16 font-bold text-gray-500 text-sm">
+                                            {new Date(item.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' })}
+                                        </span>
+                                        <div className="flex items-center gap-3 flex-1 px-4">
+                                            <div className="bg-gray-50 p-1.5 rounded-lg group-hover:bg-white shadow-sm transition-colors">
+                                                {getWeatherIcon(item.weather[0].id, "w-5 h-5")}
+                                            </div>
+                                            <span className="text-xs font-bold text-gray-400 uppercase tracking-tight truncate">{item.weather[0].main}</span>
+                                        </div>
+                                        <div className="flex items-center gap-3 w-20 justify-end">
+                                            <span className="font-black text-gray-800 text-sm">{Math.round(item.main.temp_max)}°</span>
+                                            <span className="text-gray-400 text-xs font-medium">{Math.round(item.main.temp_min)}°</span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Additional Grid Stats */}
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-in-up delay-200">
+                        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center group hover:border-blue-200 transition-colors">
+                            <div className="bg-blue-50 p-3 rounded-2xl mb-3 text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-all shadow-sm">
+                                <Droplets size={24} />
+                            </div>
+                            <span className="text-xs text-gray-400 uppercase font-black tracking-widest mb-1">{t.humidity}</span>
+                            <span className="text-2xl font-black text-gray-800">{weather.main.humidity}%</span>
+                        </div>
+                        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center group hover:border-yellow-200 transition-colors">
+                            <div className="bg-yellow-50 p-3 rounded-2xl mb-3 text-yellow-500 group-hover:bg-yellow-500 group-hover:text-white transition-all shadow-sm">
+                                <Sun size={24} />
+                            </div>
+                            <span className="text-xs text-gray-400 uppercase font-black tracking-widest mb-1">{t.uvIndex}</span>
+                            <span className="text-2xl font-black text-gray-800">Moderate</span>
+                        </div>
+                        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center group hover:border-purple-200 transition-colors">
+                            <div className="bg-purple-50 p-3 rounded-2xl mb-3 text-purple-500 group-hover:bg-purple-500 group-hover:text-white transition-all shadow-sm">
+                                <Wind size={24} />
+                            </div>
+                            <span className="text-xs text-gray-400 uppercase font-black tracking-widest mb-1">{t.wind}</span>
+                            <span className="text-2xl font-black text-gray-800">{weather.wind.speed} km/h</span>
+                        </div>
+                        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center group hover:border-emerald-200 transition-colors">
+                            <div className="bg-emerald-50 p-3 rounded-2xl mb-3 text-emerald-500 group-hover:bg-emerald-500 group-hover:text-white transition-all shadow-sm">
+                                <Thermometer size={24} />
+                            </div>
+                            <span className="text-xs text-gray-400 uppercase font-black tracking-widest mb-1">{t.pressure}</span>
+                            <span className="text-2xl font-black text-gray-800">{weather.main.pressure} hPa</span>
                         </div>
                     </div>
                 </div>
             </div>
-
-            {/* Sections: Graph & Forecast */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-                {/* Graph Section */}
-                <div className="lg:col-span-2 bg-white rounded-3xl shadow-sm border border-gray-100 p-6 animate-fade-in-up delay-100">
-                    <div className="flex items-center gap-4 mb-2 border-b border-gray-50 pb-2">
-                        <button
-                            className="text-sm font-bold pb-2 border-b-2 transition-all text-yellow-500 border-yellow-400"
-                        >
-                            {t.temperature}
-                        </button>
-                    </div>
-
-                    {/* Graph Container */}
-                    <div className="h-64 w-full">
-                        {activeTab === 'Temperature' ? (
-                            <Line options={chartOptions} data={chartData} />
-                        ) : (
-                            <div className="h-full flex items-center justify-center text-gray-400 italic">
-                                {activeTab} data visualization coming soon.
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Hourly Strip below graph */}
-                    <div className="flex justify-between mt-4 px-2 overflow-x-auto">
-                        {next8Periods.map((item, idx) => (
-                            <div key={idx} className="flex flex-col items-center gap-1 min-w-[3rem]">
-                                <span className="text-xs text-gray-400">
-                                    {new Date(item.dt * 1000).toLocaleTimeString([], { hour: 'numeric', hour12: true })}
-                                </span>
-                                {getWeatherIcon(item.weather[0].id, "w-6 h-6")}
-                                <span className="text-sm font-bold text-gray-700">{Math.round(item.main.temp)}°</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* 5-Day Forecast Panel */}
-                <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 animate-fade-in-up delay-200">
-                    <h3 className="font-bold text-gray-800 text-lg mb-4">5-Day Forecast</h3>
-                    <div className="space-y-6">
-                        {dailyForecast.slice(0, 5).map((item, idx) => (
-                            <div key={idx} className="flex items-center justify-between group cursor-default">
-                                <span className="w-16 font-medium text-gray-600">
-                                    {new Date(item.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' })}
-                                </span>
-                                <div className="flex items-center gap-3">
-                                    {getWeatherIcon(item.weather[0].id)}
-                                    <span className="text-sm text-gray-400 w-24 truncate">{item.weather[0].main}</span>
-                                </div>
-                                <div className="flex items-center gap-4 w-24 justify-end">
-                                    <span className="font-bold text-gray-800">{Math.round(item.main.temp_max)}°</span>
-                                    <span className="text-gray-400">{Math.round(item.main.temp_min)}°</span>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
-            {/* Additional Grid Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 animate-fade-in-up delay-300">
-                <div className="bg-blue-50/50 p-4 rounded-2xl flex flex-col items-center justify-center text-center">
-                    <div className="bg-white p-2 rounded-full mb-2 shadow-sm text-blue-500"><Droplets size={20} /></div>
-                    <span className="text-xs text-gray-500 uppercase font-bold tracking-wider">{t.humidity}</span>
-                    <span className="text-xl font-bold text-gray-800">{weather.main.humidity}%</span>
-                </div>
-                <div className="bg-yellow-50/50 p-4 rounded-2xl flex flex-col items-center justify-center text-center">
-                    <div className="bg-white p-2 rounded-full mb-2 shadow-sm text-yellow-500"><Sun size={20} /></div>
-                    <span className="text-xs text-gray-500 uppercase font-bold tracking-wider">{t.uvIndex}</span>
-                    <span className="text-xl font-bold text-gray-800">Moderate</span>
-                </div>
-                <div className="bg-purple-50/50 p-4 rounded-2xl flex flex-col items-center justify-center text-center">
-                    <div className="bg-white p-2 rounded-full mb-2 shadow-sm text-purple-500"><Wind size={20} /></div>
-                    <span className="text-xs text-gray-500 uppercase font-bold tracking-wider">{t.wind}</span>
-                    <span className="text-xl font-bold text-gray-800">{weather.wind.speed} km/h</span>
-                </div>
-                <div className="bg-green-50/50 p-4 rounded-2xl flex flex-col items-center justify-center text-center">
-                    <div className="bg-white p-2 rounded-full mb-2 shadow-sm text-green-500"><Thermometer size={20} /></div>
-                    <span className="text-xs text-gray-500 uppercase font-bold tracking-wider">{t.pressure}</span>
-                    <span className="text-xl font-bold text-gray-800">{weather.main.pressure} hPa</span>
-                </div>
-            </div>
-
         </div>
     );
 };

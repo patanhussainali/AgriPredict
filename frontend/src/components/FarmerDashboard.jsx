@@ -190,33 +190,36 @@ const FarmerDashboard = () => {
 
                     {/* Weather Widget */}
                     {currentWeather && (
-                        <div className="mb-8 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-100 flex items-center justify-between">
-                            <div className="flex items-center gap-4">
-                                <img
-                                    src={`https://openweathermap.org/img/wn/${currentWeather.weather[0].icon}@2x.png`}
-                                    alt="Weather Icon"
-                                    className="w-16 h-16"
-                                />
-                                <div>
-                                    <h3 className="text-lg font-bold text-gray-800">{currentWeather.name}</h3>
+                        <div className="mb-8 bg-white rounded-xl p-5 border border-blue-50 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
+                            <div className="flex items-center gap-4 w-full md:w-auto">
+                                <div className="bg-blue-50 p-2 rounded-full flex-shrink-0">
+                                    <img
+                                        src={`https://openweathermap.org/img/wn/${currentWeather.weather[0].icon}@2x.png`}
+                                        alt="Weather Icon"
+                                        className="w-12 h-12"
+                                    />
+                                </div>
+                                <div className="min-w-0">
+                                    <h3 className="text-lg font-bold text-gray-800 truncate">{currentWeather.name}</h3>
                                     <p className="text-sm text-gray-500 capitalize">{currentWeather.weather[0].description}</p>
                                 </div>
                             </div>
-                            <div className="grid grid-cols-3 gap-6 text-center">
-                                <div>
-                                    <div className="flex justify-center mb-1 text-blue-500"><Thermometer size={20} /></div>
-                                    <p className="font-bold text-gray-800">{Math.round(currentWeather.main.temp)}°C</p>
-                                    <p className="text-xs text-gray-500">Temp</p>
+                            
+                            <div className="grid grid-cols-3 gap-3 md:gap-8 w-full md:w-auto border-t md:border-t-0 p-4 md:p-0 border-gray-100">
+                                <div className="flex flex-col items-center">
+                                    <div className="bg-orange-50 p-2 rounded-lg mb-2 text-orange-500"><Thermometer size={18} /></div>
+                                    <p className="font-bold text-gray-800 text-sm md:text-base">{Math.round(currentWeather.main.temp)}°C</p>
+                                    <p className="text-[10px] uppercase font-semibold text-gray-400">Temp</p>
                                 </div>
-                                <div>
-                                    <div className="flex justify-center mb-1 text-blue-500"><Droplets size={20} /></div>
-                                    <p className="font-bold text-gray-800">{currentWeather.main.humidity}%</p>
-                                    <p className="text-xs text-gray-500">Humidity</p>
+                                <div className="flex flex-col items-center">
+                                    <div className="bg-blue-50 p-2 rounded-lg mb-2 text-blue-500"><Droplets size={18} /></div>
+                                    <p className="font-bold text-gray-800 text-sm md:text-base">{currentWeather.main.humidity}%</p>
+                                    <p className="text-[10px] uppercase font-semibold text-gray-400">Humidity</p>
                                 </div>
-                                <div>
-                                    <div className="flex justify-center mb-1 text-blue-500"><CloudRain size={20} /></div>
-                                    <p className="font-bold text-gray-800">{formData.rainfall}mm</p>
-                                    <p className="text-xs text-gray-500">Rainfall</p>
+                                <div className="flex flex-col items-center">
+                                    <div className="bg-indigo-50 p-2 rounded-lg mb-2 text-indigo-500"><CloudRain size={18} /></div>
+                                    <p className="font-bold text-gray-800 text-sm md:text-base">{formData.rainfall}mm</p>
+                                    <p className="text-[10px] uppercase font-semibold text-gray-400">Rainfall</p>
                                 </div>
                             </div>
                         </div>
