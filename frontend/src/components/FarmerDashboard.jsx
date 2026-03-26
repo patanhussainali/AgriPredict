@@ -11,7 +11,9 @@ import {
     Calendar,
     AlertCircle,
     CheckCircle,
-    Leaf
+    Leaf,
+    Send,
+    Loader2
 } from 'lucide-react';
 import API_URL from '../config';
 
