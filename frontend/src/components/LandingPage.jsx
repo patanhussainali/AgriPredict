@@ -45,18 +45,18 @@ const LandingPage = ({ onLoginClick }) => {
 
     return (
         <div className="min-h-screen flex flex-col font-sans relative">
-            <header className="flex items-center justify-between px-8 py-4 bg-white shadow-sm sticky top-0 z-50 h-20">
-                <div className="flex items-center gap-3 h-full">
-                    <img src="/logo.png" alt="AgriPredict Logo" className="h-16 w-auto object-contain" />
-                    <span className="text-2xl font-extrabold text-[#2D4A27] tracking-tighter">AgriPredict</span>
+            <header className="flex items-center justify-between px-2 md:px-8 py-4 bg-white shadow-sm sticky top-0 z-50 h-16 md:h-20">
+                <div className="flex items-center gap-1.5 md:gap-3 h-full flex-shrink-0">
+                    <img src="/logo.png" alt="AgriPredict Logo" className="h-8 md:h-16 w-auto object-contain" />
+                    <span className="text-base md:text-2xl font-extrabold text-[#2D4A27] tracking-tighter">AgriPredict</span>
                 </div>
 
                 {/* Navigation */}
-                <nav className="flex items-center flex-wrap justify-end gap-2 sm:gap-6 text-[10px] sm:text-sm font-semibold text-gray-600 ml-auto max-w-full">
-                    <a href="#home" className="hover:text-green-700 transition-colors px-1 py-1 sm:px-0 sm:py-0">Home</a>
-                    <a href="#about" className="hover:text-green-700 transition-colors px-1 py-1 sm:px-0 sm:py-0 whitespace-nowrap">About Us</a>
-                    <a href="#services" className="hover:text-green-700 transition-colors px-1 py-1 sm:px-0 sm:py-0">Services</a>
-                    <a href="#contact" className="hover:text-green-700 transition-colors px-1 py-1 sm:px-0 sm:py-0">Contact</a>
+                <nav className="flex items-center justify-end gap-1.5 sm:gap-6 text-[8px] sm:text-xs md:text-sm font-bold text-gray-600 ml-auto whitespace-nowrap flex-nowrap">
+                    <a href="#home" className="hover:text-green-700 transition-colors px-0.5 py-1 sm:px-0 sm:py-0">Home</a>
+                    <a href="#about" className="hover:text-green-700 transition-colors px-0.5 py-1 sm:px-0 sm:py-0">About Us</a>
+                    <a href="#services" className="hover:text-green-700 transition-colors px-0.5 py-1 sm:px-0 sm:py-0">Services</a>
+                    <a href="#contact" className="hover:text-green-700 transition-colors px-0.5 py-1 sm:px-0 sm:py-0">Contact</a>
                 </nav>
             </header>
 

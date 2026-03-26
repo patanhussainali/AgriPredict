@@ -114,7 +114,7 @@ function AppContent() {
 
   return (
     <WeatherProvider>
-      <div className="min-h-screen bg-gray-50 flex font-sans">
+      <div className="h-screen overflow-hidden bg-gray-50 flex font-sans relative">
         {/* Sidebar Navigation */}
         <Sidebar
           activeTab={activeTab}

@@ -122,36 +122,36 @@ const Chatbot = () => {
     };
 
     return (
-        <div className="flex flex-col h-[calc(100dvh-180px)] md:h-[calc(100vh-140px)] bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="flex flex-col h-[calc(100dvh-180px)] md:h-[calc(100vh-140px)] bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
             {/* Header */}
-            <div className="bg-green-600 p-4 text-white flex items-center justify-between shrink-0">
+            <div className="bg-green-600 p-5 text-white flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-3">
-                    <div className="bg-white/20 p-2 rounded-lg">
+                    <div className="bg-white/20 p-2.5 rounded-xl backdrop-blur-sm">
                         <Bot className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                        <h2 className="font-bold text-lg">{t.agriAssistant}</h2>
-                        <p className="text-green-100 text-xs">{t.poweredBy}</p>
+                        <h2 className="font-bold text-lg leading-tight">{t.agriAssistant}</h2>
+                        <p className="text-green-100 text-[10px] uppercase font-bold tracking-widest">{t.poweredBy}</p>
                     </div>
                 </div>
             </div>
 
             {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-gray-50/50">
+            <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 bg-gray-50/30">
                 {messages.map((msg, idx) => (
                     <div key={idx} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                        <div className={`flex max-w-[80%] ${msg.sender === 'user' ? 'flex-row-reverse' : 'flex-row'} gap-3`}>
+                        <div className={`flex max-w-[85%] sm:max-w-[75%] ${msg.sender === 'user' ? 'flex-row-reverse' : 'flex-row'} gap-3 animate-fade-in`}>
 
                             {/* Avatar */}
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${msg.sender === 'user' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 shadow-sm ${msg.sender === 'user' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'
                                 }`}>
                                 {msg.sender === 'user' ? 'U' : <Bot className="w-4 h-4" />}
                             </div>
 
                             {/* Bubble */}
-                            <div className={`px-5 py-3.5 text-sm shadow-sm leading-relaxed ${msg.sender === 'user'
-                                ? 'bg-green-600 text-white rounded-2xl rounded-tr-none'
-                                : 'bg-white text-gray-800 border border-gray-200 rounded-2xl rounded-tl-none'
+                            <div className={`px-5 py-3 text-sm shadow-sm leading-relaxed border ${msg.sender === 'user'
+                                ? 'bg-green-600 border-green-700 text-white rounded-3xl rounded-tr-none'
+                                : 'bg-white border-gray-100 text-gray-800 rounded-3xl rounded-tl-none'
                                 }`}>
                                 {msg.text}
                             </div>
@@ -162,12 +162,12 @@ const Chatbot = () => {
                 {loading && (
                     <div className="flex justify-start">
                         <div className="flex gap-3">
-                            <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
+                            <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center shrink-0 shadow-sm">
                                 <Bot className="w-4 h-4" />
                             </div>
-                            <div className="bg-white border border-gray-200 px-4 py-3 rounded-2xl rounded-tl-none shadow-sm flex items-center">
+                            <div className="bg-white border border-gray-100 px-5 py-3 rounded-3xl rounded-tl-none shadow-sm flex items-center">
                                 <Loader2 className="w-4 h-4 animate-spin text-green-600 mr-2" />
-                                <span className="text-gray-400 text-xs">{t.thinking}</span>
+                                <span className="text-gray-400 text-xs font-medium">{t.thinking}</span>
                             </div>
                         </div>
                     </div>
@@ -176,15 +176,15 @@ const Chatbot = () => {
             </div>
 
             {/* Input Area */}
-            <div className="p-4 bg-white border-t border-gray-100">
-                <form onSubmit={handleSend} className="flex gap-3 max-w-4xl mx-auto">
+            <div className="p-4 bg-white border-t border-gray-50">
+                <form onSubmit={handleSend} className="flex gap-2 sm:gap-4 max-w-4xl mx-auto">
                     <button
                         type="button"
                         onClick={toggleListening}
-                        className={`p-3 rounded-xl transition-colors ${!isSupported
-                            ? 'bg-gray-100 text-gray-300 cursor-not-allowed'
+                        className={`p-3.5 rounded-full transition-all ${!isSupported
+                            ? 'bg-gray-50 text-gray-300 cursor-not-allowed'
                             : isListening
-                                ? 'bg-red-100 text-red-600 animate-pulse'
+                                ? 'bg-red-50 text-red-600 animate-pulse ring-4 ring-red-50'
                                 : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
                             }`}
                         title={isSupported ? t.voiceInput : t.voiceNotSupported}
@@ -197,14 +197,14 @@ const Chatbot = () => {
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         placeholder={t.askSomething}
-                        className="flex-1 bg-gray-50 border border-gray-200 focus:bg-white focus:border-green-500 rounded-xl px-5 py-3 text-sm outline-none transition-all shadow-sm"
+                        className="flex-1 bg-gray-50 border border-gray-200 focus:bg-white focus:ring-4 focus:ring-green-50/50 focus:border-green-500 rounded-full px-6 py-3.5 text-sm outline-none transition-all shadow-inner"
                     />
                     <button
                         type="submit"
                         disabled={!input.trim() || loading}
-                        className="bg-green-600 text-white px-6 py-3 rounded-xl hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-md hover:shadow-lg font-medium flex items-center gap-2"
+                        className="bg-green-600 text-white px-8 py-3.5 rounded-full hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg font-bold flex items-center gap-2"
                     >
-                        <span>{t.send}</span>
+                        <span className="hidden sm:inline">{t.send}</span>
                         <Send className="w-4 h-4" />
                     </button>
                 </form>

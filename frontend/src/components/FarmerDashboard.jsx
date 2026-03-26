@@ -184,15 +184,15 @@ const FarmerDashboard = () => {
 
             <div className="max-w-4xl mx-auto flex flex-col gap-8 w-full">
                 {/* Top Section: Form */}
-                <div className="w-full bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
-                    <h2 className="text-xl font-serif font-bold text-gray-800">{t.formTitle}</h2>
-                    <p className="text-sm text-gray-500 mb-6">{t.formSub}</p>
+                <div className="w-full bg-white rounded-3xl shadow-sm border border-gray-100 p-6 md:p-10">
+                    <h2 className="text-2xl font-bold text-gray-800 tracking-tight">{t.formTitle}</h2>
+                    <p className="text-sm text-gray-500 mb-8">{t.formSub}</p>
 
                     {/* Weather Widget */}
                     {currentWeather && (
-                        <div className="mb-8 bg-white rounded-xl p-5 border border-blue-50 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
-                            <div className="flex items-center gap-4 w-full md:w-auto">
-                                <div className="bg-blue-50 p-2 rounded-full flex-shrink-0">
+                        <div className="mb-10 bg-gray-50/50 rounded-3xl p-6 border border-gray-100 shadow-sm flex flex-col md:flex-row items-center justify-between gap-8 group hover:bg-white transition-all">
+                            <div className="flex items-center gap-5 w-full md:w-auto">
+                                <div className="bg-white p-3 rounded-full shadow-sm ring-4 ring-blue-50/50">
                                     <img
                                         src={`https://openweathermap.org/img/wn/${currentWeather.weather[0].icon}@2x.png`}
                                         alt="Weather Icon"
@@ -200,26 +200,26 @@ const FarmerDashboard = () => {
                                     />
                                 </div>
                                 <div className="min-w-0">
-                                    <h3 className="text-lg font-bold text-gray-800 truncate">{currentWeather.name}</h3>
-                                    <p className="text-sm text-gray-500 capitalize">{currentWeather.weather[0].description}</p>
+                                    <h3 className="text-xl font-black text-gray-800 truncate tracking-tight">{currentWeather.name}</h3>
+                                    <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">{currentWeather.weather[0].description}</p>
                                 </div>
                             </div>
                             
-                            <div className="grid grid-cols-3 gap-3 md:gap-8 w-full md:w-auto border-t md:border-t-0 p-4 md:p-0 border-gray-100">
-                                <div className="flex flex-col items-center">
-                                    <div className="bg-orange-50 p-2 rounded-lg mb-2 text-orange-500"><Thermometer size={18} /></div>
-                                    <p className="font-bold text-gray-800 text-sm md:text-base">{Math.round(currentWeather.main.temp)}°C</p>
-                                    <p className="text-[10px] uppercase font-semibold text-gray-400">Temp</p>
+                            <div className="grid grid-cols-3 gap-4 md:gap-10 w-full md:w-auto border-t md:border-t-0 pt-6 md:pt-0 border-gray-100">
+                                <div className="flex flex-col items-center group/item">
+                                    <div className="bg-orange-50 p-3 rounded-full mb-2 text-orange-500 group-hover/item:bg-orange-500 group-hover/item:text-white transition-all"><Thermometer size={20} /></div>
+                                    <p className="font-black text-gray-800 text-lg leading-none">{Math.round(currentWeather.main.temp)}°C</p>
+                                    <p className="text-[10px] uppercase font-black text-gray-400 mt-1 tracking-widest">Temp</p>
                                 </div>
-                                <div className="flex flex-col items-center">
-                                    <div className="bg-blue-50 p-2 rounded-lg mb-2 text-blue-500"><Droplets size={18} /></div>
-                                    <p className="font-bold text-gray-800 text-sm md:text-base">{currentWeather.main.humidity}%</p>
-                                    <p className="text-[10px] uppercase font-semibold text-gray-400">Humidity</p>
+                                <div className="flex flex-col items-center group/item">
+                                    <div className="bg-blue-50 p-3 rounded-full mb-2 text-blue-500 group-hover/item:bg-blue-500 group-hover/item:text-white transition-all"><Droplets size={20} /></div>
+                                    <p className="font-black text-gray-800 text-lg leading-none">{currentWeather.main.humidity}%</p>
+                                    <p className="text-[10px] uppercase font-black text-gray-400 mt-1 tracking-widest">Humidity</p>
                                 </div>
-                                <div className="flex flex-col items-center">
-                                    <div className="bg-indigo-50 p-2 rounded-lg mb-2 text-indigo-500"><CloudRain size={18} /></div>
-                                    <p className="font-bold text-gray-800 text-sm md:text-base">{formData.rainfall}mm</p>
-                                    <p className="text-[10px] uppercase font-semibold text-gray-400">Rainfall</p>
+                                <div className="flex flex-col items-center group/item">
+                                    <div className="bg-emerald-50 p-3 rounded-full mb-2 text-emerald-500 group-hover/item:bg-emerald-500 group-hover/item:text-white transition-all"><CloudRain size={20} /></div>
+                                    <p className="font-black text-gray-800 text-lg leading-none">{formData.rainfall}mm</p>
+                                    <p className="text-[10px] uppercase font-black text-gray-400 mt-1 tracking-widest">Rainfall</p>
                                 </div>
                             </div>
                         </div>
@@ -248,7 +248,7 @@ const FarmerDashboard = () => {
                                     value={formData.crop}
                                     onChange={handleChange}
                                     required
-                                    className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-700 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all"
+                                    className="w-full bg-gray-50 border border-gray-200 rounded-full px-6 py-3 text-gray-700 focus:bg-white focus:ring-4 focus:ring-green-50/50 focus:border-green-500 outline-none transition-all text-sm font-medium"
                                 >
                                     <option value="">{t.selectCrop}</option>
                                     <option value="Rice">Rice</option>
@@ -282,7 +282,7 @@ const FarmerDashboard = () => {
                                     name="rainfall"
                                     value={formData.rainfall}
                                     onChange={handleChange}
-                                    className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-700 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all"
+                                    className="w-full bg-gray-50 border border-gray-200 rounded-full px-6 py-3 text-gray-700 focus:bg-white focus:ring-4 focus:ring-green-50/50 focus:border-green-500 outline-none transition-all text-sm font-medium"
                                     placeholder="0"
                                     readOnly={weatherStatus === 'success' && false} // Allow edit if needed
                                 />
@@ -298,7 +298,7 @@ const FarmerDashboard = () => {
                                         name="district"
                                         value={formData.district}
                                         onChange={handleChange}
-                                        className="w-full pl-10 bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-700 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all"
+                                        className="w-full pl-10 bg-gray-50 border border-gray-200 rounded-full px-6 py-3 text-gray-700 focus:bg-white focus:ring-4 focus:ring-green-50/50 focus:border-green-500 outline-none transition-all text-sm font-medium"
                                         placeholder="e.g. Srivilliputhur"
                                     />
                                 </div>
@@ -324,7 +324,7 @@ const FarmerDashboard = () => {
                                         name="temp_max"
                                         value={formData.temp_max}
                                         onChange={handleChange}
-                                        className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-gray-700 focus:ring-2 focus:ring-green-500 outline-none"
+                                        className="w-full bg-gray-50 border border-gray-200 rounded-full px-5 py-2.5 text-gray-700 focus:bg-white focus:ring-4 focus:ring-green-50/50 focus:border-green-500 outline-none transition-all text-sm font-medium"
                                         placeholder="0"
                                     />
                                 </div>
@@ -340,7 +340,7 @@ const FarmerDashboard = () => {
                                     value={formData.season}
                                     onChange={handleChange}
                                     required
-                                    className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-700 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all"
+                                    className="w-full bg-gray-50 border border-gray-200 rounded-full px-6 py-3 text-gray-700 focus:bg-white focus:ring-4 focus:ring-green-50/50 focus:border-green-500 outline-none transition-all text-sm font-medium"
                                 >
                                     <option value="">{t.selectSeason}</option>
                                     <option value="Kharif">Kharif</option>
@@ -358,7 +358,7 @@ const FarmerDashboard = () => {
                                         name="humidity"
                                         value={formData.humidity}
                                         onChange={handleChange}
-                                        className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-700 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all"
+                                        className="w-full bg-gray-50 border border-gray-200 rounded-full px-6 py-3 text-gray-700 focus:bg-white focus:ring-4 focus:ring-green-50/50 focus:border-green-500 outline-none transition-all text-sm font-medium"
                                         placeholder="0"
                                     />
                                     <div className="absolute right-3 top-2.5 text-gray-400 pointer-events-none">%</div>
@@ -375,7 +375,7 @@ const FarmerDashboard = () => {
                                     value={formData.irrigation}
                                     onChange={handleChange}
                                     required
-                                    className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-700 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all"
+                                    className="w-full bg-gray-50 border border-gray-200 rounded-full px-6 py-3 text-gray-700 focus:bg-white focus:ring-4 focus:ring-green-50/50 focus:border-green-500 outline-none transition-all text-sm font-medium"
                                 >
                                     <option value="">{t.selectIrrigation}</option>
                                     <option value="Rainfed">Rainfed</option>
@@ -410,7 +410,7 @@ const FarmerDashboard = () => {
                             <div className="mt-4 p-4 bg-green-50 rounded-lg border border-green-100 grid grid-cols-3 gap-3 animate-fade-in-up">
                                 <div>
                                     <label className="block text-xs font-medium text-gray-600 mb-1">Nitrogen (N)</label>
-                                    <input type="number" name="n" value={formData.n} onChange={handleChange} className="w-full border rounded p-1.5 text-sm" />
+                                    <input type="number" name="n" value={formData.n} onChange={handleChange} className="w-full bg-white border border-gray-200 rounded-full px-4 py-2 text-sm focus:ring-4 focus:ring-green-100 outline-none transition-all" />
                                 </div>
                                 <div>
                                     <label className="block text-xs font-medium text-gray-600 mb-1">Phosphorus (P)</label>
@@ -426,8 +426,9 @@ const FarmerDashboard = () => {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all mt-4 disabled:opacity-70 disabled:cursor-not-allowed"
+                            className="w-full bg-green-600 hover:bg-green-700 text-white font-black py-4 rounded-full transition-all shadow-md hover:shadow-xl disabled:opacity-50 flex items-center justify-center gap-3 text-lg mt-4"
                         >
+                            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
                             {loading ? t.loading : t.submit}
                         </button>
                     </form>
@@ -438,16 +439,16 @@ const FarmerDashboard = () => {
                 {/* Bottom Section: Placeholder / Result */}
                 <div className="w-full">
                     {result ? (
-                        <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6 h-full animate-fade-in">
+                        <div className="bg-white rounded-3xl shadow-lg border border-gray-100 p-6 h-full animate-fade-in">
                             <PredictionResult result={result} />
                         </div>
                     ) : (
-                        <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 min-h-[250px] flex flex-col items-center justify-center text-center bg-gray-50/50">
-                            <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-6">
-                                <Sprout className="w-10 h-10 text-gray-400" />
+                        <div className="border-2 border-dashed border-gray-200 rounded-3xl p-10 min-h-[300px] flex flex-col items-center justify-center text-center bg-white shadow-inner">
+                            <div className="w-24 h-24 bg-green-50 rounded-full flex items-center justify-center mb-8 ring-8 ring-green-50/50">
+                                <Sprout className="w-12 h-12 text-green-600" />
                             </div>
-                            <h3 className="text-lg font-bold text-gray-800 mb-2">{t.awaitingTitle}</h3>
-                            <p className="text-sm text-gray-500 max-w-xs">{t.awaitingSub}</p>
+                            <h3 className="text-xl font-black text-gray-800 mb-3 tracking-tight">{t.awaitingTitle}</h3>
+                            <p className="text-sm font-medium text-gray-400 max-w-xs leading-relaxed">{t.awaitingSub}</p>
                         </div>
                     )}
                 </div>

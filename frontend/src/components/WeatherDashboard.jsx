@@ -169,57 +169,56 @@ const WeatherDashboard = () => {
         // Fallback or simpler logic could exist here, but this suffices for MVP
     }
 
-    return (
-        <div className="flex flex-col h-[calc(100dvh-180px)] md:h-[calc(100vh-140px)] bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    return (        <div className="flex flex-col h-[calc(100dvh-180px)] md:h-[calc(100vh-140px)] bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
             {/* Scrollable Content Area */}
-            <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-8 bg-gray-50/30">
+            <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-8 bg-gray-50/20">
                 <div className="max-w-5xl mx-auto w-full space-y-8">
                     
                     {/* Main Weather Card */}
-                    <div className="bg-gradient-to-br from-emerald-600 to-teal-700 rounded-2xl p-6 md:p-8 text-white shadow-lg overflow-hidden relative min-h-[220px] flex items-center">
+                    <div className="bg-gradient-to-br from-emerald-600 to-teal-700 rounded-3xl p-6 md:p-8 text-white shadow-lg overflow-hidden relative min-h-[220px] flex items-center">
                         <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl"></div>
                         <div className="relative z-10 flex flex-col md:flex-row justify-between items-center w-full gap-8">
                             <div className="w-full md:w-auto text-center md:text-left">
-                                <h2 className="text-2xl md:text-3xl font-bold mb-2 flex items-center justify-center md:justify-start gap-3">
+                                <h2 className="text-2xl md:text-3xl font-bold mb-2 flex items-center justify-center md:justify-start gap-3 tracking-tight">
                                     <MapPin className="w-7 h-7" />
                                     {t.weatherTitle || "Weather Forecast"}
                                 </h2>
-                                <p className="text-green-100 mb-6 font-medium">{currentDate}</p>
+                                <p className="text-green-100 mb-6 font-medium text-sm">{currentDate}</p>
 
                                 <div className="flex items-center justify-center md:justify-start gap-6">
-                                    <div className="p-4 bg-white/20 rounded-2xl backdrop-blur-md shadow-inner">
-                                        {getWeatherIcon(weather.weather[0].id, "w-12 h-12 text-white")}
+                                    <div className="p-4 bg-white/20 rounded-3xl backdrop-blur-md shadow-inner border border-white/10">
+                                        {getWeatherIcon(weather.weather[0].id, "w-10 h-10 text-white")}
                                     </div>
                                     <div>
-                                        <div className="text-6xl font-black tracking-tighter">{Math.round(weather.main.temp)}°C</div>
-                                        <div className="text-green-100 font-bold text-lg capitalize opacity-90">{weather.weather[0].description}</div>
+                                        <div className="text-6xl font-black tracking-tighter leading-none">{Math.round(weather.main.temp)}°C</div>
+                                        <div className="text-green-100 font-bold text-lg capitalize opacity-90 mt-1">{weather.weather[0].description}</div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="bg-white/10 p-5 rounded-2xl backdrop-blur-md border border-white/10 min-w-full md:min-w-[280px]">
-                                <div className="text-xs text-green-100 uppercase font-black tracking-widest mb-4 opacity-70">{t.currentWeather || "Current Details"}</div>
+                            <div className="bg-white/10 p-6 rounded-3xl backdrop-blur-md border border-white/20 min-w-full md:min-w-[300px] shadow-lg">
+                                <div className="text-[10px] text-green-100 uppercase font-black tracking-[0.2em] mb-4 opacity-70">{t.currentWeather || "Current Details"}</div>
                                 <div className="grid grid-cols-1 gap-4">
-                                    <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                                    <div className="flex items-center justify-between border-b border-white/10 pb-3">
                                         <div className="flex items-center gap-3">
                                             <Wind className="w-5 h-5 text-green-100" />
-                                            <span className="text-sm font-medium">Wind Speed</span>
+                                            <span className="text-sm font-semibold">Wind Speed</span>
                                         </div>
-                                        <span className="font-bold">{Math.round(weather.wind.speed)} km/h</span>
+                                        <span className="font-bold text-base">{Math.round(weather.wind.speed)} km/h</span>
                                     </div>
-                                    <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                                    <div className="flex items-center justify-between border-b border-white/10 pb-3">
                                         <div className="flex items-center gap-3">
                                             <Droplets className="w-5 h-5 text-green-100" />
-                                            <span className="text-sm font-medium">Humidity</span>
+                                            <span className="text-sm font-semibold">Humidity</span>
                                         </div>
-                                        <span className="font-bold">{weather.main.humidity}%</span>
+                                        <span className="font-bold text-base">{weather.main.humidity}%</span>
                                     </div>
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-3">
                                             <Sun className="w-5 h-5 text-green-100" />
-                                            <span className="text-sm font-medium">UV Index</span>
+                                            <span className="text-sm font-semibold">UV Index</span>
                                         </div>
-                                        <span className="font-bold">Moderate</span>
+                                        <span className="font-bold text-base">Moderate</span>
                                     </div>
                                 </div>
                             </div>
@@ -230,27 +229,27 @@ const WeatherDashboard = () => {
                     <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
 
                         {/* Graph Section */}
-                        <div className="lg:col-span-3 bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col h-full animate-fade-in-up">
-                            <div className="flex items-center justify-between mb-6">
+                        <div className="lg:col-span-3 bg-white rounded-3xl shadow-sm border border-gray-100 p-6 flex flex-col h-full animate-fade-in-up">
+                            <div className="flex items-center justify-between mb-8">
                                 <h3 className="font-bold text-gray-800 text-lg">Hourly Temperature</h3>
-                                <button className="text-xs font-black uppercase tracking-widest text-yellow-600 bg-yellow-50 px-3 py-1 rounded-full">
+                                <div className="text-[10px] font-black uppercase tracking-widest text-yellow-600 bg-yellow-50 px-4 py-1.5 rounded-full border border-yellow-100">
                                     {t.temperature}
-                                </button>
+                                </div>
                             </div>
 
                             {/* Graph Container */}
-                            <div className="h-64 md:h-72 w-full mb-6">
+                            <div className="h-64 md:h-72 w-full mb-8">
                                 <Line options={chartOptions} data={chartData} />
                             </div>
 
                             {/* Hourly Strip below graph */}
-                            <div className="flex justify-between px-2 overflow-x-auto pb-2 scrollbar-hide gap-4">
+                            <div className="flex justify-between px-2 overflow-x-auto pb-4 scrollbar-hide gap-4">
                                 {next8Periods.map((item, idx) => (
-                                    <div key={idx} className="flex flex-col items-center gap-2 min-w-[3.5rem] p-3 rounded-xl hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100">
-                                        <span className="text-[10px] uppercase font-bold text-gray-400">
+                                    <div key={idx} className="flex flex-col items-center gap-2 min-w-[4rem] p-4 rounded-3xl hover:bg-gray-50 transition-all border border-transparent hover:border-gray-100 group">
+                                        <span className="text-[10px] uppercase font-bold text-gray-400 group-hover:text-gray-600 transition-colors">
                                             {new Date(item.dt * 1000).toLocaleTimeString([], { hour: 'numeric', hour12: true })}
                                         </span>
-                                        <div className="bg-gray-50 p-1.5 rounded-lg shadow-sm">
+                                        <div className="bg-gray-50 p-2 rounded-2xl shadow-sm group-hover:bg-white transition-colors">
                                             {getWeatherIcon(item.weather[0].id, "w-6 h-6")}
                                         </div>
                                         <span className="text-sm font-black text-gray-800">{Math.round(item.main.temp)}°</span>
@@ -260,26 +259,26 @@ const WeatherDashboard = () => {
                         </div>
 
                         {/* 5-Day Forecast Panel */}
-                        <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col h-full animate-fade-in-up delay-100">
-                            <h3 className="font-bold text-gray-800 text-lg mb-6 flex items-center gap-2">
+                        <div className="lg:col-span-2 bg-white rounded-3xl shadow-sm border border-gray-100 p-6 flex flex-col h-full animate-fade-in-up delay-100">
+                            <h3 className="font-bold text-gray-800 text-lg mb-8 flex items-center gap-2">
                                 <Calendar className="w-5 h-5 text-green-600" />
                                 5-Day Forecast
                             </h3>
                             <div className="space-y-4 flex-1">
                                 {dailyForecast.slice(0, 5).map((item, idx) => (
-                                    <div key={idx} className="flex items-center justify-between p-3 rounded-xl hover:bg-green-50/50 transition-all border border-transparent hover:border-green-100 group">
-                                        <span className="w-16 font-bold text-gray-500 text-sm">
+                                    <div key={idx} className="flex items-center justify-between p-4 rounded-3xl hover:bg-green-50/50 transition-all border border-transparent hover:border-green-100 group">
+                                        <span className="w-16 font-bold text-gray-500 text-sm group-hover:text-green-700 transition-colors">
                                             {new Date(item.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' })}
                                         </span>
                                         <div className="flex items-center gap-3 flex-1 px-4">
-                                            <div className="bg-gray-50 p-1.5 rounded-lg group-hover:bg-white shadow-sm transition-colors">
+                                            <div className="bg-gray-50 p-2 rounded-2xl group-hover:bg-white shadow-sm transition-colors">
                                                 {getWeatherIcon(item.weather[0].id, "w-5 h-5")}
                                             </div>
-                                            <span className="text-xs font-bold text-gray-400 uppercase tracking-tight truncate">{item.weather[0].main}</span>
+                                            <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest truncate group-hover:text-gray-600 transition-colors">{item.weather[0].main}</span>
                                         </div>
                                         <div className="flex items-center gap-3 w-20 justify-end">
                                             <span className="font-black text-gray-800 text-sm">{Math.round(item.main.temp_max)}°</span>
-                                            <span className="text-gray-400 text-xs font-medium">{Math.round(item.main.temp_min)}°</span>
+                                            <span className="text-gray-400 text-xs font-bold">{Math.round(item.main.temp_min)}°</span>
                                         </div>
                                     </div>
                                 ))}
@@ -288,33 +287,33 @@ const WeatherDashboard = () => {
                     </div>
 
                     {/* Additional Grid Stats */}
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-in-up delay-200">
-                        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center group hover:border-blue-200 transition-colors">
-                            <div className="bg-blue-50 p-3 rounded-2xl mb-3 text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-all shadow-sm">
-                                <Droplets size={24} />
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-in-up delay-200 pb-4">
+                        <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center group hover:border-blue-200 transition-all hover:shadow-md">
+                            <div className="bg-blue-50 p-4 rounded-3xl mb-4 text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-all shadow-sm">
+                                <Droplets size={28} />
                             </div>
-                            <span className="text-xs text-gray-400 uppercase font-black tracking-widest mb-1">{t.humidity}</span>
+                            <span className="text-[10px] text-gray-400 uppercase font-black tracking-[0.2em] mb-2">{t.humidity}</span>
                             <span className="text-2xl font-black text-gray-800">{weather.main.humidity}%</span>
                         </div>
-                        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center group hover:border-yellow-200 transition-colors">
-                            <div className="bg-yellow-50 p-3 rounded-2xl mb-3 text-yellow-500 group-hover:bg-yellow-500 group-hover:text-white transition-all shadow-sm">
-                                <Sun size={24} />
+                        <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center group hover:border-yellow-200 transition-all hover:shadow-md">
+                            <div className="bg-yellow-50 p-4 rounded-3xl mb-4 text-yellow-500 group-hover:bg-yellow-500 group-hover:text-white transition-all shadow-sm">
+                                <Sun size={28} />
                             </div>
-                            <span className="text-xs text-gray-400 uppercase font-black tracking-widest mb-1">{t.uvIndex}</span>
+                            <span className="text-[10px] text-gray-400 uppercase font-black tracking-[0.2em] mb-2">{t.uvIndex}</span>
                             <span className="text-2xl font-black text-gray-800">Moderate</span>
                         </div>
-                        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center group hover:border-purple-200 transition-colors">
-                            <div className="bg-purple-50 p-3 rounded-2xl mb-3 text-purple-500 group-hover:bg-purple-500 group-hover:text-white transition-all shadow-sm">
-                                <Wind size={24} />
+                        <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center group hover:border-purple-200 transition-all hover:shadow-md">
+                            <div className="bg-purple-50 p-4 rounded-3xl mb-4 text-purple-500 group-hover:bg-purple-500 group-hover:text-white transition-all shadow-sm">
+                                <Wind size={28} />
                             </div>
-                            <span className="text-xs text-gray-400 uppercase font-black tracking-widest mb-1">{t.wind}</span>
+                            <span className="text-[10px] text-gray-400 uppercase font-black tracking-[0.2em] mb-2">{t.wind}</span>
                             <span className="text-2xl font-black text-gray-800">{weather.wind.speed} km/h</span>
                         </div>
-                        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center group hover:border-emerald-200 transition-colors">
-                            <div className="bg-emerald-50 p-3 rounded-2xl mb-3 text-emerald-500 group-hover:bg-emerald-500 group-hover:text-white transition-all shadow-sm">
-                                <Thermometer size={24} />
+                        <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center group hover:border-emerald-200 transition-all hover:shadow-md">
+                            <div className="bg-emerald-50 p-4 rounded-3xl mb-4 text-emerald-500 group-hover:bg-emerald-500 group-hover:text-white transition-all shadow-sm">
+                                <Thermometer size={28} />
                             </div>
-                            <span className="text-xs text-gray-400 uppercase font-black tracking-widest mb-1">{t.pressure}</span>
+                            <span className="text-[10px] text-gray-400 uppercase font-black tracking-[0.2em] mb-2">{t.pressure}</span>
                             <span className="text-2xl font-black text-gray-800">{weather.main.pressure} hPa</span>
                         </div>
                     </div>
