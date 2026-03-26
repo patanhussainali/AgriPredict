@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Leaf, Search, Shovel, Info, Sprout, Tractor, CloudSun } from 'lucide-react'; // Using available icons
-// Assuming we usually don't have exact icons like Wheelbarrow in standard sets, substituting with relevant ones.
+import React from 'react';
+import { Leaf, Mail, Shovel, Info, Sprout, Tractor, CloudSun } from 'lucide-react'; // Using available icons
 
 const LandingPage = ({ onLoginClick }) => {
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     // Scroll to top on mount to ensure Home section is visible
     React.useLayoutEffect(() => {
@@ -52,39 +50,14 @@ const LandingPage = ({ onLoginClick }) => {
                     <span className="text-xl font-bold text-gray-800 tracking-tight">AgriPredict</span>
                 </div>
 
-                {/* Desktop Nav */}
-                <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
-                    <a href="#home" className="hover:text-green-700 transition-colors">Home</a>
-                    <a href="#about" className="hover:text-green-700 transition-colors">About Us</a>
-                    <a href="#services" className="hover:text-green-700 transition-colors">Services</a>
-                    <a href="#contact" className="hover:text-green-700 transition-colors">Contact</a>
-                    <Search className="w-5 h-5 text-gray-400 cursor-pointer hover:text-green-700 transition-colors" />
+                {/* Navigation */}
+                <nav className="flex items-center gap-3 sm:gap-8 text-xs sm:text-sm font-medium text-gray-600 overflow-x-auto ml-auto">
+                    <a href="#home" className="hover:text-green-700 transition-colors whitespace-nowrap">Home</a>
+                    <a href="#about" className="hover:text-green-700 transition-colors whitespace-nowrap">About Us</a>
+                    <a href="#services" className="hover:text-green-700 transition-colors whitespace-nowrap">Services</a>
+                    <a href="#contact" className="hover:text-green-700 transition-colors whitespace-nowrap">Contact</a>
                 </nav>
-
-                {/* Mobile Menu Toggle */}
-                <div className="md:hidden">
-                    <button
-                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                        className="text-gray-600 focus:outline-none"
-                    >
-                        {isMobileMenuOpen ? (
-                            <span className="text-2xl">&times;</span>
-                        ) : (
-                            <span className="text-2xl">☰</span>
-                        )}
-                    </button>
-                </div>
             </header>
-
-            {/* Mobile Nav Dropdown */}
-            {isMobileMenuOpen && (
-                <div className="md:hidden bg-white shadow-lg absolute top-16 left-0 w-full z-40 flex flex-col py-4 px-8 space-y-4 text-gray-600 font-medium">
-                    <a href="#home" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-green-700">Home</a>
-                    <a href="#about" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-green-700">About Us</a>
-                    <a href="#services" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-green-700">Services</a>
-                    <a href="#contact" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-green-700">Contact</a>
-                </div>
-            )}
 
             {/* Main Content - HERO (HOME) */}
             <section id="home" className="flex-1 flex flex-col md:flex-row bg-[#F3F8F2] min-h-screen pt-16 md:pt-0 relative"> {/* Added min-h-screen and padding for scroll offset */}
@@ -230,7 +203,7 @@ const LandingPage = ({ onLoginClick }) => {
                     <div className="flex flex-col md:flex-row justify-center gap-8 text-left inline-block">
                         <div className="flex items-center gap-3">
                             <div className="bg-[#487528] p-3 rounded-full">
-                                <Info className="w-6 h-6" />
+                                <Mail className="w-6 h-6" />
                             </div>
                             <div>
                                 <h4 className="font-semibold">Email Us</h4>

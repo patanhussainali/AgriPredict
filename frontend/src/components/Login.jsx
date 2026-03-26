@@ -277,9 +277,9 @@ const Login = ({ onLogin, onBack }) => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 relative">
+        <div className="min-h-screen bg-transparent flex items-center justify-center p-4 py-12 relative w-full">
             {/* Back to Home Button - Absolute to screen or relative to card? Let's put it on the card for better UX */}
-            <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 animate-fade-in-up relative">
+            <div className="w-full max-w-md bg-transparent p-4 sm:p-8 animate-fade-in-up relative">
                 <button
                     onClick={() => {
                         if (isForgotPassword) {
@@ -312,7 +312,7 @@ const Login = ({ onLogin, onBack }) => {
                                     required
                                     value={forgotEmail}
                                     onChange={(e) => setForgotEmail(e.target.value)}
-                                    className="block w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-green-500 focus:outline-none transition-colors"
+                                    className="block w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-full focus:bg-white focus:ring-2 focus:ring-green-500 focus:outline-none transition-colors"
                                     placeholder="your@email.com"
                                 />
                             </div>
@@ -323,7 +323,7 @@ const Login = ({ onLogin, onBack }) => {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition-colors shadow-md disabled:opacity-70"
+                                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-full transition-colors shadow-md disabled:opacity-70"
                             >
                                 {loading ? 'Sending Link...' : 'Send Reset Link'}
                             </button>
@@ -355,7 +355,7 @@ const Login = ({ onLogin, onBack }) => {
                                         required
                                         value={firstName}
                                         onChange={(e) => setFirstName(e.target.value)}
-                                        className="block w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-green-500 focus:outline-none transition-colors"
+                                        className="block w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-full focus:bg-white focus:ring-2 focus:ring-green-500 focus:outline-none transition-colors"
                                         placeholder="John"
                                     />
                                 </div>
@@ -366,7 +366,7 @@ const Login = ({ onLogin, onBack }) => {
                                         required
                                         value={lastName}
                                         onChange={(e) => setLastName(e.target.value)}
-                                        className="block w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-green-500 focus:outline-none transition-colors"
+                                        className="block w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-full focus:bg-white focus:ring-2 focus:ring-green-500 focus:outline-none transition-colors"
                                         placeholder="Doe"
                                     />
                                 </div>
@@ -379,7 +379,7 @@ const Login = ({ onLogin, onBack }) => {
                                     required
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="block w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-green-500 focus:outline-none transition-colors"
+                                    className="block w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-full focus:bg-white focus:ring-2 focus:ring-green-500 focus:outline-none transition-colors"
                                     placeholder="m@example.com"
                                 />
                             </div>
@@ -392,7 +392,7 @@ const Login = ({ onLogin, onBack }) => {
                                         required
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
-                                        className="block w-full pl-3 pr-10 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-green-500 focus:outline-none transition-colors"
+                                        className="block w-full pl-4 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-full focus:bg-white focus:ring-2 focus:ring-green-500 focus:outline-none transition-colors"
                                         placeholder="••••••••"
                                     />
                                     <button
@@ -413,7 +413,7 @@ const Login = ({ onLogin, onBack }) => {
                                         required
                                         value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
-                                        className={`block w-full pl-3 pr-10 py-2 bg-gray-50 border ${password && confirmPassword && password !== confirmPassword ? 'border-red-500 focus:ring-red-500' : 'border-gray-200 focus:ring-green-500'} rounded-lg focus:bg-white focus:ring-2 focus:outline-none transition-colors`}
+                                        className={`block w-full pl-4 pr-10 py-3 bg-gray-50 border ${password && confirmPassword && password !== confirmPassword ? 'border-red-500 focus:ring-red-500' : 'border-gray-200 focus:ring-green-500'} rounded-full focus:bg-white focus:ring-2 focus:outline-none transition-colors`}
                                         placeholder="••••••••"
                                     />
                                     <button
@@ -431,9 +431,9 @@ const Login = ({ onLogin, onBack }) => {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition-colors shadow-md disabled:opacity-70"
+                                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-full transition-colors shadow-md disabled:opacity-70"
                             >
-                                {loading ? 'Creating Account...' : 'Sign Up (V2)'}
+                                {loading ? 'Creating Account...' : 'Sign Up'}
                             </button>
                         </form>
 
@@ -465,7 +465,7 @@ const Login = ({ onLogin, onBack }) => {
                         <button
                             onClick={handleGoogleLogin}
                             disabled={loading}
-                            className="w-full mb-4 flex items-center justify-center gap-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium py-2.5 rounded-lg transition-all"
+                            className="w-full mb-4 flex items-center justify-center gap-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium py-3 rounded-full transition-all"
                         >
                             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
                             Sign in with Google
@@ -484,7 +484,7 @@ const Login = ({ onLogin, onBack }) => {
                                     required
                                     value={loginEmail}
                                     onChange={(e) => setLoginEmail(e.target.value)}
-                                    className="block w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-green-500 focus:outline-none transition-colors"
+                                    className="block w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-full focus:bg-white focus:ring-2 focus:ring-green-500 focus:outline-none transition-colors"
                                     placeholder="your@email.com"
                                 />
                             </div>
@@ -505,7 +505,7 @@ const Login = ({ onLogin, onBack }) => {
                                         required
                                         value={loginPassword}
                                         onChange={(e) => setLoginPassword(e.target.value)}
-                                        className="block w-full pl-3 pr-10 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-green-500 focus:outline-none transition-colors"
+                                        className="block w-full pl-4 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-full focus:bg-white focus:ring-2 focus:ring-green-500 focus:outline-none transition-colors"
                                         placeholder="••••••••"
                                     />
                                     <button
@@ -536,7 +536,7 @@ const Login = ({ onLogin, onBack }) => {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition-colors shadow-md disabled:opacity-70"
+                                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-full transition-colors shadow-md disabled:opacity-70"
                             >
                                 {loading ? 'Signing In...' : 'Sign In'}
                             </button>

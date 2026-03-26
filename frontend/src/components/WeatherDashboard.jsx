@@ -173,7 +173,7 @@ const WeatherDashboard = () => {
         <div className="max-w-4xl mx-auto space-y-6">
 
             {/* Main Weather Card */}
-            <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow-lg overflow-hidden relative">
+            <div className="bg-gradient-to-br from-emerald-600 to-teal-700 rounded-xl p-6 text-white shadow-lg overflow-hidden relative">
                 <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl"></div>
                 <div className="relative z-10 flex flex-col md:flex-row justify-between items-start gap-6">
                     <div>
@@ -181,7 +181,7 @@ const WeatherDashboard = () => {
                             <MapPin className="w-6 h-6" />
                             {t.weatherTitle || "Weather Forecast"}
                         </h2>
-                        <p className="text-blue-100 mb-6">{currentDate}</p>
+                        <p className="text-green-100 mb-6">{currentDate}</p>
 
                         <div className="flex items-center gap-4">
                             <div className="p-3 bg-white/20 rounded-full backdrop-blur-sm">
@@ -189,13 +189,13 @@ const WeatherDashboard = () => {
                             </div>
                             <div>
                                 <div className="text-5xl font-bold">{Math.round(weather.main.temp)}°C</div>
-                                <div className="text-blue-100 font-medium capitalize">{weather.weather[0].description}</div>
+                                <div className="text-green-100 font-medium capitalize">{weather.weather[0].description}</div>
                             </div>
                         </div>
                     </div>
 
                     <div className="bg-white/10 p-4 rounded-lg backdrop-blur-sm min-w-[200px]">
-                        <div className="text-xs text-blue-100 uppercase tracking-wider mb-2">{t.currentWeather || "Current Weather"}</div>
+                        <div className="text-xs text-green-100 uppercase tracking-wider mb-2">{t.currentWeather || "Current Weather"}</div>
                         <div className="flex flex-col gap-2">
                             <div className="flex items-center gap-2">
                                 <Wind className="w-4 h-4 opacity-80" />

@@ -122,7 +122,7 @@ const Chatbot = () => {
     };
 
     return (
-        <div className="flex flex-col h-[calc(100vh-140px)] bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="flex flex-col h-[calc(100dvh-180px)] md:h-[calc(100vh-140px)] bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             {/* Header */}
             <div className="bg-green-600 p-4 text-white flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-3">

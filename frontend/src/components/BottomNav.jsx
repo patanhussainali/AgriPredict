@@ -29,12 +29,12 @@ const BottomNav = ({ activeTab, onTabChange }) => {
                     <button
                         key={item.id}
                         onClick={() => onTabChange(item.id)}
-                        className={`flex flex-col items-center gap-1 transition-colors relative px-2 ${isActive ? 'text-green-600' : 'text-gray-400 hover:text-gray-600'
+                        className={`flex flex-col items-center gap-1 transition-colors relative px-2 ${isActive ? 'text-emerald-600' : 'text-gray-400 hover:text-gray-600'
                             }`}
                     >
                         {/* Active Indicator Line */}
                         {isActive && (
-                            <span className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-green-600 rounded-b-lg"></span>
+                            <span className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-emerald-600 rounded-b-lg"></span>
                         )}
 
                         <Icon strokeWidth={isActive ? 2.5 : 2} className={`w-6 h-6 transition-transform ${isActive ? 'scale-110' : ''}`} />

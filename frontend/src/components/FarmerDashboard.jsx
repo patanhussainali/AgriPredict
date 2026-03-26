@@ -182,9 +182,9 @@ const FarmerDashboard = () => {
                 <div className="text-xs text-gray-400 mt-2 text-right md:-mt-6">{currentDate}</div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Left Column: Form */}
-                <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
+            <div className="max-w-4xl mx-auto flex flex-col gap-8 w-full">
+                {/* Top Section: Form */}
+                <div className="w-full bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
                     <h2 className="text-xl font-serif font-bold text-gray-800">{t.formTitle}</h2>
                     <p className="text-sm text-gray-500 mb-6">{t.formSub}</p>
 
@@ -423,7 +423,7 @@ const FarmerDashboard = () => {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all mt-4 disabled:opacity-70 disabled:cursor-not-allowed"
+                            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all mt-4 disabled:opacity-70 disabled:cursor-not-allowed"
                         >
                             {loading ? t.loading : t.submit}
                         </button>
@@ -432,14 +432,14 @@ const FarmerDashboard = () => {
                     {error && <p className="text-red-500 text-sm mt-4 text-center">{error}</p>}
                 </div>
 
-                {/* Right Column: Placeholder / Result */}
-                <div className="lg:col-span-1">
+                {/* Bottom Section: Placeholder / Result */}
+                <div className="w-full">
                     {result ? (
                         <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6 h-full animate-fade-in">
                             <PredictionResult result={result} />
                         </div>
                     ) : (
-                        <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 h-full min-h-[400px] flex flex-col items-center justify-center text-center bg-gray-50/50">
+                        <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 min-h-[250px] flex flex-col items-center justify-center text-center bg-gray-50/50">
                             <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-6">
                                 <Sprout className="w-10 h-10 text-gray-400" />
                             </div>

@@ -97,7 +97,7 @@ function AppContent() {
       case 'settings':
         return <SettingsPage />;
       case 'account':
-        return <AccountPage user={user} />;
+        return <AccountPage user={user} onUpdateUser={setUser} />;
       case 'help':
         return <HelpPage />;
       default:

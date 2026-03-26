@@ -26,9 +26,9 @@ const Sidebar = ({ activeTab, onTabChange, onLogout, isMobileOpen, isDesktopOpen
     ];
 
     const bottomItems = [
-        { id: 'settings', label: t.settings, icon: Settings },
         { id: 'account', label: t.account, icon: User },
         { id: 'help', label: t.help, icon: HelpCircle },
+        { id: 'settings', label: t.settings, icon: Settings },
     ];
 
     return (

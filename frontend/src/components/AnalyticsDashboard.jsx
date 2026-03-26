@@ -179,9 +179,9 @@ const AnalyticsDashboard = () => {
     const numColumns = Object.keys(stats).filter(k => stats[k].type === 'numeric');
 
     return (
-        <div className="flex h-[calc(100vh-100px)] bg-gray-50 border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+        <div className="flex flex-col md:flex-row h-auto md:h-[calc(100vh-100px)] min-h-[calc(100vh-100px)] bg-gray-50 border border-gray-200 rounded-xl overflow-hidden shadow-sm">
             {/* Sidebar: Datasets */}
-            <div className="w-64 bg-white border-r border-gray-200 flex flex-col">
+            <div className="w-full md:w-64 bg-white border-b md:border-b-0 md:border-r border-gray-200 flex flex-col shrink-0 max-h-48 md:max-h-none">
                 <div className="p-4 border-b border-gray-100 bg-gray-50">
                     <h2 className="font-bold text-gray-700 flex items-center gap-2">
                         <Database className="w-4 h-4" /> {t.datasets}

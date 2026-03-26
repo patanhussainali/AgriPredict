@@ -1,5 +1,6 @@
 
 import { createContext, useState, useEffect } from 'react';
+import LocationPopup from '../components/LocationPopup';
 
 export const WeatherContext = createContext();
 
@@ -9,6 +10,7 @@ export const WeatherProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [location, setLocation] = useState(null); // { lat, lon, name }
+    const [showLocationPopup, setShowLocationPopup] = useState(false);
 
     const API_KEY = '65bffa581a844173ce5682387773a602';
 
@@ -45,41 +47,73 @@ export const WeatherProvider = ({ children }) => {
         }
     };
 
+    const requestGeolocation = () => {
+        setLoading(true);
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                fetchWeatherByCoords(position.coords.latitude, position.coords.longitude);
+            },
+            (err) => {
+                console.warn("Geolocation denied or error:", err);
+                setError("Location access denied. Please enable location services.");
+                setLoading(false);
+            }
+        );
+    };
+
+    const handleAllowLocation = () => {
+        setShowLocationPopup(false);
+        requestGeolocation();
+    };
+
+    const handleDenyLocation = () => {
+        setShowLocationPopup(false);
+        setError("Location access denied. Please enable location services to view local weather.");
+        setLoading(false);
+    };
+
     // Initial Fetch on Mount
     useEffect(() => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    fetchWeatherByCoords(position.coords.latitude, position.coords.longitude);
-                },
-                (err) => {
-                    console.warn("Geolocation denied or error:", err);
-                    setError("Location access denied. Please enable location services.");
-                    setLoading(false); // Ensure loading stops
-                }
-            );
-        } else {
+        if (!navigator.geolocation) {
             setError("Geolocation not supported by this browser.");
             setLoading(false);
+            return;
         }
 
-        // Safety timeout: If nothing happens in 5 seconds, stop loading
-        const timer = setTimeout(() => {
-            setLoading(prev => {
-                if (prev) {
-                    console.warn("Weather loading timed out");
-                    return false;
+        const checkPermissionAndFetch = async () => {
+            if (navigator.permissions && navigator.permissions.query) {
+                try {
+                    const result = await navigator.permissions.query({ name: 'geolocation' });
+                    if (result.state === 'granted') {
+                        requestGeolocation();
+                        return;
+                    } else if (result.state === 'denied') {
+                        setError("Location access is denied in your browser settings.");
+                        setLoading(false);
+                        return;
+                    }
+                } catch (e) {
+                    console.warn("Permissions query failed", e);
                 }
-                return prev;
-            });
-        }, 5000);
+            }
 
-        return () => clearTimeout(timer);
+            // Show custom popup if permission is prompt (or unsupported)
+            setShowLocationPopup(true);
+            setLoading(false);
+        };
+
+        checkPermissionAndFetch();
     }, []);
 
     return (
         <WeatherContext.Provider value={{ weather, forecast, location, loading, error, refreshWeather: fetchWeatherByCoords }}>
             {children}
+            {showLocationPopup && (
+                <LocationPopup
+                    onAllow={handleAllowLocation}
+                    onDeny={handleDenyLocation}
+                />
+            )}
         </WeatherContext.Provider>
     );
 };

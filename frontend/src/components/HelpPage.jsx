@@ -57,10 +57,10 @@ const HelpPage = () => {
                 <p className="text-gray-500 mt-2">{t.helpSubtitle}</p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
                 {/* Left Column: FAQs */}
-                <div className="lg:col-span-2 space-y-6">
+                <div className="space-y-6">
                     <h2 className="text-xl font-bold text-gray-900 mb-4">{t.faqTitle}</h2>
 
                     <div className="space-y-4">
@@ -89,7 +89,7 @@ const HelpPage = () => {
                 </div>
 
                 {/* Right Column: Contact Info */}
-                <div className="lg:col-span-1 space-y-6">
+                <div className="space-y-6">
                     <h2 className="text-xl font-bold text-gray-900 mb-4">{t.contactTitle}</h2>
 
                     {/* Email Card */}
