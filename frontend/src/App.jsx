@@ -32,7 +32,14 @@ function AppContent() {
   }
 
   // Check for existing session on mount
-  // Check for existing session on mount
+  useEffect(() => {
+    // Scroll to top on tab change
+    const mainEl = document.getElementById('main-scroll-container');
+    if (mainEl) {
+      mainEl.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [activeTab]);
+
   useEffect(() => {
     // USER REQUEST: Always redirect to Landing Page on refresh.
     // We intentionally DO NOT restore the session here.
@@ -129,7 +136,7 @@ function AppContent() {
           />
 
           {/* Scrollable Content */}
-          <main className="flex-1 p-4 md:p-6 overflow-y-auto">
+          <main id="main-scroll-container" className="flex-1 p-4 md:p-6 overflow-y-auto">
             <div className="max-w-7xl mx-auto">
               {renderContent()}
             </div>

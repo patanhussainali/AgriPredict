@@ -36,14 +36,14 @@ const Sidebar = ({ activeTab, onTabChange, onLogout, isMobileOpen, isDesktopOpen
             {/* Mobile Overlay */}
             {isMobileOpen && (
                 <div
-                    className="fixed inset-0 bg-black/50 z-40 md:hidden"
+                    className="fixed inset-0 bg-black/50 z-[60] md:hidden"
                     onClick={onCloseMobile}
                 ></div>
             )}
 
             {/* Sidebar Container */}
             <aside className={`
-                fixed top-0 left-0 z-50 h-screen w-64 bg-white border-r border-gray-200 transition-transform duration-300 ease-in-out flex flex-col
+                fixed top-0 left-0 z-[70] h-screen w-64 bg-white border-r border-gray-200 transition-transform duration-300 ease-in-out flex flex-col
                 ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}
                 ${isDesktopOpen ? 'md:translate-x-0' : 'md:-translate-x-full'}
             `}>
