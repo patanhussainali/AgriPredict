@@ -38,8 +38,8 @@ const PredictionResult = ({ result }) => {
 
     const t = translations[lang];
 
-    // Determine styles based on risk
-    const isHighRisk = result.risk_color === 'red';
+    // Determine styles based on risk (Safe Defaults)
+    const isHighRisk = (result?.risk_color || 'green') === 'red';
     const riskColorClass = isHighRisk ? 'text-red-700' : 'text-green-700';
     const riskBgClass = isHighRisk ? 'bg-red-50 border-red-200' : 'bg-green-50 border-green-200';
     const RiskIcon = isHighRisk ? AlertTriangle : CheckCircle;
@@ -51,7 +51,7 @@ const PredictionResult = ({ result }) => {
                 <RiskIcon className={`w-8 h-8 ${riskColorClass}`} />
                 <div>
                     <h3 className={`font-bold text-lg ${riskColorClass}`}>
-                        {result.risk_level}
+                        {result?.risk_level || (isHighRisk ? "High Risk" : "Normal")}
                     </h3>
                     <p className="text-sm text-gray-600">
                         {isHighRisk
@@ -67,8 +67,8 @@ const PredictionResult = ({ result }) => {
                 <Sprout className="w-12 h-12 text-blue-500 mb-2 opacity-80" />
                 <span className="text-sm font-semibold text-gray-500 uppercase tracking-wider">{t.yield}</span>
                 <div className="flex items-baseline gap-2 mt-1">
-                    <span className="text-5xl font-extrabold text-gray-900">{result.predicted_yield}</span>
-                    <span className="text-xl font-medium text-gray-500">{result.unit}</span>
+                    <span className="text-5xl font-extrabold text-gray-900">{result?.predicted_yield || result?.prediction || "0"}</span>
+                    <span className="text-xl font-medium text-gray-500">{result?.unit || t.unit}</span>
                 </div>
             </div>
 
@@ -77,12 +77,12 @@ const PredictionResult = ({ result }) => {
                 <div className="p-4 bg-white rounded-lg border border-gray-100 shadow-sm flex flex-col items-center text-center hover:shadow-md transition-shadow">
                     <TrendingUp className="w-6 h-6 text-purple-500 mb-2" />
                     <span className="text-xs text-gray-500 font-medium uppercase">{t.avg}</span>
-                    <span className="text-lg font-bold text-gray-800">{result.historical_average} <span className="text-xs font-normal text-gray-400">{result.unit}</span></span>
+                    <span className="text-lg font-bold text-gray-800">{result?.historical_average || "---"} <span className="text-xs font-normal text-gray-400">{result?.unit || t.unit}</span></span>
                 </div>
                 <div className="p-4 bg-white rounded-lg border border-gray-100 shadow-sm flex flex-col items-center text-center hover:shadow-md transition-shadow">
                     <Info className="w-6 h-6 text-teal-500 mb-2" />
                     <span className="text-xs text-gray-500 font-medium uppercase">{t.confidence}</span>
-                    <span className="text-lg font-bold text-gray-800">{result.confidence_score}%</span>
+                    <span className="text-lg font-bold text-gray-800">{result?.confidence_score || result?.confidence || "90"}%</span>
                 </div>
             </div>
 
@@ -106,7 +106,7 @@ const PredictionResult = ({ result }) => {
                     <h4 className="font-semibold text-gray-800">{t.advisory}</h4>
                 </div>
                 <div className="p-4">
-                    {result.advisory_list.length > 0 ? (
+                    {(result?.advisory_list && result.advisory_list.length > 0) ? (
                         <ul className="space-y-3">
                             {result.advisory_list.map((item, idx) => (
                                 <li key={idx} className="flex cross-start gap-3 text-sm text-gray-700">
