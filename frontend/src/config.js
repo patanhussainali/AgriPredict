@@ -1,9 +1,7 @@
 // config.js
-// Logic: Use VITE_API_URL if set (production), otherwise default to local backend.
-// On Vercel, requests to /api/... will be rewritten to the backend.
-// But for a separate backend deployment or if we want explicit control:
+// In development: Vite proxy forwards /predict, /chat, /auth → localhost:8000
+// In production (Vercel): requests go to /api/... and Vercel rewrites handle it
 
-const isProd = import.meta.env.PROD || window.location.hostname !== 'localhost';
-const API_URL = import.meta.env.VITE_API_URL || (isProd ? "/api" : "http://localhost:8000");
+const API_URL = import.meta.env.VITE_API_URL || "";
 
 export default API_URL;
