@@ -136,8 +136,8 @@ function AppContent() {
           />
 
           {/* Scrollable Content */}
-          <main id="main-scroll-container" className="flex-1 p-4 md:p-6 overflow-y-auto">
-            <div className="max-w-7xl mx-auto">
+          <main id="main-scroll-container" className="flex-1 overflow-y-auto flex flex-col min-h-0">
+            <div className={`${activeTab === 'chat' ? 'flex-1 flex flex-col min-h-0' : 'p-4 md:p-6 max-w-7xl mx-auto w-full'}`}>
               {renderContent()}
             </div>
           </main>
