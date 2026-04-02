@@ -122,7 +122,9 @@ const Chatbot = () => {
     };
 
     return (
-        <div className="flex flex-col flex-1 min-h-0 bg-white md:rounded-3xl md:shadow-sm md:border md:border-gray-100 overflow-hidden">
+        <div className="flex flex-col bg-white md:rounded-3xl md:shadow-sm md:border md:border-gray-100 overflow-hidden
+            fixed inset-0 md:static md:inset-auto md:flex-1 md:min-h-0
+            pb-[calc(env(safe-area-inset-bottom)+64px)] md:pb-0">
             {/* Header */}
             <div className="bg-green-600 p-5 text-white flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-3">
@@ -141,24 +143,17 @@ const Chatbot = () => {
                 {messages.map((msg, idx) => (
                     <div key={idx} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
                         <div className={`flex max-w-[85%] sm:max-w-[75%] ${msg.sender === 'user' ? 'flex-row-reverse' : 'flex-row'} gap-3 animate-fade-in`}>
-
-                            {/* Avatar */}
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 shadow-sm ${msg.sender === 'user' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'
-                                }`}>
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 shadow-sm ${msg.sender === 'user' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'}`}>
                                 {msg.sender === 'user' ? 'U' : <Bot className="w-4 h-4" />}
                             </div>
-
-                            {/* Bubble */}
                             <div className={`px-5 py-3 text-sm shadow-sm leading-relaxed border ${msg.sender === 'user'
                                 ? 'bg-green-600 border-green-700 text-white rounded-3xl rounded-tr-none'
-                                : 'bg-white border-gray-100 text-gray-800 rounded-3xl rounded-tl-none'
-                                }`}>
+                                : 'bg-white border-gray-100 text-gray-800 rounded-3xl rounded-tl-none'}`}>
                                 {msg.text}
                             </div>
                         </div>
                     </div>
                 ))}
-
                 {loading && (
                     <div className="flex justify-start">
                         <div className="flex gap-3">
@@ -175,8 +170,8 @@ const Chatbot = () => {
                 <div ref={messagesEndRef} />
             </div>
 
-            {/* Input Area */}
-            <div className="p-4 bg-white border-t border-gray-50">
+            {/* Input Area — fixed above bottom nav on mobile */}
+            <div className="shrink-0 p-4 bg-white border-t border-gray-100 shadow-[0_-2px_8px_rgba(0,0,0,0.06)]">
                 <form onSubmit={handleSend} className="flex gap-2 sm:gap-4 max-w-4xl mx-auto">
                     <button
                         type="button"
@@ -185,8 +180,7 @@ const Chatbot = () => {
                             ? 'bg-gray-50 text-gray-300 cursor-not-allowed'
                             : isListening
                                 ? 'bg-red-50 text-red-600 animate-pulse ring-4 ring-red-50'
-                                : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
-                            }`}
+                                : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}
                         title={isSupported ? t.voiceInput : t.voiceNotSupported}
                         disabled={!isSupported}
                     >
@@ -202,7 +196,7 @@ const Chatbot = () => {
                     <button
                         type="submit"
                         disabled={!input.trim() || loading}
-                        className="bg-green-600 text-white px-8 py-3.5 rounded-full hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg font-bold flex items-center gap-2"
+                        className="bg-green-600 text-white px-5 md:px-8 py-3.5 rounded-full hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg font-bold flex items-center gap-2"
                     >
                         <span className="hidden sm:inline">{t.send}</span>
                         <Send className="w-4 h-4" />
