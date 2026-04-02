@@ -3,7 +3,7 @@ import { WeatherContext } from '../context/WeatherContext';
 import { LanguageContext } from '../context/LanguageContext';
 // import axios from 'axios';
 import { Cloud, Droplets, Wind, Thermometer, Loader2, TrendingUp, RefreshCcw } from 'lucide-react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import PropTypes from 'prop-types';
 
 const DashboardHome = ({ user }) => {
@@ -182,51 +182,38 @@ const DashboardHome = ({ user }) => {
                             Loading data...
                         </div>
                     ) : chartData.length > 0 ? (
-                        <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart
-                                data={chartData}
-                                margin={{
-                                    top: 10,
-                                    right: 30,
-                                    left: 0,
-                                    bottom: 0,
-                                }}
-                            >
-                                <defs>
-                                    <linearGradient id="colorYield" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-                                        <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
-                                    </linearGradient>
-                                </defs>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                                <XAxis
-                                    dataKey="name"
-                                    tickLine={false}
-                                    axisLine={false}
-                                    tick={{ fontSize: 12, fill: '#9ca3af' }}
-                                    dy={10}
-                                />
-                                <YAxis
-                                    tickLine={false}
-                                    axisLine={false}
-                                    tick={{ fontSize: 12, fill: '#9ca3af' }}
-                                    dx={-10}
-                                />
-                                <Tooltip
-                                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                                    cursor={{ stroke: '#82ca9d', strokeWidth: 2 }}
-                                />
-                                <Area
-                                    type="monotone"
-                                    dataKey="value"
-                                    stroke="#82ca9d"
-                                    strokeWidth={3}
-                                    fillOpacity={1}
-                                    fill="url(#colorYield)"
-                                    animationDuration={1500}
-                                />
-                            </AreaChart>
-                        </ResponsiveContainer>
+                        <>
+                            {/* Bar Chart — mobile only */}
+                            <div className="block md:hidden w-full h-full">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                                        <XAxis dataKey="name" tickLine={false} axisLine={false} tick={{ fontSize: 10, fill: '#9ca3af' }} dy={10} />
+                                        <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 10, fill: '#9ca3af' }} />
+                                        <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                                        <Bar dataKey="value" fill="#4ade80" radius={[6, 6, 0, 0]} animationDuration={1500} />
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            </div>
+                            {/* Area Chart — desktop only */}
+                            <div className="hidden md:block w-full h-full">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <AreaChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                                        <defs>
+                                            <linearGradient id="colorYield" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
+                                                <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
+                                            </linearGradient>
+                                        </defs>
+                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                                        <XAxis dataKey="name" tickLine={false} axisLine={false} tick={{ fontSize: 12, fill: '#9ca3af' }} dy={10} />
+                                        <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 12, fill: '#9ca3af' }} dx={-10} />
+                                        <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} cursor={{ stroke: '#82ca9d', strokeWidth: 2 }} />
+                                        <Area type="monotone" dataKey="value" stroke="#82ca9d" strokeWidth={3} fillOpacity={1} fill="url(#colorYield)" animationDuration={1500} />
+                                    </AreaChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </>
                     ) : (
                         <div className="w-full h-full flex items-center justify-center text-gray-400">
                             No data available for {selectedCrop}

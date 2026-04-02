@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { LanguageContext } from '../context/LanguageContext.jsx';
 import {
     LayoutDashboard,
@@ -13,9 +13,18 @@ import {
     Leaf
 } from 'lucide-react';
 
-// eslint-disable-next-line react/prop-types
 const Sidebar = ({ activeTab, onTabChange, onLogout, isMobileOpen, isDesktopOpen, onCloseMobile }) => {
     const { t } = useContext(LanguageContext);
+
+    // Lock body scroll when mobile sidebar is open
+    useEffect(() => {
+        if (isMobileOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => { document.body.style.overflow = ''; };
+    }, [isMobileOpen]);
 
     const menuItems = [
         { id: 'dashboard', label: t.dashboard, icon: LayoutDashboard },
@@ -43,7 +52,7 @@ const Sidebar = ({ activeTab, onTabChange, onLogout, isMobileOpen, isDesktopOpen
 
             {/* Sidebar Container */}
             <aside className={`
-                fixed top-0 left-0 z-[70] h-screen w-64 bg-white border-r border-gray-200 transition-transform duration-300 ease-in-out flex flex-col
+                fixed top-0 left-0 z-[70] h-screen w-64 bg-white border-r border-gray-200 transition-transform duration-300 ease-in-out flex flex-col overflow-hidden
                 ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}
                 ${isDesktopOpen ? 'md:translate-x-0' : 'md:-translate-x-full'}
             `}>
@@ -68,7 +77,7 @@ const Sidebar = ({ activeTab, onTabChange, onLogout, isMobileOpen, isDesktopOpen
                                     onCloseMobile();
                                 }}
                                 className={`
-                                    w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
+                                    w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs md:text-sm font-medium transition-colors
                                     ${isActive
                                         ? 'bg-green-50 text-green-700 border-l-4 border-green-600'
                                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}
@@ -93,7 +102,7 @@ const Sidebar = ({ activeTab, onTabChange, onLogout, isMobileOpen, isDesktopOpen
                                     onCloseMobile();
                                 }}
                                 className={`
-                                    w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
+                                    w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs md:text-sm font-medium transition-colors
                                     ${activeTab === item.id
                                         ? 'bg-green-50 text-green-700 border-l-4 border-green-600'
                                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}
