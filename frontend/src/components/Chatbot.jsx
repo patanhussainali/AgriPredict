@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect, useContext } from 'react';
 import { LanguageContext } from '../context/LanguageContext';
 import { Send, Bot, Loader2, Mic, MicOff } from 'lucide-react';
-import API_URL from '../config';
 
 const Chatbot = () => {
     const { t, lang } = useContext(LanguageContext);
@@ -84,38 +83,39 @@ const Chatbot = () => {
         setLoading(true);
 
         try {
-            // Use GET request for Vercel stability
-            const params = new URLSearchParams({
-                message: userMsg,
-                lang: lang
+            const groqKey = import.meta.env.VITE_GROQ_API_KEY;
+            const systemPrompt = `You are an expert Agricultural Assistant. Answer in ${lang === 'ta' ? 'Tamil' : lang === 'te' ? 'Telugu' : lang === 'hi' ? 'Hindi' : lang === 'kn' ? 'Kannada' : lang === 'ur' ? 'Urdu' : 'English'} language. Keep answers concise, helpful, and focused on farming, crops, and weather.`;
+
+            const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${groqKey}`
+                },
+                body: JSON.stringify({
+                    model: "llama-3.3-70b-versatile",
+                    messages: [
+                        { role: "system", content: systemPrompt },
+                        { role: "user", content: userMsg }
+                    ],
+                    temperature: 0.7,
+                    max_tokens: 300
+                })
             });
 
-            const res = await fetch(`${API_URL}/chat?${params.toString()}`, {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' }
-            });
-
-            const text = await res.text();
-            let data;
-            try {
-                data = JSON.parse(text);
-            } catch (e) {
-                console.error("Non-JSON Response received:", text);
-                throw new Error(`Invalid server response (not JSON). Received: ${text.substring(0, 50)}...`);
-            }
+            const data = await res.json();
 
             if (!res.ok) {
-                // Display specific server error if available (e.g., "GROQ_API_KEY missing")
-                throw new Error(data.error || data.detail || "Chat Service Unavailable");
+                throw new Error(data.error?.message || "Groq API Error");
             }
 
-            setMessages(prev => [...prev, { text: data.response, sender: 'bot' }]);
+            const reply = data.choices[0].message.content;
+            setMessages(prev => [...prev, { text: reply, sender: 'bot' }]);
         } catch (error) {
             console.error("Chat error:", error);
             const errorText = error.message.includes("Failed to fetch")
                 ? (t.chatError || "Connection failed. Please check your internet.")
                 : `Error: ${error.message}`;
-
             setMessages(prev => [...prev, { text: errorText, sender: 'bot' }]);
         }
         setLoading(false);

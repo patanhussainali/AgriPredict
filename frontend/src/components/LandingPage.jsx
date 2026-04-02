@@ -157,23 +157,23 @@ const LandingPage = ({ onLoginClick }) => {
 
             {/* SERVICES SECTION */}
             <section id="services" className="py-20 px-8 bg-[#F3F8F2]">
-                <div className="max-w-6xl mx-auto">
+                <div className="w-full max-w-none px-4 md:px-12">
                     <h2 className="text-3xl font-bold text-[#2D4A27] mb-12 text-center">Our Services</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
                         {/* Service 1 */}
-                        <div className="bg-white p-10 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 text-center border border-gray-100">
-                            <div className="bg-[#E8F5E9] w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-8 border border-[#C8E6C9]">
-                                <CropPredictionIcon className="w-10 h-10 text-[#2E7D32]" />
+                        <div className="group bg-white p-10 rounded-2xl shadow-sm hover:shadow-2xl hover:-translate-y-3 transition-all duration-500 ease-out text-center border border-gray-100 cursor-pointer">
+                            <div className="bg-[#E8F5E9] w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-8 border border-[#C8E6C9] group-hover:scale-110 group-hover:bg-[#2E7D32] transition-all duration-500">
+                                <CropPredictionIcon className="w-10 h-10 text-[#2E7D32] group-hover:text-white transition-colors duration-500" />
                             </div>
                             <h3 className="text-2xl font-bold text-gray-800 mb-4">Crop Prediction</h3>
                             <p className="text-gray-500 text-sm leading-relaxed">
                                 Analyze soil and climate data to recommend the most suitable crops for your land.
                             </p>
                         </div>
-                        {/* Service 2 */}
-                        <div className="bg-white p-10 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 text-center border border-gray-100">
-                            <div className="bg-[#E8F5E9] w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-8 border border-[#C8E6C9]">
-                                <YieldEstimationIcon className="w-10 h-10 text-[#2E7D32]" />
+                        {/* Service 2 — center card elevated by default */}
+                        <div className="group bg-white p-10 rounded-2xl shadow-xl -translate-y-4 hover:shadow-2xl hover:-translate-y-7 transition-all duration-500 ease-out text-center border border-gray-100 cursor-pointer">
+                            <div className="bg-[#E8F5E9] w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-8 border border-[#C8E6C9] group-hover:scale-110 group-hover:bg-[#2E7D32] transition-all duration-500">
+                                <YieldEstimationIcon className="w-10 h-10 text-[#2E7D32] group-hover:text-white transition-colors duration-500" />
                             </div>
                             <h3 className="text-2xl font-bold text-gray-800 mb-4">Yield Estimation</h3>
                             <p className="text-gray-500 text-sm leading-relaxed">
@@ -181,9 +181,9 @@ const LandingPage = ({ onLoginClick }) => {
                             </p>
                         </div>
                         {/* Service 3 */}
-                        <div className="bg-white p-10 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 text-center border border-gray-100">
-                            <div className="bg-[#E8F5E9] w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-8 border border-[#C8E6C9]">
-                                <WeatherAdvisoryIcon className="w-10 h-10 text-[#2E7D32]" />
+                        <div className="group bg-white p-10 rounded-2xl shadow-sm hover:shadow-2xl hover:-translate-y-3 transition-all duration-500 ease-out text-center border border-gray-100 cursor-pointer">
+                            <div className="bg-[#E8F5E9] w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-8 border border-[#C8E6C9] group-hover:scale-110 group-hover:bg-[#2E7D32] transition-all duration-500">
+                                <WeatherAdvisoryIcon className="w-10 h-10 text-[#2E7D32] group-hover:text-white transition-colors duration-500" />
                             </div>
                             <h3 className="text-2xl font-bold text-gray-800 mb-4">Weather Advisory</h3>
                             <p className="text-gray-500 text-sm leading-relaxed">
