@@ -162,13 +162,6 @@ const FarmerDashboard = () => {
             setLoading(false);
         }
     };
-        } catch (err) {
-            console.error(err);
-            setError(err.message || t.error);
-        } finally {
-            setLoading(false);
-        }
-    };
 
     const pulseTypes = [
         "Black gram", "Green Gram", "Cowpea", "Horse gram", "Red gram", "Lablab"
