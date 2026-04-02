@@ -169,12 +169,13 @@ const WeatherDashboard = () => {
         // Fallback or simpler logic could exist here, but this suffices for MVP
     }
 
-    return (        <div className="flex flex-col h-[calc(100dvh-180px)] md:h-[calc(100vh-140px)] bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+    return (
+        <div className="flex flex-col h-[calc(100dvh-180px)] md:h-[calc(100vh-140px)] bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
             {/* Scrollable Content Area */}
             <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-8 bg-gray-50/20">
                 <div className="max-w-5xl mx-auto w-full space-y-8">
                     
-                    {/* Main Weather Card */}
+                    <div className="bg-green-600 rounded-3xl p-6 md:p-8 text-white shadow-lg overflow-hidden relative min-h-[220px] flex items-center">
                     <div className="bg-gradient-to-br from-emerald-600 to-teal-700 rounded-3xl p-6 md:p-8 text-white shadow-lg overflow-hidden relative min-h-[220px] flex items-center">
                         <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl"></div>
                         <div className="relative z-10 flex flex-col md:flex-row justify-between items-center w-full gap-8">
