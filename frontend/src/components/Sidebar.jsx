@@ -67,6 +67,8 @@ const Sidebar = ({ activeTab, onTabChange, onLogout, isMobileOpen, isDesktopOpen
 
                 {/* Mobile header inside sidebar */}
                 <div className="flex md:hidden items-center justify-between px-4 py-3 border-b border-gray-100 bg-green-50">
+                    <div className="flex items-center gap-3">
+                        <img src="/logo.png" alt="AgriPredict Logo" className="h-8 w-8 object-contain" />
                     <span className="text-green-700 font-bold text-base">AgriPredict AI</span>
                     <button onClick={onCloseMobile} className="text-gray-500 hover:text-gray-700 p-1">✕</button>
                 </div>
