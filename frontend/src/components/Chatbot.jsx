@@ -123,7 +123,7 @@ const Chatbot = () => {
 
     return (
         <div className="flex flex-col bg-white md:rounded-3xl md:shadow-sm md:border md:border-gray-100
-            fixed inset-0 md:static md:inset-auto md:flex-1 md:min-h-0" style={{top: 0, bottom: 0}}>
+            fixed top-16 left-0 right-0 bottom-0 md:static md:inset-auto md:flex-1 md:min-h-0">
             {/* Header */}
             <div className="bg-green-600 p-4 text-white flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-3">
