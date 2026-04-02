@@ -170,7 +170,9 @@ const WeatherDashboard = () => {
     }
 
     return (
-        <div className="flex flex-col h-[calc(100dvh-180px)] md:h-[calc(100vh-140px)] bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="flex flex-col bg-white md:rounded-3xl md:shadow-sm md:border md:border-gray-100 overflow-hidden
+            fixed inset-0 md:static md:inset-auto md:h-[calc(100vh-140px)]
+            pb-[calc(env(safe-area-inset-bottom)+64px)] md:pb-0">
             {/* Scrollable Content Area */}
             <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-8 bg-gray-50/20">
                 <div className="max-w-5xl mx-auto w-full space-y-8">
