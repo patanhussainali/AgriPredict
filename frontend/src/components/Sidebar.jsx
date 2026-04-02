@@ -65,7 +65,7 @@ const Sidebar = ({ activeTab, onTabChange, onLogout, isMobileOpen, isDesktopOpen
                 </div>
 
                 {/* Main Menu */}
-                <div className="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+                <div className="flex-1 overflow-y-auto py-3 px-3 space-y-0.5 min-h-0">
                     {menuItems.map((item) => {
                         const Icon = item.icon;
                         const isActive = activeTab === item.id;
@@ -83,15 +83,15 @@ const Sidebar = ({ activeTab, onTabChange, onLogout, isMobileOpen, isDesktopOpen
                                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}
                                 `}
                             >
-                                <Icon className={`w-5 h-5 ${isActive ? 'text-green-600' : 'text-gray-400'}`} />
+                                <Icon className={`w-5 h-5 shrink-0 ${isActive ? 'text-green-600' : 'text-gray-400'}`} />
                                 {item.label}
                             </button>
                         );
                     })}
                 </div>
 
-                {/* Bottom Menu */}
-                <div className="p-3 border-t border-gray-100 space-y-1">
+                {/* Bottom Menu — always visible, never scrolled away */}
+                <div className="shrink-0 p-3 border-t border-gray-100 space-y-0.5 bg-white">
                     {bottomItems.map((item) => {
                         const Icon = item.icon;
                         return (
@@ -108,7 +108,7 @@ const Sidebar = ({ activeTab, onTabChange, onLogout, isMobileOpen, isDesktopOpen
                                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}
                                 `}
                             >
-                                <Icon className={`w-5 h-5 ${activeTab === item.id ? 'text-green-600' : 'text-gray-400'}`} />
+                                <Icon className={`w-5 h-5 shrink-0 ${activeTab === item.id ? 'text-green-600' : 'text-gray-400'}`} />
                                 {item.label}
                             </button>
                         );
@@ -116,9 +116,9 @@ const Sidebar = ({ activeTab, onTabChange, onLogout, isMobileOpen, isDesktopOpen
 
                     <button
                         onClick={onLogout}
-                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-colors mt-2"
+                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs md:text-sm font-medium text-red-600 hover:bg-red-50 transition-colors border border-red-100 mt-1"
                     >
-                        <LogOut className="w-5 h-5" />
+                        <LogOut className="w-5 h-5 shrink-0" />
                         {t.logout}
                     </button>
                 </div>

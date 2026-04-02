@@ -122,11 +122,10 @@ const Chatbot = () => {
     };
 
     return (
-        <div className="flex flex-col bg-white md:rounded-3xl md:shadow-sm md:border md:border-gray-100 overflow-hidden
-            fixed inset-0 md:static md:inset-auto md:flex-1 md:min-h-0
-            pb-[calc(env(safe-area-inset-bottom)+64px)] md:pb-0">
+        <div className="flex flex-col bg-white md:rounded-3xl md:shadow-sm md:border md:border-gray-100
+            fixed inset-0 md:static md:inset-auto md:flex-1 md:min-h-0" style={{top: 0, bottom: 0}}>
             {/* Header */}
-            <div className="bg-green-600 p-5 text-white flex items-center justify-between shrink-0">
+            <div className="bg-green-600 p-4 text-white flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-3">
                     <div className="bg-white/20 p-2.5 rounded-xl backdrop-blur-sm">
                         <Bot className="w-6 h-6 text-white" />
@@ -138,8 +137,9 @@ const Chatbot = () => {
                 </div>
             </div>
 
-            {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 bg-gray-50/30">
+            {/* Messages Area — only this scrolls */}
+            <div className="flex-1 overflow-y-auto overscroll-contain p-4 md:p-8 space-y-6 bg-gray-50/30"
+                style={{paddingBottom: '0'}}>
                 {messages.map((msg, idx) => (
                     <div key={idx} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
                         <div className={`flex max-w-[85%] sm:max-w-[75%] ${msg.sender === 'user' ? 'flex-row-reverse' : 'flex-row'} gap-3 animate-fade-in`}>
@@ -170,13 +170,14 @@ const Chatbot = () => {
                 <div ref={messagesEndRef} />
             </div>
 
-            {/* Input Area — fixed above bottom nav on mobile */}
-            <div className="shrink-0 p-4 bg-white border-t border-gray-100 shadow-[0_-2px_8px_rgba(0,0,0,0.06)]">
-                <form onSubmit={handleSend} className="flex gap-2 sm:gap-4 max-w-4xl mx-auto">
+            {/* Input Area — always pinned above bottom nav */}
+            <div className="shrink-0 p-3 bg-white border-t border-gray-100 shadow-[0_-2px_8px_rgba(0,0,0,0.06)]"
+                style={{paddingBottom: 'calc(env(safe-area-inset-bottom) + 68px)'}}>
+                <form onSubmit={handleSend} className="flex gap-2 max-w-4xl mx-auto">
                     <button
                         type="button"
                         onClick={toggleListening}
-                        className={`p-3.5 rounded-full transition-all ${!isSupported
+                        className={`p-3 rounded-full transition-all shrink-0 ${!isSupported
                             ? 'bg-gray-50 text-gray-300 cursor-not-allowed'
                             : isListening
                                 ? 'bg-red-50 text-red-600 animate-pulse ring-4 ring-red-50'
@@ -191,12 +192,12 @@ const Chatbot = () => {
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         placeholder={t.askSomething}
-                        className="flex-1 bg-gray-50 border border-gray-200 focus:bg-white focus:ring-4 focus:ring-green-50/50 focus:border-green-500 rounded-full px-6 py-3.5 text-sm outline-none transition-all shadow-inner"
+                        className="flex-1 bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-green-200 focus:border-green-500 rounded-full px-5 py-3 text-sm outline-none transition-all"
                     />
                     <button
                         type="submit"
                         disabled={!input.trim() || loading}
-                        className="bg-green-600 text-white px-5 md:px-8 py-3.5 rounded-full hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg font-bold flex items-center gap-2"
+                        className="bg-green-600 text-white px-4 md:px-8 py-3 rounded-full hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md font-bold flex items-center gap-2 shrink-0"
                     >
                         <span className="hidden sm:inline">{t.send}</span>
                         <Send className="w-4 h-4" />

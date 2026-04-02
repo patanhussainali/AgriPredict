@@ -170,57 +170,54 @@ const WeatherDashboard = () => {
     }
 
     return (
-        <div className="flex flex-col bg-white md:rounded-3xl md:shadow-sm md:border md:border-gray-100 overflow-hidden
-            fixed inset-0 md:static md:inset-auto md:h-[calc(100vh-140px)]
-            pb-[calc(env(safe-area-inset-bottom)+64px)] md:pb-0">
+        <div className="flex flex-col bg-gray-50/20 md:rounded-3xl md:shadow-sm md:border md:border-gray-100
+            fixed inset-0 md:static md:inset-auto md:h-[calc(100vh-140px)]"
+            style={{paddingBottom: 'calc(env(safe-area-inset-bottom) + 64px)'}}>
             {/* Scrollable Content Area */}
-            <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-8 bg-gray-50/20">
-                <div className="max-w-5xl mx-auto w-full space-y-8">
-                    
-                    <div className="bg-green-600 rounded-3xl p-6 md:p-8 text-white shadow-lg overflow-hidden relative min-h-[220px] flex items-center">
-                        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl"></div>
-                        <div className="relative z-10 flex flex-col md:flex-row justify-between items-center w-full gap-8">
-                            <div className="w-full md:w-auto text-center md:text-left">
-                                <h2 className="text-2xl md:text-3xl font-bold mb-2 flex items-center justify-center md:justify-start gap-3 tracking-tight">
-                                    <MapPin className="w-7 h-7" />
-                                    {t.weatherTitle || "Weather Forecast"}
-                                </h2>
-                                <p className="text-green-100 mb-6 font-medium text-sm">{currentDate}</p>
+            <div className="flex-1 overflow-y-auto overscroll-contain p-3 md:p-8 space-y-4 md:space-y-8">
+                <div className="max-w-5xl mx-auto w-full space-y-4 md:space-y-8">
 
-                                <div className="flex items-center justify-center md:justify-start gap-6">
-                                    <div className="p-4 bg-white/20 rounded-3xl backdrop-blur-md shadow-inner border border-white/10">
-                                        {getWeatherIcon(weather.weather[0].id, "w-10 h-10 text-white")}
-                                    </div>
-                                    <div>
-                                        <div className="text-6xl font-black tracking-tighter leading-none">{Math.round(weather.main.temp)}°C</div>
-                                        <div className="text-green-100 font-bold text-lg capitalize opacity-90 mt-1">{weather.weather[0].description}</div>
-                                    </div>
+                    {/* Main Weather Card — compact on mobile */}
+                    <div className="bg-green-600 rounded-2xl md:rounded-3xl p-4 md:p-8 text-white shadow-lg overflow-hidden relative">
+                        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl"></div>
+                        <div className="relative z-10">
+                            {/* Top row: title + date */}
+                            <div className="flex items-start justify-between mb-3">
+                                <div>
+                                    <h2 className="text-lg md:text-3xl font-bold flex items-center gap-2">
+                                        <MapPin className="w-5 h-5 md:w-7 md:h-7" />
+                                        {t.weatherTitle || "Weather Forecast"}
+                                    </h2>
+                                    <p className="text-green-100 text-xs md:text-sm font-medium mt-0.5">{currentDate}</p>
                                 </div>
                             </div>
 
-                            <div className="bg-white/10 p-6 rounded-3xl backdrop-blur-md border border-white/20 min-w-full md:min-w-[300px] shadow-lg">
-                                <div className="text-[10px] text-green-100 uppercase font-black tracking-[0.2em] mb-4 opacity-70">{t.currentWeather || "Current Details"}</div>
-                                <div className="grid grid-cols-1 gap-4">
-                                    <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                                        <div className="flex items-center gap-3">
-                                            <Wind className="w-5 h-5 text-green-100" />
-                                            <span className="text-sm font-semibold">Wind Speed</span>
-                                        </div>
-                                        <span className="font-bold text-base">{Math.round(weather.wind.speed)} km/h</span>
+                            {/* Middle row: temp + details side by side on mobile too */}
+                            <div className="flex items-center justify-between gap-3">
+                                {/* Temp */}
+                                <div className="flex items-center gap-3">
+                                    <div className="p-3 bg-white/20 rounded-2xl backdrop-blur-md border border-white/10">
+                                        {getWeatherIcon(weather.weather[0].id, "w-8 h-8 text-white")}
                                     </div>
-                                    <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                                        <div className="flex items-center gap-3">
-                                            <Droplets className="w-5 h-5 text-green-100" />
-                                            <span className="text-sm font-semibold">Humidity</span>
-                                        </div>
-                                        <span className="font-bold text-base">{weather.main.humidity}%</span>
+                                    <div>
+                                        <div className="text-4xl md:text-6xl font-black tracking-tighter leading-none">{Math.round(weather.main.temp)}°C</div>
+                                        <div className="text-green-100 text-sm capitalize opacity-90 mt-0.5">{weather.weather[0].description}</div>
                                     </div>
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex items-center gap-3">
-                                            <Sun className="w-5 h-5 text-green-100" />
-                                            <span className="text-sm font-semibold">UV Index</span>
-                                        </div>
-                                        <span className="font-bold text-base">Moderate</span>
+                                </div>
+
+                                {/* Stats — inline on mobile */}
+                                <div className="bg-white/10 px-4 py-3 rounded-2xl backdrop-blur-md border border-white/20 text-xs space-y-2 min-w-[130px]">
+                                    <div className="flex items-center justify-between gap-2">
+                                        <div className="flex items-center gap-1.5 text-green-100"><Wind className="w-3.5 h-3.5" /><span>Wind</span></div>
+                                        <span className="font-bold">{Math.round(weather.wind.speed)} km/h</span>
+                                    </div>
+                                    <div className="flex items-center justify-between gap-2 border-t border-white/10 pt-2">
+                                        <div className="flex items-center gap-1.5 text-green-100"><Droplets className="w-3.5 h-3.5" /><span>Humidity</span></div>
+                                        <span className="font-bold">{weather.main.humidity}%</span>
+                                    </div>
+                                    <div className="flex items-center justify-between gap-2 border-t border-white/10 pt-2">
+                                        <div className="flex items-center gap-1.5 text-green-100"><Sun className="w-3.5 h-3.5" /><span>UV</span></div>
+                                        <span className="font-bold">Moderate</span>
                                     </div>
                                 </div>
                             </div>
