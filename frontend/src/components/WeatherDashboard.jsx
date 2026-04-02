@@ -176,7 +176,6 @@ const WeatherDashboard = () => {
                 <div className="max-w-5xl mx-auto w-full space-y-8">
                     
                     <div className="bg-green-600 rounded-3xl p-6 md:p-8 text-white shadow-lg overflow-hidden relative min-h-[220px] flex items-center">
-                    <div className="bg-gradient-to-br from-emerald-600 to-teal-700 rounded-3xl p-6 md:p-8 text-white shadow-lg overflow-hidden relative min-h-[220px] flex items-center">
                         <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl"></div>
                         <div className="relative z-10 flex flex-col md:flex-row justify-between items-center w-full gap-8">
                             <div className="w-full md:w-auto text-center md:text-left">
