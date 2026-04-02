@@ -128,16 +128,21 @@ function AppContent() {
 
         {/* Main Content Area */}
         <div className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${isDesktopSidebarOpen ? 'md:ml-64' : 'md:ml-0'} mb-16 md:mb-0`}>
-          {/* Header */}
-          <Header
-            user={user}
-            onMenuClick={handleToggleSidebar}
-            onProfileClick={() => setActiveTab('account')}
-          />
+          {/* Header — fixed on mobile so it never scrolls away */}
+          <div className="fixed top-0 left-0 right-0 z-40 md:static md:z-auto">
+            <Header
+              user={user}
+              onMenuClick={handleToggleSidebar}
+              onProfileClick={() => setActiveTab('account')}
+            />
+          </div>
+
+          {/* Spacer to push content below fixed header on mobile */}
+          <div className="h-16 md:hidden shrink-0" />
 
           {/* Scrollable Content */}
           <main id="main-scroll-container" className="flex-1 overflow-y-auto flex flex-col min-h-0">
-            <div className={`${activeTab === 'chat' ? 'flex-1 flex flex-col min-h-0' : 'p-4 md:p-6 max-w-7xl mx-auto w-full'}`}>
+            <div className={`${activeTab === 'chat' || activeTab === 'weather' ? 'flex-1 flex flex-col min-h-0' : 'p-4 md:p-6 max-w-7xl mx-auto w-full'}`}>
               {renderContent()}
             </div>
           </main>

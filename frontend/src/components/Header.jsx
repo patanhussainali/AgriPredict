@@ -3,7 +3,7 @@ import { PanelLeft } from 'lucide-react';
 // eslint-disable-next-line react/prop-types
 const Header = ({ user, onMenuClick, onProfileClick }) => {
     return (
-        <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 md:px-6 sticky top-0 z-30">
+        <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 md:px-6">
             {/* Left: Mobile Menu Trigger & Search */}
             <div className="flex items-center gap-4 flex-1">
                 <button
