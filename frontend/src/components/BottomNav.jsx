@@ -5,7 +5,7 @@ import {
     Sprout,
     CloudSun,
     MessageSquare,
-    BarChart3
+    Microscope
 } from 'lucide-react';
 
 const BottomNav = ({ activeTab, onTabChange }) => {
@@ -14,9 +14,9 @@ const BottomNav = ({ activeTab, onTabChange }) => {
     const navItems = [
         { id: 'dashboard', label: t.dashboard, icon: LayoutDashboard },
         { id: 'prediction', label: t.prediction, icon: Sprout },
+        { id: 'disease', label: t.disease || 'Disease', icon: Microscope },
         { id: 'weather', label: t.weather, icon: CloudSun },
         { id: 'chat', label: t.chat, icon: MessageSquare },
-        { id: 'analytics', label: t.analytics, icon: BarChart3 },
     ];
 
     return (

@@ -17,6 +17,7 @@ import { LanguageContext, LanguageProvider } from './context/LanguageContext.jsx
 import { WeatherProvider } from './context/WeatherContext';
 
 import VerifyEmail from './components/VerifyEmail';
+import DiseaseDetection from './components/PlantDiseaseDetector';
 
 function AppContent() {
   const { lang, setLang } = useContext(LanguageContext);
@@ -105,6 +106,8 @@ function AppContent() {
         return <SettingsPage />;
       case 'account':
         return <AccountPage user={user} onUpdateUser={setUser} />;
+      case 'disease':
+        return <DiseaseDetection />;
       case 'help':
         return <HelpPage />;
       default:

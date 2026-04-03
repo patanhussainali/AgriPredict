@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 import os
 import random
@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np
 from dotenv import load_dotenv
 from groq import Groq
+from utils.disease_engine import DiseaseEngine
 
 # Load .env from ROOT directory (one level up)
 load_dotenv(dotenv_path="../.env")
@@ -51,13 +52,52 @@ if api_key:
 else:
     print("⚠️ No GROQ_API_KEY found in .env")
 
+# --- Initialize Disease Detection Engine ---
+disease_engine = DiseaseEngine()
+
 @app.get("/")
 def home():
     return {
         "status": "AgriPredict Backend Running", 
         "ai_enabled": client is not None,
-        "model_loaded": model_data is not None
+        "model_loaded": model_data is not None,
+        "disease_detection": disease_engine.client is not None
     }
+
+@app.post("/detect-disease")
+async def detect_disease(
+    image: UploadFile = File(...),
+    crop_name: str = Form(default=""),
+    lang: str = Form(default="en")
+):
+    """
+    Plant Disease Detection Endpoint
+    Accepts an uploaded plant image and returns disease diagnosis with treatment recommendations.
+    """
+    print(f"Disease detection request: crop={crop_name}, lang={lang}, file={image.filename}")
+
+    # Validate file type
+    allowed_types = {"image/jpeg", "image/jpg", "image/png", "image/webp"}
+    if image.content_type not in allowed_types:
+        return {
+            "status": "error",
+            "disease_name": "Invalid file",
+            "farmer_advice": "Please upload a valid image file (JPG, PNG, or WebP).",
+            "confidence": 0
+        }
+
+    # Validate file size (max 10MB)
+    image_bytes = await image.read()
+    if len(image_bytes) > 10 * 1024 * 1024:
+        return {
+            "status": "error",
+            "disease_name": "File too large",
+            "farmer_advice": "Please upload an image smaller than 10MB.",
+            "confidence": 0
+        }
+
+    result = disease_engine.analyze_disease(image_bytes, crop_name, lang)
+    return result
 
 @app.get("/predict")
 def predict(

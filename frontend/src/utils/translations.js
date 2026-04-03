@@ -3,6 +3,7 @@ export const translations = {
         // Sidebar & Nav
         dashboard: "Dashboard",
         prediction: "Prediction",
+        disease: "Disease Detection",
         weather: "Weather",
         chat: "AI ChatBox",
         analytics: "Analytics",
@@ -162,6 +163,7 @@ export const translations = {
     ta: {
         dashboard: "முகப்பு",
         prediction: "கணிப்பு",
+        disease: "நோய் கண்டறிதல்",
         weather: "வானிலை",
         chat: "AI அரட்டை",
         analytics: "பகுப்பாய்வு",
@@ -314,6 +316,7 @@ export const translations = {
     te: {
         dashboard: "డాష్‌బోర్డ్",
         prediction: "అంచనా",
+        disease: "వ్యాధి గుర్తింపు",
         weather: "వాతావరణం",
         chat: "AI చాట్",
         analytics: "విశ్లేషణలు",
@@ -465,6 +468,7 @@ export const translations = {
     hi: {
         dashboard: "डैशबोर्ड",
         prediction: "भविष्यवाणी",
+        disease: "रोग पहचान",
         weather: "मौसम",
         chat: "AI चैट",
         analytics: "एनालिटिक्स",
@@ -616,6 +620,7 @@ export const translations = {
     kn: {
         dashboard: "ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",
         prediction: "ಮುನ್ಸೂಚನೆ",
+        disease: "ರೋಗ ಪತ್ತೆ",
         weather: "ಹವಾಮಾನ",
         chat: "AI ಚಾಟ್",
         analytics: "ವಿಶ್ಲೇಷಣೆ",
@@ -767,6 +772,7 @@ export const translations = {
     ur: {
         dashboard: "ڈیش بورڈ",
         prediction: "پیشن گوئی",
+        disease: "بیماری کی تشخیص",
         weather: "موسم",
         chat: "AI چیٹ",
         analytics: "تجزیات",

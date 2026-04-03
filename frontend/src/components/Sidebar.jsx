@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 import { LanguageContext } from '../context/LanguageContext.jsx';
 import {
     LayoutDashboard, Sprout, CloudSun, MessageSquare,
-    BarChart3, Settings, User, HelpCircle, LogOut
+    BarChart3, Settings, User, HelpCircle, LogOut, Microscope
 } from 'lucide-react';
 
 const Sidebar = ({ activeTab, onTabChange, onLogout, isMobileOpen, isDesktopOpen, onCloseMobile }) => {
@@ -16,6 +16,7 @@ const Sidebar = ({ activeTab, onTabChange, onLogout, isMobileOpen, isDesktopOpen
     const menuItems = [
         { id: 'dashboard',  label: t.dashboard,  icon: LayoutDashboard },
         { id: 'prediction', label: t.prediction, icon: Sprout },
+        { id: 'disease',    label: t.disease || 'Disease Detection', icon: Microscope },
         { id: 'weather',    label: t.weather,    icon: CloudSun },
         { id: 'chat',       label: t.chat,       icon: MessageSquare },
         { id: 'analytics',  label: t.analytics,  icon: BarChart3 },
