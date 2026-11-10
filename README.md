@@ -4,8 +4,6 @@
 
 The platform provides crop yield prediction, plant disease detection, weather monitoring, and an AI-powered agricultural chatbot through a user-friendly web application.
 
-🌐 **Live Demo:** https://agripredictf.vercel.app
-
 ---
 
 ## 🚀 Key Features
