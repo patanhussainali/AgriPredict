@@ -6,8 +6,6 @@ The platform provides crop yield prediction, plant disease detection, weather mo
 
 🌐 **Live Demo:** https://agripredictf.vercel.app
 
-📂 **GitHub Repository:** https://github.com/saidurga144/AgriPredict
-
 ---
 
 ## 🚀 Key Features
